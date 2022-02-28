@@ -11,7 +11,7 @@ import {
   OnDestroy,
   ChangeDetectorRef
 } from "@angular/core";
-import * as hl from "highlight.js";
+import * as hljs from "highlight.js";
 import { HttpClient } from "@angular/common/http";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -24,6 +24,9 @@ import { takeUntil } from "rxjs/operators";
   selector: "[egretHighlight]"
 })
 export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
+
+  hl: any = hljs;
+
   constructor(
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
@@ -56,7 +59,7 @@ export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-      this.unsubscribeAll.next();
+      this.unsubscribeAll.next('');
       this.unsubscribeAll.complete();
   }
 
@@ -73,7 +76,7 @@ export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
 
   highlightElement(code: string, languages?: string[]) {
     this._zone.runOutsideAngular(() => {
-      const res = hl.highlightAuto(code);
+      const res = this.hl.highlightAuto(code);
       this.highlightedCode = res.value;
       // this.cdr.detectChanges();
       // console.log(languages)

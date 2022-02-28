@@ -24,8 +24,7 @@ import '@angular/localize/init';
 
 
 /** Evergreen browsers require these. **/
-import 'core-js/es6/reflect';
-import 'core-js/es7/reflect';  // Run `npm install --save web-animations-js`.
+import 'core-js/es/reflect';  // Run `npm install --save web-animations-js`.
 
 
 /***************************************************************************************************

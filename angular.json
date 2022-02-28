@@ -48,6 +48,11 @@
               "node_modules/collact-components/styles/_styles.scss",
               "src/assets/styles/app.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/styles"
+              ]
+            },
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
