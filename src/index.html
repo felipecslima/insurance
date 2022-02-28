@@ -6,7 +6,9 @@
     <meta name="description" content="Pure Angular admin template built with official material design ui library" />
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon/favicon.ico" id="light-scheme-icon" />
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon/favicon-dark.ico" id="dark-scheme-icon"/>
+
     <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap"
@@ -77,8 +79,24 @@
       </div>
     </app-root>
 
-    <!-- <script>
-    __Zone_enable_cross_context_check = true;
-  </script> -->
+    <script>
+    // UPDATE FAVICON BY THEME 
+    onUpdate();
+    function onUpdate() {
+      var lightSchemeIcon = document.querySelector('link#light-scheme-icon');
+      var darkSchemeIcon = document.querySelector('link#dark-scheme-icon');
+      var matcher = window.matchMedia('(prefers-color-scheme: dark)');
+      matcher.addListener(onUpdate);
+
+      console.log(matcher.matches);
+      if (matcher.matches) {
+        lightSchemeIcon.remove();
+        document.head.append(darkSchemeIcon);
+      } else {
+        document.head.append(lightSchemeIcon);
+        darkSchemeIcon.remove();
+      }
+    }
+    </script>
   </body>
 </html>
