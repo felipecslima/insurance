@@ -1,11 +1,11 @@
-<div class="page-wrap h-full slate">
+<div class="page-wrap h-full green">
   <div class="session-form-hold">
     <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
     <mat-card>
       <mat-card-content>
         <div class="text-center pt-8 pb-16">
-          <img width="60px" src="assets/images/egret.png" alt="">
-          <p class="text-muted m-0">Sign in to your account</p>
+          <img width="60px" src="assets/images/logos/parcial-logo-green.png" alt="">
+          <p class="text-muted m-0">Entre no seu clube de benefícios</p>
         </div>
 
         <p *ngIf="errorMsg" class="text-center"><small class="text-red">{{errorMsg}}</small></p>
@@ -17,7 +17,7 @@
                 matInput
                 name="username"
                 [formControl]="signinForm.controls['username']"
-                placeholder="Username"
+                placeholder="CPF"
                 value="">
             </mat-form-field>
             <small 
@@ -32,7 +32,7 @@
                 name="password"
                 matInput
                 [formControl]="signinForm.controls['password']"
-                placeholder="Password" 
+                placeholder="Senha" 
                 value="">
             </mat-form-field>
             <small 
@@ -40,18 +40,9 @@
               class="form-error-msg"> Password is required </small>
           </div>
           
-          <div class="pb-16">
-            <mat-checkbox
-              name="rememberMe"
-              [formControl]="signinForm.controls['rememberMe']"
-              class="pb-16">Remember this computer</mat-checkbox>
-          </div>
-          
-          <button mat-raised-button class="mat-primary full-width mb-16" [disabled]="signinForm.invalid">Sign in</button>
+          <button mat-raised-button class="mat-primary full-width mb-16" [disabled]="signinForm.invalid">Entrar</button>
           <div class="text-center">
-            <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center full-width">Forgot password</a>
-            <span fxFlex></span>
-            <a [routerLink]="'/sessions/signup'" class="mat-primary text-center full-width">Create a new account</a>
+            <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center full-width">Esqueci minha senha</a>
           </div>
         </form>
       </mat-card-content>
