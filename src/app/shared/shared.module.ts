@@ -13,13 +13,17 @@ import { AppLoaderService } from './services/app-loader/app-loader.service';
 import { SharedComponentsModule } from './components/shared-components.module';
 import { SharedPipesModule } from './pipes/shared-pipes.module';
 import { SharedDirectivesModule } from './directives/shared-directives.module';
+import { CollactComponentsModule } from 'collact-components';
+import { CollactDesignSystemModule } from 'collact-design-system';
 
 @NgModule({
   imports: [
-  CommonModule,
+    CommonModule,
     SharedComponentsModule,
     SharedPipesModule,
-    SharedDirectivesModule    
+    SharedDirectivesModule,
+    CollactDesignSystemModule,
+    CollactComponentsModule,  
   ],
   providers: [
     ThemeService,
@@ -31,6 +35,8 @@ import { SharedDirectivesModule } from './directives/shared-directives.module';
     AppLoaderService
   ],
   exports: [
+    CollactDesignSystemModule,
+    CollactComponentsModule,  
     SharedComponentsModule,
     SharedPipesModule,
     SharedDirectivesModule

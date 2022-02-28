@@ -4,6 +4,7 @@ import { ThemeService } from "../../services/theme.service";
 import { Subscription } from "rxjs";
 import { ILayoutConf, LayoutService } from "app/shared/services/layout.service";
 import { JwtAuthService } from "app/shared/services/auth/jwt-auth.service";
+import { User } from "app/shared/models/user.model";
 
 @Component({
   selector: "app-sidebar-side",
@@ -15,7 +16,7 @@ export class SidebarSideComponent implements OnInit, OnDestroy, AfterViewInit {
   public iconTypeMenuTitle: string;
   private menuItemsSub: Subscription;
   public layoutConf: ILayoutConf;
-
+  
   constructor(
     private navService: NavigationService,
     public themeService: ThemeService,

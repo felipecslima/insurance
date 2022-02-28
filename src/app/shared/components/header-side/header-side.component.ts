@@ -4,6 +4,7 @@ import { LayoutService } from '../../services/layout.service';
 import { TranslateService } from '@ngx-translate/core';
 import { JwtAuthService } from '../../services/auth/jwt-auth.service';
 import { EgretNotifications2Component } from '../egret-notifications2/egret-notifications2.component';
+import { User } from 'app/shared/models/user.model';
 
 @Component({
   selector: 'app-header-side',
@@ -25,6 +26,8 @@ export class HeaderSideComponent implements OnInit {
 
   public egretThemes;
   public layoutConf: any;
+  public user: User;
+
   constructor(
     private themeService: ThemeService,
     private layout: LayoutService,
@@ -33,6 +36,7 @@ export class HeaderSideComponent implements OnInit {
     public jwtAuth: JwtAuthService
   ) {}
   ngOnInit() {
+    this.user = this.jwtAuth.getUser();
     this.egretThemes = this.themeService.egretThemes;
     this.layoutConf = this.layout.layoutConf;
     this.translate.use(this.currentLang.code);
