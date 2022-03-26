@@ -87,8 +87,6 @@
       var darkSchemeIcon = document.querySelector('link#dark-scheme-icon');
       var matcher = window.matchMedia('(prefers-color-scheme: dark)');
       matcher.addListener(onUpdate);
-
-      console.log(matcher.matches);
       if (matcher.matches) {
         lightSchemeIcon.remove();
         document.head.append(darkSchemeIcon);

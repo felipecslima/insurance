@@ -21,8 +21,8 @@
     mat-icon-button
     [matMenuTriggerFor]="accountMenu"
     class="topbar-button-right img-button"
-  > 
-    <img src="assets/images/placeholder-user.png" alt="" />
+  >
+    <img src="assets/images/placeholder-user.png" alt=""/>
   </button>
 
   <mat-menu #accountMenu="matMenu">
@@ -32,7 +32,7 @@
     </button>
     <button mat-menu-item (click)="jwtAuth.signout()">
       <mat-icon>exit_to_app</mat-icon>
-      <span>{{ "Sair" | translate }}</span>
+      <span>{{ "Sair"  }}</span>
     </button>
   </mat-menu>
 </mat-toolbar>

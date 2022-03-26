@@ -1,39 +1,84 @@
-import { Injectable } from "@angular/core";
-import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest
-} from "@angular/common/http";
-import { Observable } from "rxjs";
-import { JwtAuthService } from "../services/auth/jwt-auth.service";
+import { Injectable, Injector } from '@angular/core';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Observable, Subject, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { JwtAuthService } from '../services/auth/jwt-auth.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private jwtAuth: JwtAuthService) {}
+  private AUTH_HEADER = 'Authorization';
+  private token: string | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private refreshTokenSubject = new Subject<any>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private authService: any;
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    var token = this.jwtAuth.token || this.jwtAuth.getJwtToken();
+  constructor(private inj: Injector, private router: Router) {
+    this.refreshTokenSubject.next(null);
+    this.authService = this.inj.get(JwtAuthService);
+  }
 
-    var changedReq;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    req = this.addAuthenticationToken(req);
 
-    if (token) {
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (req.urlWithParams.includes('token=test')) {
+          return throwError(error);
+        }
 
-      changedReq = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        },
-      });
+        if (error && (error.status === 401 || error.status === 403)) {
+          // 401 errors are most likely going to be because we have an expired token that we need to refresh.
+          this.authService.signout(this.router.url);
+        }
+        const { error: err } = error;
+        if (err) {
+          return throwError(err);
+        }
 
-    } else {
+        return throwError(error);
+      }),
+    );
+  }
 
-      changedReq = req;
-      
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private addAuthenticationToken(request: HttpRequest<any>): HttpRequest<any> {
+    // If we do not have a token yet then we should not set the header.
+    // Here we could first retrieve the token from where we store it.
+    const authService = this.inj.get(JwtAuthService);
+    this.token = authService.getJwtToken();
+
+    if (!this.token) {
+      return request;
     }
-    return next.handle(changedReq);
+    let excludeTokenInterceptor;
+    if (request.url.indexOf('auth') > 0) {
+      excludeTokenInterceptor = true;
+    } else {
+      excludeTokenInterceptor = request.url.indexOf('svg') > 0;
+    }
+
+    if (excludeTokenInterceptor) {
+      return request;
+    }
+
+    // If you are calling an outside domain then do not add the token.
+    if (request.url.indexOf('34.74') === -1) {
+      return request;
+    }
+
+    if (!request.headers.has('Content-Type')) {
+      request = request.clone({
+        headers: request.headers.set('Content-Type', 'application/json'),
+      });
+    }
+
+
+    return request.clone({
+      headers: request.headers.set(this.AUTH_HEADER, 'Bearer ' + this.token),
+    });
   }
 }

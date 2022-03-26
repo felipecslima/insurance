@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 // SERVICES
 import { ThemeService } from './services/theme.service';
-import { NavigationService } from "./services/navigation.service";
+import { NavigationService } from './services/navigation.service';
 import { RoutePartsService } from './services/route-parts.service';
 import { AuthGuard } from './guards/auth.guard';
 import { UserRoleGuard } from './guards/user-role.guard';
@@ -15,6 +15,7 @@ import { SharedPipesModule } from './pipes/shared-pipes.module';
 import { SharedDirectivesModule } from './directives/shared-directives.module';
 import { CollactComponentsModule } from 'collact-components';
 import { CollactDesignSystemModule } from 'collact-design-system';
+import { StateModule } from './services/states/state.module';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { CollactDesignSystemModule } from 'collact-design-system';
     SharedPipesModule,
     SharedDirectivesModule,
     CollactDesignSystemModule,
-    CollactComponentsModule,  
+    CollactComponentsModule,
+    StateModule,
   ],
   providers: [
     ThemeService,
@@ -36,10 +38,11 @@ import { CollactDesignSystemModule } from 'collact-design-system';
   ],
   exports: [
     CollactDesignSystemModule,
-    CollactComponentsModule,  
+    CollactComponentsModule,
     SharedComponentsModule,
     SharedPipesModule,
     SharedDirectivesModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}
