@@ -2,21 +2,11 @@ import { Injectable } from '@angular/core';
 import { LocalStoreService } from '../local-store.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, delay, map } from 'rxjs/operators';
-import { User } from '../../models/user.model';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, of, throwError } from 'rxjs';
+import { PersonsEntityService } from '../states/persons-entity.service';
+import { Person } from '../../interfaces/person.interface';
 
-// ================= only for demo purpose ===========
-const DEMO_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YjhkNDc4MDc4NmM3MjE3MjBkYzU1NzMiLCJlbWFpbCI6InJhZmkuYm9ncmFAZ21haWwuY29tIiwicm9sZSI6IlNBIiwiYWN0aXZlIjp0cnVlLCJpYXQiOjE1ODc3MTc2NTgsImV4cCI6MTU4ODMyMjQ1OH0.dXw0ySun5ex98dOzTEk0lkmXJvxg3Qgz4ed';
-
-const DEMO_USER: User = {
-  id: '5b700c45639d2c0c54b354ba',
-  displayName: 'Watson Joyce',
-  role: 'SA',
-};
-
-// ================= you will get those data from server =======
 
 @Injectable({
   providedIn: 'root',
@@ -24,14 +14,15 @@ const DEMO_USER: User = {
 export class JwtAuthService {
   token;
   isAuthenticated: boolean;
-  user: User = {};
-  user$ = (new BehaviorSubject<User>(this.user));
+  user: Person = <Person> {};
+  user$ = (new BehaviorSubject<Person>(this.user));
   signingIn: boolean;
   return: string;
   JWT_TOKEN = 'JWT_TOKEN';
   APP_USER = 'EGRET_USER';
 
   constructor(
+    private personsEntityService: PersonsEntityService,
     private ls: LocalStoreService,
     private http: HttpClient,
     private router: Router,
@@ -42,33 +33,20 @@ export class JwtAuthService {
   }
 
   public signin(username, password) {
-    return of({ token: DEMO_TOKEN, user: DEMO_USER })
-      .pipe(
-        delay(1000),
-        map((res: any) => {
-          this.setUserAndToken(res.token, res.user, !!res);
-          this.signingIn = false;
-          return res;
-        }),
-        catchError((error) => {
-          return throwError(error);
-        })
-      );
-
-    // FOLLOWING CODE SENDS SIGNIN REQUEST TO SERVER
-
-    // this.signingIn = true;
-    // return this.http.post(`${environment.apiURL}/auth/local`, { username, password })
-    //   .pipe(
-    //     map((res: any) => {
-    //       this.setUserAndToken(res.token, res.user, !!res);
-    //       this.signingIn = false;
-    //       return res;
-    //     }),
-    //     catchError((error) => {
-    //       return throwError(error);
-    //     })
-    //   );
+    this.signingIn = true;
+    return this.personsEntityService.login(username, password).pipe(
+      switchMap((res: any) => {
+        this.signingIn = false;
+        return this.personsEntityService.self().pipe(
+          tap(person => {
+            this.setUserAndToken(res.accessToken, person, !!res);
+          })
+        );
+      }),
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
   }
 
   /*
@@ -76,9 +54,9 @@ export class JwtAuthService {
     shared/components/layouts/admin-layout/admin-layout.component.ts
   */
   public checkTokenIsValid() {
-    return of(DEMO_USER)
+    return this.personsEntityService.self()
       .pipe(
-        map((profile: User) => {
+        map((profile: Person) => {
           this.setUserAndToken(this.getJwtToken(), profile, true);
           this.signingIn = false;
           return profile;
@@ -87,29 +65,11 @@ export class JwtAuthService {
           return of(error);
         })
       );
-
-    /*
-      The following code get user data and jwt token is assigned to
-      Request header using token.interceptor
-      This checks if the existing token is valid when app is reloaded
-    */
-
-    // return this.http.get(`${environment.apiURL}/api/users/profile`)
-    //   .pipe(
-    //     map((profile: User) => {
-    //       this.setUserAndToken(this.getJwtToken(), profile, true);
-    //       return profile;
-    //     }),
-    //     catchError((error) => {
-    //       this.signout();
-    //       return of(error);
-    //     })
-    //   );
   }
 
   public signout() {
     this.setUserAndToken(null, null, false);
-    this.router.navigateByUrl('sessions/signin');
+    this.router.navigateByUrl('sessions/login');
   }
 
   isLoggedIn(): boolean {
@@ -124,12 +84,12 @@ export class JwtAuthService {
     return this.ls.getItem(this.APP_USER);
   }
 
-  setUserAndToken(token: string, user: User, isAuthenticated: boolean) {
+  setUserAndToken(token: string, person: Person, isAuthenticated: boolean) {
     this.isAuthenticated = isAuthenticated;
     this.token = token;
-    this.user = user;
-    this.user$.next(user);
+    this.user = person;
+    this.user$.next(person);
     this.ls.setItem(this.JWT_TOKEN, token);
-    this.ls.setItem(this.APP_USER, user);
+    this.ls.setItem(this.APP_USER, person);
   }
 }

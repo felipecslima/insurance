@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { JwtAuthService } from '../../../shared/services/auth/jwt-auth.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signin',
@@ -19,7 +19,7 @@ export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
 
   signinForm: FormGroup;
   errorMsg = '';
-  // return: string;
+  return: string;
 
   private _unsubscribeAll: Subject<any>;
 
@@ -34,14 +34,14 @@ export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.signinForm = new FormGroup({
-      username: new FormControl('Watson', Validators.required),
-      password: new FormControl('12345678', Validators.required),
+      username: new FormControl('85787310268', Validators.required),
+      password: new FormControl('321321', Validators.required),
       rememberMe: new FormControl(true)
     });
 
-    // this.route.queryParams
-    //   .pipe(takeUntil(this._unsubscribeAll))
-    //   .subscribe(params => this.return = params['return'] || '/');
+    this.route.queryParams
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(params => this.return = params['return'] || '/');
   }
 
   ngAfterViewInit() {
@@ -54,31 +54,31 @@ export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   signin() {
-    const signinData = this.signinForm.value
+    const signinData = this.signinForm.value;
 
     this.submitButton.disabled = true;
     this.progressBar.mode = 'indeterminate';
-    
+
     this.jwtAuth.signin(signinData.username, signinData.password)
-    .subscribe(response => {
-      this.router.navigateByUrl(this.jwtAuth.return);
-    }, err => {
-      this.submitButton.disabled = false;
-      this.progressBar.mode = 'determinate';
-      this.errorMsg = err.message;
-      // console.log(err);
-    })
+      .subscribe(response => {
+        this.router.navigateByUrl(this.jwtAuth.return);
+      }, err => {
+        console.log(err);
+        this.submitButton.disabled = false;
+        this.progressBar.mode = 'determinate';
+        this.errorMsg = err.message;
+      });
   }
 
-  autoSignIn() {    
-    if(this.jwtAuth.return === '/') {
-      return
+  autoSignIn() {
+    if (this.jwtAuth.return === '/') {
+      return;
     }
-    this.egretLoader.open(`Automatically Signing you in! \n Return url: ${this.jwtAuth.return.substring(0, 20)}...`, {width: '320px'});
+    this.egretLoader.open(`Automatically Signing you in! \n Return url: ${ this.jwtAuth.return.substring(0, 20) }...`, { width: '320px' });
     setTimeout(() => {
       this.signin();
       console.log('autoSignIn');
-      this.egretLoader.close()
+      this.egretLoader.close();
     }, 2000);
   }
 

@@ -6,10 +6,32 @@ let index = 0;
 let collection = [
   {
     id: ++index,
-    name: 'Joel Lima',
-    email: 'joel@jota.com',
-    password: '321321'
-    // roles: [rolesJs.getById(1)]
+    name: 'Joel Monstro',
+    birthday: '04/02/1989',
+    document: 'RG',
+    username: '85787310268',
+    timestamp: 1,
+    user: {
+      personTypeId: 1,
+      password: 321321,
+      hashForgot: 3,
+      hashTimestamp: 4,
+      active: true,
+      timestamp: 1
+    },
+    addres: {
+      zipcode: '66033329',
+      description: 'rua dos timbiras',
+      number: '1811',
+      city: 'Belém',
+      countrystate: 'Pará'
+    },
+    phone: { // telefone
+      number: '+5511985024625'
+    },
+    email: { // email
+      recipient: 'lfj182@gmail.com'
+    }
   }
 ];
 
@@ -29,32 +51,32 @@ module.exports = {
     {
       const { sign } = require('jsonwebtoken');
       
-      const email = req.body.email;
+      const username = req.body.username;
       const password = req.body.password;
       let userAuthenticated;
       let accessToken;
       const currentTimestamp = Math.floor((new Date()).getTime() / 1000);
       const expires = Math.floor(currentTimestamp + 60 * 60 * 3.5);
       
-      collection.forEach(user => {
-        if (user.email === email && password.toString() === user.password.toString()) {
+      collection.forEach(person => {
+        if (person.username === username && password.toString() === person.user.password.toString()) {
           accessToken = sign({
-            'iss': 'STORE',
-            'exp': expires,
-            'jti': 'wvn1kfNvZfyFtAkQIru4Eg',
-            'iat': currentTimestamp,
-            'nbf': currentTimestamp,
-            'sub': user.id
+            iss: 'STORE',
+            exp: expires,
+            jti: 'wvn1kfNvZfyFtAkQIru4Eg',
+            iat: currentTimestamp,
+            nbf: currentTimestamp,
+            sub: person.id
           }, '$4lg4d0_Az3d0');
-          userAuthenticated = user;
+          userAuthenticated = person;
         }
       });
       
       if (userAuthenticated !== undefined) {
         res.json({
-          access_token: accessToken,
-          token_type: 'Bearer',
-          expires_in: expires
+          accessToken: accessToken,
+          tokenType: 'Bearer',
+          expiresIn: expires
         });
       } else {
         res.status(401).json({

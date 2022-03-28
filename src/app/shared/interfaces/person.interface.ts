@@ -32,3 +32,7 @@ export interface Phone {
 export interface Email {
   recipient: string;
 }
+
+export interface Login {
+  accessToken: string;
+}
