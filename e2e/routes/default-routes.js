@@ -2,9 +2,8 @@ module.exports = {
   getById: (id, collection) => collection.find(c => c.id === id),
   get: function (req, res, collection) {
     const maxResults = req.query.maxResults ? parseInt(req.query.maxResults, 10) : 50;
-    const firstResult = req.query.page ? parseInt(req.query.page, 10) : 1;
-    const startSlice = firstResult * maxResults;
-    let json = collection.slice(startSlice, maxResults);
+    const firstResult = req.query.firstResult ? parseInt(req.query.firstResult, 10) : 0;
+    let json = collection.slice(firstResult, maxResults + firstResult);
     if (req.params.id) {
       json = collection.find(item => item.id === parseInt(req.params.id, 10));
     }

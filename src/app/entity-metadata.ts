@@ -1,6 +1,7 @@
 import { EntityMetadataMap } from '@ngrx/data';
 
 export const entityMetadata: EntityMetadataMap = {
+  Table: {},
   Persons: {},
   PageLoadData: {
     entityDispatcherOptions: {
@@ -10,6 +11,7 @@ export const entityMetadata: EntityMetadataMap = {
 };
 
 const entity = {
+  Table: 'Table',
   Persons: 'Persons',
 };
 const pluralNames = entity;

@@ -6,7 +6,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 export const rootRouterConfig: Routes = [
   {
     path: '',
-    redirectTo: 'others/blank',
+    redirectTo: 'usuario/escolha-sua-area',
     pathMatch: 'full'
   },
   {
@@ -16,7 +16,7 @@ export const rootRouterConfig: Routes = [
       {
         path: 'sessions',
         loadChildren: () => import('./views/sessions/sessions.module').then(m => m.SessionsModule),
-        data: { title: 'Session'}
+        data: { title: 'Session' }
       }
     ]
   },
@@ -26,9 +26,14 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: 'usuario',
+        loadChildren: () => import('./views/persons/persons.module').then(m => m.PersonsModule),
+        data: { title: 'Usuários', breadcrumb: 'Usuários' }
+      },
+      {
         path: 'others',
         loadChildren: () => import('./views/others/others.module').then(m => m.OthersModule),
-        data: { title: 'Others', breadcrumb: 'OTHERS'}
+        data: { title: 'Others', breadcrumb: 'OTHERS' }
       },
       {
         path: 'search',

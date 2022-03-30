@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
 
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { LockscreenComponent } from './lockscreen/lockscreen.component';
-import { SigninComponent } from './signin/signin.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { ErrorComponent } from './error/error.component';
+import { ForgotPasswordComponent } from './page/forgot-password/forgot-password.component';
+import { LockscreenComponent } from './page/lockscreen/lockscreen.component';
+import { SigninComponent } from './page/signin/signin.component';
+import { NotFoundComponent } from './page/not-found/not-found.component';
+import { ErrorComponent } from './page/error/error.component';
+import { SessionsAreasPageComponent } from './page/sessions-areas-page/sessions-areas-page.component';
 
 export const SessionsRoutes: Routes = [
   {
@@ -14,6 +15,11 @@ export const SessionsRoutes: Routes = [
         path: 'login',
         component: SigninComponent,
         data: { title: 'Signin' }
+      },
+      {
+        path: 'areas',
+        component: SessionsAreasPageComponent,
+        data: { title: 'Áreas' }
       },
       {
         path: 'forgot-password',

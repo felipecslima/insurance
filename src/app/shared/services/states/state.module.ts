@@ -9,6 +9,7 @@ import { TokenInterceptor } from '../../interceptors/token.interceptor';
 
 const entityMetadata: EntityMetadataMap = {
   Persons: {},
+  Table: {},
 };
 
 @NgModule({

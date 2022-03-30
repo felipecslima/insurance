@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { Unsubscribable } from 'rxjs';
-import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
-import { JwtAuthService } from '../../../shared/services/auth/jwt-auth.service';
-import { FormFieldService } from '../../../shared/forms/services/form-field.service';
-import { AutoUnsubscribe, CombineSubscriptions } from '../../../shared/decorators/auto-unsubscribe.decorator';
-import { environment } from '../../../../environments/environment';
-import { FormConfigBaseService } from '../../../shared/forms/services/form-config-base.service';
-import { UtilsService } from '../../../shared/services/utils.service';
+import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
+import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
+import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
+import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
+import { environment } from '../../../../../environments/environment';
+import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
 
 @Component({
   selector: 'app-signin',

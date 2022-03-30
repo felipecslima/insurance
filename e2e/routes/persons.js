@@ -1,4 +1,4 @@
-let baseUrl = 'http://localhost:8080/person';
+let baseUrl = 'http://localhost:8080/persons';
 let index = 0;
 
 // const rolesJs = require('./roles');
@@ -35,11 +35,47 @@ let collection = [
   }
 ];
 
+
+for (let i = 0; i < 200; i++) {
+  const indx = ++index;
+  collection.push(
+    {
+      id: indx,
+      name: `Novo teste ${ indx }`,
+      birthday: '04/02/1989',
+      document: 'RG',
+      username: '85787310268',
+      timestamp: 1,
+      user: {
+        personTypeId: 1,
+        password: 321321,
+        hashForgot: 3,
+        hashTimestamp: 4,
+        active: true,
+        timestamp: 1
+      },
+      addres: {
+        zipcode: '66033329',
+        description: 'rua dos timbiras',
+        number: '1811',
+        city: 'Belém',
+        countrystate: 'Pará'
+      },
+      phone: { // telefone
+        number: '+5511985024625'
+      },
+      email: { // email
+        recipient: 'lfj182@gmail.com'
+      }
+    }
+  );
+}
+
 const defaultRoutes = require('./default-routes');
 
 module.exports = {
   getById: (id) => defaultRoutes.getById(id, collection),
-  get: (req, res) => defaultRoutes.get(req, res, collection, baseUrl),
+  get: (req, res) => defaultRoutes.get(req, res, collection),
   post: (req, res) => collection = defaultRoutes.post(req, res, collection),
   put: (req, res) => collection = defaultRoutes.put(req, res, collection),
   delete: (req, res) => collection = defaultRoutes.delete(req, res, collection),

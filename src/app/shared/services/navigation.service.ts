@@ -30,14 +30,11 @@ interface IBadge {
 export class NavigationService {
   iconMenu: IMenuItem[] = [
     {
-      name: 'Blank',
+      name: 'Usuários',
       type: 'link',
-      svgIcon: 'ulb_server',
-      state: 'others/blank',
+      icon: 'person',
+      state: 'usuario/listagem',
     },
-    
-    
-    
     {
       name: 'DOC',
       type: 'extLink',
@@ -59,7 +56,7 @@ export class NavigationService {
   // Customizer component uses this method to change menu.
   // You can remove this method and customizer component.
   // Or you can customize this method to supply different menu for
-  // different user type.
+  // different persons type.
   publishNavigationChange(menuType: string) {
     this.menuItems.next(this.iconMenu);
     

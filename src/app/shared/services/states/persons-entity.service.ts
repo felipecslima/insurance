@@ -7,6 +7,7 @@ import { PersonsDataService } from './persons-data.service';
 @Injectable({ providedIn: 'root' })
 export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
 
+
   constructor(
     private personsDataService: PersonsDataService,
     serviceElementsFactory: EntityCollectionServiceElementsFactory) {

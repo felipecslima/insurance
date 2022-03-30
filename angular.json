@@ -51,6 +51,7 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
+                "node_modules",
                 "src/assets/styles"
               ]
             },
@@ -136,11 +137,12 @@
   "defaultProject": "egret",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": ["app", "cl"],
-      "style": "scss"
+      "prefix": "",
+      "style": "scss",
+      "skipTests": true,
     },
     "@schematics/angular:directive": {
-      "prefix": ["app", "cl"]
+      "prefix":""
     }
   }
 }

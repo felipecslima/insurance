@@ -19,9 +19,13 @@ import { StateModule } from './services/states/state.module';
 import { ClFormsModule } from './forms/forms.module';
 import { SnackbarCustonComponent } from './services/snackbar-custon/snackbar-custon.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { TableListComponent } from './components/table-list/table-list.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
+    TableListComponent,
     SnackbarCustonComponent,
   ],
   imports: [
@@ -34,6 +38,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CollactComponentsModule,
     StateModule,
     FlexLayoutModule,
+    NgxDatatableModule,
+    RouterModule,
   ],
   providers: [
     ThemeService,
@@ -50,7 +56,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CollactComponentsModule,
     SharedComponentsModule,
     SharedPipesModule,
-    SharedDirectivesModule
+    SharedDirectivesModule,
+    TableListComponent
   ]
 })
 export class SharedModule {

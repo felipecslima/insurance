@@ -7,13 +7,14 @@ import { SharedMaterialModule } from 'app/shared/shared-material.module';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { LockscreenComponent } from './lockscreen/lockscreen.component';
-import { SigninComponent } from './signin/signin.component';
+import { ForgotPasswordComponent } from './page/forgot-password/forgot-password.component';
+import { LockscreenComponent } from './page/lockscreen/lockscreen.component';
+import { SigninComponent } from './page/signin/signin.component';
 import { SessionsRoutes } from './sessions.routing';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { ErrorComponent } from './error/error.component';
+import { NotFoundComponent } from './page/not-found/not-found.component';
+import { ErrorComponent } from './page/error/error.component';
 import { SharedModule } from '../../shared/shared.module';
+import { SessionsAreasPageComponent } from './page/sessions-areas-page/sessions-areas-page.component';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { SharedModule } from '../../shared/shared.module';
     RouterModule.forChild(SessionsRoutes)
   ],
   declarations: [
+    SessionsAreasPageComponent,
     ForgotPasswordComponent,
     LockscreenComponent,
     SigninComponent,

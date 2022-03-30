@@ -1,0 +1,37 @@
+<div #ngxDataTable>
+  <ngx-datatable
+    *ngIf="!!data"
+    class="material striped"
+    [rows]="data"
+    [sorts]="sorts"
+    [columnMode]="columnModeSelected"
+    [headerHeight]="headerHeight"
+    [rowHeight]="rowHeight"
+    [virtualization]="enableScrollTable"
+    [scrollbarV]="true"
+    [scrollbarH]="true"
+    (scroll)="onScroll($event)"
+    (sort)="sortData($event)"
+  >
+    <ngx-datatable-column
+      *ngFor="let columnData of columns"
+      [name]="columnData.columnName"
+      [prop]="columnData.columnName"
+      [resizeable]="columnData?.resizeable || false"
+      [minWidth]="columnData?.minWidth"
+      [maxWidth]="columnData?.maxWidth"
+      [draggable]="columnData?.draggable || false"
+      [sortable]="columnData?.sortable || false">
+      <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="datatable-header-cell-label">
+                {{ columnData.displayText }}
+              </span>
+      </ng-template>
+      <ng-template let-element="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+        <a [routerLink]="columnData.urlBase+element[columnData.id]">
+          {{ element[columnData.columnName] }}
+        </a>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>

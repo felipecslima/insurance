@@ -74,7 +74,7 @@ export class UILibIconService {
     { 'name': 'ulb_building', 'fileName': 'building.svg' },
     { 'name': 'ulb_block', 'fileName': 'block.svg' },
     { 'name': 'ulb_users', 'fileName': 'users.svg' },
-    { 'name': 'ulb_user', 'fileName': 'user.svg' },
+    { 'name': 'ulb_user', 'fileName': 'persons.svg' },
     { 'name': 'ulb_map', 'fileName': 'map.svg' },
     { 'name': 'ulb_location', 'fileName': 'location.svg' },
     { 'name': 'ulb_drag', 'fileName': 'drag.svg' },
