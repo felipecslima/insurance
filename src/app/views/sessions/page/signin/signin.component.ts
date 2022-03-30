@@ -71,6 +71,9 @@ export class SigninComponent implements OnInit, OnDestroy {
   }
 
   signin() {
+    if (!this.isFormValid) {
+      return;
+    }
     this.isFormLoading = true;
     this.progressBar.mode = 'indeterminate';
     const { username, password } = this.values;
