@@ -1,72 +1,87 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatButton } from '@angular/material/button';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Unsubscribable } from 'rxjs';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { JwtAuthService } from '../../../shared/services/auth/jwt-auth.service';
-import { takeUntil } from 'rxjs/operators';
+import { FormFieldService } from '../../../shared/forms/services/form-field.service';
+import { AutoUnsubscribe, CombineSubscriptions } from '../../../shared/decorators/auto-unsubscribe.decorator';
+import { environment } from '../../../../environments/environment';
+import { FormConfigBaseService } from '../../../shared/forms/services/form-config-base.service';
+import { UtilsService } from '../../../shared/services/utils.service';
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
-export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
+@AutoUnsubscribe()
+export class SigninComponent implements OnInit, OnDestroy {
+  colors = environment.color;
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
-  @ViewChild(MatButton) submitButton: MatButton;
 
-  signinForm: FormGroup;
-  errorMsg = '';
+  @CombineSubscriptions()
+  subscriptions: Unsubscribable;
+
+  public formConfig;
   return: string;
 
-  private _unsubscribeAll: Subject<any>;
+  values: any;
+  isFormValid: boolean;
+  isFormLoading: boolean;
 
   constructor(
+    private utilsService: UtilsService,
+    private formConfigBaseService: FormConfigBaseService,
+    private formFieldService: FormFieldService,
     private jwtAuth: JwtAuthService,
     private egretLoader: AppLoaderService,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this._unsubscribeAll = new Subject();
+
+    this.subscriptions = formConfigBaseService.getValues().subscribe(values => {
+      this.isFormValid = formConfigBaseService.isAllFormsValid();
+      this.values = values;
+    });
+
+    this.formConfig = [
+      this.formFieldService.getText({
+        name: 'username',
+        title: 'CPF:',
+        mask: 'CPF',
+        validations: ['required', 'cpf'],
+      }),
+      this.formFieldService.getText({
+        name: 'password',
+        inputType: 'password',
+        title: 'Senha:',
+        minValue: 6,
+        validations: ['required', 'minValue'],
+      }),
+    ];
   }
 
   ngOnInit() {
-    this.signinForm = new FormGroup({
-      username: new FormControl('85787310268', Validators.required),
-      password: new FormControl('321321', Validators.required),
-      rememberMe: new FormControl(true)
-    });
-
-    this.route.queryParams
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.subscriptions = this.route.queryParams
       .subscribe(params => this.return = params['return'] || '/');
   }
 
-  ngAfterViewInit() {
-    this.autoSignIn();
-  }
-
   ngOnDestroy() {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
   }
 
   signin() {
-    const signinData = this.signinForm.value;
-
-    this.submitButton.disabled = true;
+    this.isFormLoading = true;
     this.progressBar.mode = 'indeterminate';
-
-    this.jwtAuth.signin(signinData.username, signinData.password)
-      .subscribe(response => {
+    const { username, password } = this.values;
+    this.jwtAuth.signin(this.utilsService.removeCPFMask(username), password)
+      .subscribe(() => {
+        this.isFormLoading = true;
         this.router.navigateByUrl(this.jwtAuth.return);
       }, err => {
-        console.log(err);
-        this.submitButton.disabled = false;
+        this.utilsService.toast('CPF ou Senha incorretos', 'error');
+        this.isFormLoading = false;
         this.progressBar.mode = 'determinate';
-        this.errorMsg = err.message;
       });
   }
 

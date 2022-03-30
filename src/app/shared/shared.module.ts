@@ -16,9 +16,16 @@ import { SharedDirectivesModule } from './directives/shared-directives.module';
 import { CollactComponentsModule } from 'collact-components';
 import { CollactDesignSystemModule } from 'collact-design-system';
 import { StateModule } from './services/states/state.module';
+import { ClFormsModule } from './forms/forms.module';
+import { SnackbarCustonComponent } from './services/snackbar-custon/snackbar-custon.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
+  declarations: [
+    SnackbarCustonComponent,
+  ],
   imports: [
+    ClFormsModule,
     CommonModule,
     SharedComponentsModule,
     SharedPipesModule,
@@ -26,6 +33,7 @@ import { StateModule } from './services/states/state.module';
     CollactDesignSystemModule,
     CollactComponentsModule,
     StateModule,
+    FlexLayoutModule,
   ],
   providers: [
     ThemeService,
@@ -37,6 +45,7 @@ import { StateModule } from './services/states/state.module';
     AppLoaderService
   ],
   exports: [
+    ClFormsModule,
     CollactDesignSystemModule,
     CollactComponentsModule,
     SharedComponentsModule,

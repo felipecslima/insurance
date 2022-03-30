@@ -1,11 +1,13 @@
-import { Component, OnInit, AfterViewInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router, NavigationEnd, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { RoutePartsService } from './shared/services/route-parts.service';
 
 import { filter } from 'rxjs/operators';
 import { UILibIconService } from './shared/services/ui-lib-icon.service';
+import { ClTheme } from 'collact-design-system';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +19,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   pageTitle = '';
 
   constructor(
+    private clTheme: ClTheme,
     public title: Title,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private routePartsService: RoutePartsService,
     private iconService: UILibIconService
   ) {
-    iconService.init()
+    iconService.init();
   }
 
   ngOnInit() {
@@ -41,10 +44,12 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
       // Extract title from parts;
       this.pageTitle = routeParts
-                      .reverse()
-                      .map((part) => part.title )
-                      .reduce((partA, partI) => {return `${partA} > ${partI}`});
-      this.pageTitle += ` | ${this.appTitle}`;
+        .reverse()
+        .map((part) => part.title)
+        .reduce((partA, partI) => {
+          return `${ partA } > ${ partI }`;
+        });
+      this.pageTitle += ` | ${ this.appTitle }`;
       this.title.setTitle(this.pageTitle);
     });
   }

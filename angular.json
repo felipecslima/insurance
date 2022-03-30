@@ -136,11 +136,11 @@
   "defaultProject": "egret",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
+      "prefix": ["app", "cl"],
       "style": "scss"
     },
     "@schematics/angular:directive": {
-      "prefix": "app"
+      "prefix": ["app", "cl"]
     }
   }
 }
