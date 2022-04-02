@@ -4,6 +4,8 @@ import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decora
 import { Unsubscribable } from 'rxjs';
 import { PersonListService } from '../../../../shared/services/states/person-list.service';
 import { environment } from '../../../../../environments/environment';
+import { Person } from '../../../../shared/interfaces/person.interface';
+import { UtilsService } from '../../../../shared/services/utils.service';
 
 @Component({
   selector: 'person-list-page',
@@ -20,13 +22,24 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
   columns: TableInfinityListColumn[];
 
   constructor(
+    private utilsService: UtilsService,
     private personListService: PersonListService,
   ) {
     this.personListService.load();
 
     this.subscribers = this.personListService.getList()
-      .subscribe(persons => {
-        this.personListService.setDataTable(persons);
+      .subscribe((persons: Person[]) => {
+       const personsFormat = persons.map(person => {
+          const { id, username, name, phone, email } = person;
+          return {
+            id,
+            username: this.utilsService.maskCpfCnpj(username),
+            name,
+            phone: phone?.number ? this.utilsService.phoneFormat(phone.number) : '',
+            email: email?.recipient || '',
+          };
+        });
+        this.personListService.setDataTable(personsFormat);
       });
 
     this.columns = [
@@ -39,10 +52,29 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
       },
       {
         id: 'id',
+        columnName: 'username',
+        displayText: 'CPF',
+        urlBase: '/usuario/setup/'
+      },
+      {
+        id: 'id',
         columnName: 'name',
         displayText: 'Nome',
         urlBase: '/usuario/setup/'
-      }
+      },
+      {
+        id: 'id',
+        columnName: 'phone',
+        displayText: 'Telefone',
+        urlBase: '/usuario/setup/'
+      },
+      {
+        id: 'id',
+        columnName: 'email',
+        displayText: 'Email',
+        urlBase: '/usuario/setup/'
+      },
+
     ];
   }
 

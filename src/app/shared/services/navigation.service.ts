@@ -33,7 +33,7 @@ export class NavigationService {
       name: 'Usuários',
       type: 'link',
       icon: 'person',
-      state: 'usuario/listagem',
+      state: 'usuario',
     },
     {
       name: 'DOC',
