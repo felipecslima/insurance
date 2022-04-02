@@ -7,7 +7,7 @@ let collection = [
   {
     id: ++index,
     name: 'Joel Monstro',
-    birthday: '04/02/1989',
+    birthday: '1989-02-04',
     document: 'RG',
     username: '85787310268',
     timestamp: 1,
@@ -19,7 +19,7 @@ let collection = [
       active: true,
       timestamp: 1
     },
-    addres: {
+    address: {
       zipcode: '66033329',
       description: 'rua dos timbiras',
       number: '1811',
@@ -42,7 +42,7 @@ for (let i = 0; i < 200; i++) {
     {
       id: indx,
       name: `Novo teste ${ indx }`,
-      birthday: '04/02/1989',
+      birthday: '1989-02-04',
       document: 'RG',
       username: '85787310268',
       timestamp: 1,
@@ -54,7 +54,7 @@ for (let i = 0; i < 200; i++) {
         active: true,
         timestamp: 1
       },
-      addres: {
+      address: {
         zipcode: '66033329',
         description: 'rua dos timbiras',
         number: '1811',

@@ -1,6 +1,12 @@
-<div clCard class="content">
-  <table-list
-    [columns]="columns"
-    (loadNewData)="load()"
-  ></table-list>
+<div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+  <div clCard>
+    <table-list
+      [columns]="columns"
+      (loadNewData)="load()"
+    ></table-list>
+  </div>
+
+  <button clButtonContained [bgColor]="colors.primary">
+    <span>Cadastrar</span>
+  </button>
 </div>

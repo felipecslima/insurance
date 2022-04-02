@@ -7,6 +7,7 @@ import { ValidatorDate } from '../validators/validator-date';
 import { ValidatorEmail } from '../validators/validator-email';
 import { ValidatorCpf } from '../validators/validator-cpf';
 import { ValidatorMin } from '../validators/validator-min';
+import { ValidatorPhone } from '../validators/validator-phone';
 
 @Injectable({
   providedIn: 'root',
@@ -101,7 +102,7 @@ export class FormFieldService {
       validations.push({
         name: 'maxValue',
         validator: ValidatorMax.validator(maxValue, 'characters'),
-        message: `Máximo de ${maxValue} caracteres`,
+        message: `Máximo de ${ maxValue } caracteres`,
       });
     }
 
@@ -110,7 +111,7 @@ export class FormFieldService {
       validations.push({
         name: 'minValue',
         validator: ValidatorMin.validator(minValue, 'characters'),
-        message: `Mínimo de ${minValue} caracteres`,
+        message: `Mínimo de ${ minValue } caracteres`,
       });
     }
 
@@ -161,6 +162,14 @@ export class FormFieldService {
         message: 'E-mail inválido',
       });
     }
+
+    if (validationsArr.find(v => v === 'phone')) {
+      validations.push({
+        name: 'validatePhone',
+        validator: ValidatorPhone.validator,
+        message: 'Telefone inválido',
+      });
+    }
     return validations;
   }
 }
@@ -174,6 +183,7 @@ export type validations =
   | 'date'
   | 'hour'
   | 'email'
+  | 'phone'
   | string;
 
 export type masks =

@@ -12,6 +12,7 @@ interface IRoutePart {
 @Injectable()
 export class RoutePartsService {
   public routeParts: IRoutePart[];
+  public params: Params = {};
 
   constructor(private router: Router) {
   }
@@ -24,14 +25,17 @@ export class RoutePartsService {
       }
       if (snapshot.data['title'] && snapshot.url.length) {
         // console.log(snapshot.data['title'], snapshot.url)
+        const { params } = snapshot;
         routeParts.push({
           title: snapshot.data['title'],
           breadcrumb: snapshot.data['breadcrumb'],
           url: snapshot.url[0].path,
           urlSegments: snapshot.url,
-          params: snapshot.params
+          params
         });
+        this.params = { ...this.params, ...params };
       }
+
     }
     return routeParts;
   }

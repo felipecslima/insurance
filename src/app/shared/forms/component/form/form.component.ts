@@ -43,7 +43,7 @@ export class FormComponent
   isFormValid: boolean;
   formInstanceLocal: any;
 
-  @ViewChild(ClForm, { static: false }) form: ClForm;
+  @ViewChild(ClForm) form: ClForm;
 
   regConfig: ClFieldConfig[];
 
@@ -67,7 +67,7 @@ export class FormComponent
   }
 
   ngAfterViewInit(): void {
-    this.isFormValid = this.form.form.valid;
+    this.isFormValid = this.form?.form.valid;
     this.isValid.emit(this.isFormValid);
     this.formInstance.emit(this.form);
     this.formInstanceLocal = this.form;

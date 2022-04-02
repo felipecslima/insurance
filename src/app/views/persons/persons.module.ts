@@ -16,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { PersonListPageComponent } from './pages/person-list-page/person-list-page.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { PersonSetupPageComponent } from './pages/person-setup-page/person-setup-page.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { MatSortModule } from '@angular/material/sort';
   ],
   declarations: [
     PersonPersonAreasPageComponent,
-    PersonListPageComponent
+    PersonListPageComponent,
+    PersonSetupPageComponent
   ]
 })
 export class PersonsModule {

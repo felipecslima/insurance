@@ -3,7 +3,6 @@ import { DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator } from '
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { UtilsStateService } from '../utils-state.service';
 import { Person } from '../../interfaces/person.interface';
 
@@ -20,7 +19,11 @@ export class PersonsDataService extends DefaultDataService<Person> {
 
   login(username: string, password: string): Observable<any> {
     const body = { username, password };
-    console.log(`${ this._baseUrl }/login`)
+    console.log(`${ this._baseUrl }/login`);
     return this.http.post(`${ this._baseUrl }/login`, body);
+  }
+
+  self(): Observable<any> {
+    return this.http.get(`${ this._baseUrl }/self`);
   }
 }

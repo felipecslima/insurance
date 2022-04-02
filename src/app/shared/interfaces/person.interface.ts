@@ -5,7 +5,7 @@ export interface Person {
   username: string;
   timestamp: number;
   user: User;
-  addres: Address;
+  address: Address;
   phone: Phone;
   email: Email;
 }
@@ -22,6 +22,7 @@ export interface User {
 export interface Address {
   zipcode: string;
   description: string;
+  number: string;
   city: string;
 }
 

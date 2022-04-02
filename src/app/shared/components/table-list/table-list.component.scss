@@ -6,8 +6,9 @@
   }
 
   .ngx-datatable {
-    height: calc(100vh - 148px);
+    height: calc(100vh - 218px);
     @media screen and (max-width: 600px) {
+      height: calc(100vh - 204px);
       datatable-header-cell {
         display: none !important;
       }

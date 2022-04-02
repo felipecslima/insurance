@@ -27,6 +27,7 @@ const persons = require('./routes/persons');
 app.post(baseUrl + 'persons/login', (req, res) => persons.login(req, res));
 app.get(baseUrl + 'persons/self', (req, res) => persons.self(req, res));
 app.get(baseUrl + 'persons', (req, res) => persons.get(req, res));
+app.get(baseUrl + 'persons/:id', (req, res) => persons.get(req, res));
 
 /**
  * Auction

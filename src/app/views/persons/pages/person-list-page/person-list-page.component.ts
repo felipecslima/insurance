@@ -3,6 +3,7 @@ import { TableInfinityListColumn } from '../../../../shared/components/table-lis
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { Unsubscribable } from 'rxjs';
 import { PersonListService } from '../../../../shared/services/states/person-list.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'person-list-page',
@@ -11,6 +12,7 @@ import { PersonListService } from '../../../../shared/services/states/person-lis
 })
 @AutoUnsubscribe()
 export class PersonListPageComponent implements OnInit, OnDestroy {
+  colors = environment.color;
   @CombineSubscriptions()
   subscribers: Unsubscribable;
 
@@ -32,18 +34,16 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         id: 'id',
         columnName: 'id',
         displayText: '',
-        urlBase: '/usuario/editar/',
+        urlBase: '/usuario/setup/',
         maxWidth: 80,
       },
       {
         id: 'id',
         columnName: 'name',
         displayText: 'Nome',
-        urlBase: '/usuario/editar/'
+        urlBase: '/usuario/setup/'
       }
     ];
-
-
   }
 
   ngOnInit(): void {
@@ -53,7 +53,6 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
   }
 
   load() { // LOAD MORE
-    console.log('oi')
     this.personListService.load(true);
   }
 

@@ -1,4 +1,5 @@
 .cl-card {
+
   &.content {
     margin: .75rem;
     overflow: hidden;
@@ -9,6 +10,12 @@
     &.rounded-circle {
       border-radius: 200px !important;
     }
+  }
+
+  &.no-bg{
+    background: transparent;
+    box-shadow: none !important;
+    border-radius: 0;
   }
 
   h2 {
