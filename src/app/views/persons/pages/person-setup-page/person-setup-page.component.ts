@@ -44,18 +44,18 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
 
     const { personId } = routePartsService.params;
 
+    this.setupForm();
+
     this.subscribers = this.personsEntityService.getByKey(personId).subscribe(noop);
     this.subscribers = personsEntityService.getCurrent()
       .pipe(take(1))
       .subscribe(response => {
         this.person = response;
-        this.setupForm();
         this._populate();
       });
   }
 
   ngOnInit(): void {
-
   }
 
   ngOnDestroy(): void {

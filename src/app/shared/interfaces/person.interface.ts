@@ -38,3 +38,10 @@ export interface Email {
 export interface Login {
   accessToken: string;
 }
+
+export interface Permission {
+  id: number;
+  name: 'coop' | 'consultant' | 'doctor' | 'clinic' | 'subscriber';
+  label: 'cooperativa' | 'Consultor' | 'Médico' | 'Clínica' | 'Assinante';
+  paramType: 'cooperativa' | 'consultor' | 'medico' | 'clinica' | 'assinante';
+}

@@ -12,6 +12,7 @@ interface IMenuItem {
   sub?: IChildItem[]; // Dropdown items
   badges?: IBadge[];
 }
+
 interface IChildItem {
   type?: string;
   name: string; // Display text
@@ -35,13 +36,13 @@ export class NavigationService {
       icon: 'person',
       state: 'usuario',
     },
-    {
-      name: 'DOC',
-      type: 'extLink',
-      tooltip: 'Documentation',
-      icon: 'library_books',
-      state: 'http://demos.ui-lib.com/egret-doc/'
-    }
+    // {
+    //   name: 'DOC',
+    //   type: 'extLink',
+    //   tooltip: 'Documentation',
+    //   icon: 'library_books',
+    //   state: 'http://demos.ui-lib.com/egret-doc/'
+    // }
   ];
 
   // Icon menu TITLE at the very top of navigation.
@@ -51,7 +52,9 @@ export class NavigationService {
   menuItems = new BehaviorSubject<IMenuItem[]>(this.iconMenu);
   // navigation component has subscribed to this Observable
   menuItems$ = this.menuItems.asObservable();
-  constructor() {}
+
+  constructor() {
+  }
 
   // Customizer component uses this method to change menu.
   // You can remove this method and customizer component.
@@ -59,6 +62,5 @@ export class NavigationService {
   // different persons type.
   publishNavigationChange(menuType: string) {
     this.menuItems.next(this.iconMenu);
-    
   }
 }

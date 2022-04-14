@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000',
+  apiUrl: 'https://clube-beneficios.herokuapp.com', // 'http://localhost:3000',
   color: {
     primary: '#234711',
     textPrimary: '#fff',

@@ -5,8 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { PersonsEntityService } from '../states/persons-entity.service';
-import { Person } from '../../interfaces/person.interface';
-
+import { Permission, Person } from '../../interfaces/person.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +13,45 @@ import { Person } from '../../interfaces/person.interface';
 export class JwtAuthService {
   token;
   isAuthenticated: boolean;
-  user: Person = <Person> {};
+  user: Person = {} as Person;
   user$ = (new BehaviorSubject<Person>(this.user));
   signingIn: boolean;
   return: string;
   JWT_TOKEN = 'JWT_TOKEN';
   APP_USER = 'EGRET_USER';
+
+  permissions: Permission[] = [
+    {
+      id: 1,
+      name: 'coop',
+      label: 'cooperativa',
+      paramType: 'cooperativa',
+    },
+    {
+      id: 2,
+      name: 'consultant',
+      label: 'Consultor',
+      paramType: 'consultor',
+    },
+    {
+      id: 3,
+      name: 'doctor',
+      label: 'Médico',
+      paramType: 'medico',
+    },
+    {
+      id: 4,
+      name: 'clinic',
+      label: 'Clínica',
+      paramType: 'clinica',
+    },
+    {
+      id: 5,
+      name: 'subscriber',
+      label: 'Assinante',
+      paramType: 'assinante',
+    },
+  ];
 
   constructor(
     private personsEntityService: PersonsEntityService,
@@ -30,6 +62,15 @@ export class JwtAuthService {
   ) {
     this.route.queryParams
       .subscribe(params => this.return = params['return'] || '/');
+  }
+
+
+  getPermission(paramType: Permission['paramType']): Permission {
+    return this.permissions.find(p => p.paramType === paramType);
+  }
+
+  getPermissions(paramType: Permission['paramType']): Permission[] {
+    return this.permissions;
   }
 
   public signin(username, password) {
@@ -49,10 +90,6 @@ export class JwtAuthService {
     );
   }
 
-  /*
-    checkTokenIsValid is called inside constructor of
-    shared/components/layouts/admin-layout/admin-layout.component.ts
-  */
   public checkTokenIsValid() {
     return this.personsEntityService.self()
       .pipe(

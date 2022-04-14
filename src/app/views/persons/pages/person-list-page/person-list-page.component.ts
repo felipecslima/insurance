@@ -6,6 +6,8 @@ import { PersonListService } from '../../../../shared/services/states/person-lis
 import { environment } from '../../../../../environments/environment';
 import { Person } from '../../../../shared/interfaces/person.interface';
 import { UtilsService } from '../../../../shared/services/utils.service';
+import { UrlService } from '../../../../shared/services/url.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'person-list-page',
@@ -21,15 +23,23 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
   dataSource;
   columns: TableInfinityListColumn[];
 
+  urlSetup: string;
+
   constructor(
+    private route: ActivatedRoute,
+    private urlService: UrlService,
     private utilsService: UtilsService,
     private personListService: PersonListService,
   ) {
+    this.urlService.setBasePath(route);
+
+    this.urlSetup = this.urlService.getUserSetup();
+
     this.personListService.load();
 
     this.subscribers = this.personListService.getList()
       .subscribe((persons: Person[]) => {
-       const personsFormat = persons.map(person => {
+        const personsFormat = persons.map(person => {
           const { id, username, name, phone, email } = person;
           return {
             id,
@@ -47,34 +57,33 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         id: 'id',
         columnName: 'id',
         displayText: '',
-        urlBase: '/usuario/setup/',
+        urlBase: this.urlService.getUserSetup(),
         maxWidth: 80,
       },
       {
         id: 'id',
         columnName: 'username',
         displayText: 'CPF',
-        urlBase: '/usuario/setup/'
+        urlBase: this.urlService.getUserSetup()
       },
       {
         id: 'id',
         columnName: 'name',
         displayText: 'Nome',
-        urlBase: '/usuario/setup/'
+        urlBase: this.urlService.getUserSetup()
       },
       {
         id: 'id',
         columnName: 'phone',
         displayText: 'Telefone',
-        urlBase: '/usuario/setup/'
+        urlBase: this.urlService.getUserSetup()
       },
       {
         id: 'id',
         columnName: 'email',
         displayText: 'Email',
-        urlBase: '/usuario/setup/'
+        urlBase: this.urlService.getUserSetup()
       },
-
     ];
   }
 

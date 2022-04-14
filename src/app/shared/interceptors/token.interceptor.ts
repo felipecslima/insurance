@@ -10,9 +10,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   private AUTH_HEADER = 'Authorization';
   private token: string | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private refreshTokenSubject = new Subject<any>();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private authService: any;
 
   constructor(private inj: Injector, private router: Router) {
@@ -20,7 +18,6 @@ export class TokenInterceptor implements HttpInterceptor {
     this.authService = this.inj.get(JwtAuthService);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = this.addAuthenticationToken(req);
 
@@ -44,7 +41,6 @@ export class TokenInterceptor implements HttpInterceptor {
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private addAuthenticationToken(request: HttpRequest<any>): HttpRequest<any> {
     // If we do not have a token yet then we should not set the header.
     // Here we could first retrieve the token from where we store it.
@@ -75,7 +71,6 @@ export class TokenInterceptor implements HttpInterceptor {
         headers: request.headers.set('Content-Type', 'application/json'),
       });
     }
-
 
     return request.clone({
       headers: request.headers.set(this.AUTH_HEADER, 'Bearer ' + this.token),

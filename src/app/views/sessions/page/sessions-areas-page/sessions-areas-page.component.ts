@@ -1,16 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AutoUnsubscribe } from '../../../../shared/decorators/auto-unsubscribe.decorator';
+import { UrlService } from '../../../../shared/services/url.service';
 
 @Component({
   selector: 'app-pricing',
   templateUrl: './sessions-areas-page.component.html',
-  styleUrls: ['./sessions-areas-page.component.css']
+  styleUrls: ['./sessions-areas-page.component.scss']
 })
-export class SessionsAreasPageComponent implements OnInit {
+@AutoUnsubscribe()
+export class SessionsAreasPageComponent implements OnInit, OnDestroy {
 
-  constructor() {
+  permissionsList = [
+    {
+      name: 'Área da Cooperativa',
+      url: this.urlService.getUserList('cooperativa')
+    }
+  ];
+
+  constructor(
+    private urlService: UrlService,
+  ) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
   }
 
 }

@@ -6,7 +6,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 export const rootRouterConfig: Routes = [
   {
     path: '',
-    redirectTo: 'usuario/escolha-sua-area',
+    redirectTo: 'sessions/areas',
     pathMatch: 'full'
   },
   {
@@ -21,7 +21,7 @@ export const rootRouterConfig: Routes = [
     ]
   },
   {
-    path: '',
+    path: ':type',
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
     children: [
