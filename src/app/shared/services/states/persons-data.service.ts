@@ -19,7 +19,6 @@ export class PersonsDataService extends DefaultDataService<Person> {
 
   login(username: string, password: string): Observable<any> {
     const body = { username, password };
-    console.log(`${ this._baseUrl }/login`);
     return this.http.post(`${ this._baseUrl }/login`, body);
   }
 

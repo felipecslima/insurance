@@ -6,10 +6,13 @@ import { Injectable } from '@angular/core';
 export class LocalStoreService {
   private ls = window.localStorage;
 
-  constructor() {}
+  constructor() {
+  }
 
   public setItem(key, value) {
-    value = JSON.stringify(value);
+    if (typeof value !== 'string') {
+      value = JSON.stringify(value);
+    }
     this.ls.setItem(key, value);
     return true;
   }
@@ -19,7 +22,7 @@ export class LocalStoreService {
     try {
       return JSON.parse(value);
     } catch (e) {
-      return null;
+      return value;
     }
   }
 

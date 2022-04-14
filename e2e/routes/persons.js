@@ -90,13 +90,13 @@ module.exports = {
       const username = req.body.username;
       const password = req.body.password;
       let userAuthenticated;
-      let accessToken;
+      let token;
       const currentTimestamp = Math.floor((new Date()).getTime() / 1000);
       const expires = Math.floor(currentTimestamp + 60 * 60 * 3.5);
       
       collection.forEach(person => {
         if (person.username === username && password.toString() === person.user.password.toString()) {
-          accessToken = sign({
+          token = sign({
             iss: 'STORE',
             exp: expires,
             jti: 'wvn1kfNvZfyFtAkQIru4Eg',
@@ -110,7 +110,7 @@ module.exports = {
       
       if (userAuthenticated !== undefined) {
         res.json({
-          accessToken: accessToken,
+          token: token,
           tokenType: 'Bearer',
           expiresIn: expires
         });

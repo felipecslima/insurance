@@ -64,23 +64,25 @@ export class JwtAuthService {
       .subscribe(params => this.return = params['return'] || '/');
   }
 
-
   getPermission(paramType: Permission['paramType']): Permission {
     return this.permissions.find(p => p.paramType === paramType);
   }
 
-  getPermissions(paramType: Permission['paramType']): Permission[] {
+  getPermissions(): Permission[] {
     return this.permissions;
   }
 
   public signin(username, password) {
     this.signingIn = true;
     return this.personsEntityService.login(username, password).pipe(
+      tap(res => {
+        this.ls.setItem(this.JWT_TOKEN, res.token);
+      }),
       switchMap((res: any) => {
-        this.signingIn = false;
         return this.personsEntityService.self().pipe(
           tap(person => {
-            this.setUserAndToken(res.accessToken, person, !!res);
+            this.signingIn = false;
+            this.setUserAndToken(res.token, person, !!res);
           })
         );
       }),
@@ -122,11 +124,11 @@ export class JwtAuthService {
   }
 
   setUserAndToken(token: string, person: Person, isAuthenticated: boolean) {
+    this.ls.setItem(this.JWT_TOKEN, token);
+    this.ls.setItem(this.APP_USER, person);
     this.isAuthenticated = isAuthenticated;
     this.token = token;
     this.user = person;
     this.user$.next(person);
-    this.ls.setItem(this.JWT_TOKEN, token);
-    this.ls.setItem(this.APP_USER, person);
   }
 }

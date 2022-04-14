@@ -50,8 +50,9 @@ export class TokenInterceptor implements HttpInterceptor {
     if (!this.token) {
       return request;
     }
+
     let excludeTokenInterceptor;
-    if (request.url.indexOf('auth') > 0) {
+    if (request.url.indexOf('login') > 0) {
       excludeTokenInterceptor = true;
     } else {
       excludeTokenInterceptor = request.url.indexOf('svg') > 0;
@@ -62,7 +63,7 @@ export class TokenInterceptor implements HttpInterceptor {
     }
 
     // If you are calling an outside domain then do not add the token.
-    if (request.url.indexOf('34.74') === -1) {
+    if (request.url.indexOf('34.74') > -1) {
       return request;
     }
 

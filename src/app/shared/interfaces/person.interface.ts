@@ -36,7 +36,7 @@ export interface Email {
 }
 
 export interface Login {
-  accessToken: string;
+  token: string;
 }
 
 export interface Permission {
