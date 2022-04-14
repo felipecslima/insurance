@@ -42,6 +42,6 @@ export interface Login {
 export interface Permission {
   id: number;
   name: 'coop' | 'consultant' | 'doctor' | 'clinic' | 'subscriber';
-  label: 'cooperativa' | 'Consultor' | 'Médico' | 'Clínica' | 'Assinante';
+  label: 'Cooperativa' | 'Consultor' | 'Médico' | 'Clínica' | 'Assinante';
   paramType: 'cooperativa' | 'consultor' | 'medico' | 'clinica' | 'assinante';
 }

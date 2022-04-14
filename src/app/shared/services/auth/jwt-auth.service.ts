@@ -24,7 +24,7 @@ export class JwtAuthService {
     {
       id: 1,
       name: 'coop',
-      label: 'cooperativa',
+      label: 'Cooperativa',
       paramType: 'cooperativa',
     },
     {
