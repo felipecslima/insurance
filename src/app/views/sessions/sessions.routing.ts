@@ -6,6 +6,7 @@ import { SigninComponent } from './page/signin/signin.component';
 import { NotFoundComponent } from './page/not-found/not-found.component';
 import { ErrorComponent } from './page/error/error.component';
 import { SessionsAreasPageComponent } from './page/sessions-areas-page/sessions-areas-page.component';
+import { AuthGuard } from '../../shared/guards/auth.guard';
 
 export const SessionsRoutes: Routes = [
   {
@@ -19,7 +20,8 @@ export const SessionsRoutes: Routes = [
       {
         path: 'areas',
         component: SessionsAreasPageComponent,
-        data: { title: 'Áreas' }
+        data: { title: 'Áreas' },
+        canActivate: [AuthGuard],
       },
       {
         path: 'forgot-password',
