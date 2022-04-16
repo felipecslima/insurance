@@ -53,7 +53,6 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     body = this.utilsService.removeEmpty(body);
     const { id } = values as Person; // personTypeId
     if (id) {
-      console.log(body);
       return this.update(body);
     }
     return this.add(body);

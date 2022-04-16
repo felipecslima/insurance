@@ -43,12 +43,10 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
           });
           if (i === 0) {
             item.url = `${ this.urlService.basePath }/${item.url}`;
-            console.log(item.url);
             return item;
           }
           // prepend previous part to current part
           item.url = `${ this.routeParts[i - 1].url }/${ item.url }`;
-          console.log(item.url);
           return item;
         });
       });

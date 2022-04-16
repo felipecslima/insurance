@@ -35,9 +35,11 @@ import { BottomSheetShareComponent } from './bottom-sheet-share/bottom-sheet-sha
 import { EgretExampleViewerComponent } from './example-viewer/example-viewer.component';
 import { EgretExampleViewerTemplateComponent } from './example-viewer-template/example-viewer-template.component';
 import { EgretNotifications2Component } from './egret-notifications2/egret-notifications2.component';
+import { AdminLayoutInternalComponent } from './layouts/internal-layout/admin-layout-internal.component';
 
 
 const components = [
+  AdminLayoutInternalComponent,
   HeaderTopComponent,
   SidebarTopComponent,
   SidenavComponent,

@@ -1,6 +1,9 @@
 import { Routes } from '@angular/router';
 import { PersonListPageComponent } from './pages/person-list-page/person-list-page.component';
 import { PersonSetupPageComponent } from './pages/person-setup-page/person-setup-page.component';
+import {
+  AdminLayoutInternalComponent
+} from '../../shared/components/layouts/internal-layout/admin-layout-internal.component';
 
 
 export interface ChildPersonList {
@@ -27,19 +30,26 @@ personCrud.forEach((p, id: number) => {
   children.push(
     {
       path: `${ p.type }`,
-      component: PersonListPageComponent,
-      data: { title: `Lista de ${ p.pluralName }`, breadcrumb: `Lista de ${ p.pluralName }`, type: p }
+      component: AdminLayoutInternalComponent,
+      data: { title: `Lista de ${ p.pluralName }`, breadcrumb: `Lista de ${ p.pluralName }`, type: p },
+      children: [
+        {
+          path: ``,
+          component: PersonListPageComponent,
+          data: { title: `Lista de ${ p.pluralName }`, breadcrumb: `Lista de ${ p.pluralName }`, type: p },
+        },
+        {
+          path: `setup`,
+          component: PersonSetupPageComponent,
+          data: { title: `Cadastro de ${ p.singularName }`, breadcrumb: `Cadastro de ${ p.singularName }`, type: p }
+        },
+        {
+          path: `setup/:personId`,
+          component: PersonSetupPageComponent,
+          data: { title: `Edição de ${ p.singularName }`, breadcrumb: `Edição de ${ p.singularName }`, type: p }
+        }
+      ]
     },
-    {
-      path: `${ p.type }/setup`,
-      component: PersonSetupPageComponent,
-      data: { title: `Cadastro de ${ p.singularName }`, breadcrumb: `Cadastro de ${ p.singularName }`, type: p }
-    },
-    {
-      path: `${ p.type }/setup/:personId`,
-      component: PersonSetupPageComponent,
-      data: { title: `Edição de ${ p.singularName }`, breadcrumb: `Edição de ${ p.singularName }`, type: p }
-    }
   );
 });
 
