@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterParamsService } from './router-params.service';
 import { noop } from 'rxjs';
 import { pluck, tap } from 'rxjs/operators';
+import { ChildPersonList } from '../../views/persons/persons.routing';
 
 @Injectable({
   providedIn: 'root',
@@ -22,25 +23,24 @@ export class UrlService {
     return this.getParamType(route.parent);
   }
 
-  public getUserList(type?: UrlType): string {
+  public getUserList(typeList: ChildPersonList['type'], typeBase?: ChildPersonList['type']): string {
     return [
-      this.getBasePath(type),
-      'usuario'
+      this.getBasePath(typeBase),
+      'usuario',
+      typeList
     ].join('/');
   }
 
-  public getUserSetup(id: unknown = '', type?: UrlType): string {
+  public getUserSetup(id: unknown = '', typeList: ChildPersonList['type']): string {
     return [
-      this.getBasePath(type),
-      'usuario/setup',
+      this.getUserList(typeList),
+      'setup',
       id
     ].join('/');
   }
 
-  private getBasePath(type: UrlType): string {
+  private getBasePath(type: ChildPersonList['type']): string {
     return ['/', type || this.basePath].join('/');
   }
 
 }
-
-export type UrlType = 'cooperativa';

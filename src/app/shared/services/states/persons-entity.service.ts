@@ -5,12 +5,14 @@ import { Observable } from 'rxjs';
 import { PersonsDataService } from './persons-data.service';
 import { RouterParamsService } from '../router-params.service';
 import { filter, map, pluck, switchMap } from 'rxjs/operators';
+import { UtilsService } from '../utils.service';
 
 @Injectable({ providedIn: 'root' })
 export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
 
 
   constructor(
+    private utilsService: UtilsService,
     private routerParamsService: RouterParamsService,
     private personsDataService: PersonsDataService,
     serviceElementsFactory: EntityCollectionServiceElementsFactory) {
@@ -46,4 +48,53 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     );
   }
 
+  save(values: unknown): Observable<Person> {
+    let body = this._defaultSavePerson(values);
+    body = this.utilsService.removeEmpty(body);
+    const { id } = values as Person; // personTypeId
+    if (id) {
+      console.log(body);
+      return this.update(body);
+    }
+    return this.add(body);
+  }
+
+  private _defaultSavePerson(values) {
+    const {
+      id,
+      name, birthday, document, username, personTypeId,
+      password, zipcode,
+      description,
+      city,
+      addressNumber,
+      phoneNumber, recipient
+    } = values;
+    const person = {
+      id, name, birthday, document, username
+    };
+    const user = [{
+      personTypeId, password
+    }];
+    const address = [
+      {
+        zipcode,
+        description,
+        city,
+        number: addressNumber
+      }
+    ];
+    const phone = [{
+      number: phoneNumber,
+    }];
+    const email = [{
+      recipient
+    }];
+    return {
+      ...person,
+      user,
+      address,
+      phone,
+      email,
+    };
+  }
 }

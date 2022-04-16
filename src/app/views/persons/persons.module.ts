@@ -9,7 +9,7 @@ import { ChartsModule } from 'ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload';
 import { SharedModule } from '../../shared/shared.module';
 
-import { OthersRoutes } from './persons.routing';
+import { PersonRoutes } from './persons.routing';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { PersonListPageComponent } from './pages/person-list-page/person-list-page.component';
@@ -28,7 +28,7 @@ import { PersonSetupPageComponent } from './pages/person-setup-page/person-setup
     ChartsModule,
     FileUploadModule,
     SharedModule,
-    RouterModule.forChild(OthersRoutes),
+    RouterModule.forChild(PersonRoutes),
     MatDividerModule,
     MatListModule,
     MatTableModule,

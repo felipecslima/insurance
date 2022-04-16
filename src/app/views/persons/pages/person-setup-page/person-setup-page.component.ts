@@ -5,12 +5,14 @@ import { noop, Unsubscribable } from 'rxjs';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
 import { RoutePartsService } from '../../../../shared/services/route-parts.service';
 import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
 import { Person } from '../../../../shared/interfaces/person.interface';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { DateService } from '../../../../shared/services/date.service';
+import { ChildPersonList } from '../../persons.routing';
+import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
 
 @Component({
   selector: 'person-setup-page',
@@ -29,9 +31,11 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   public values: any;
   public isFormValid: boolean;
   public isFormLoading: boolean;
-
+  private personId: number;
+  private typePerson: ChildPersonList;
 
   constructor(
+    private jwtAuthService: JwtAuthService,
     private dateService: DateService,
     private utilsService: UtilsService,
     private formConfigBaseService: FormConfigBaseService,
@@ -43,16 +47,30 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
     routePartsService.generateRouteParts(route.snapshot);
 
     const { personId } = routePartsService.params;
+    this.personId = personId;
 
-    this.setupForm();
+    this.subscribers = route.data
+      .pipe(
+        take(1),
+        switchMap((data) => {
+          this.typePerson = data.type;
+          this.setupForm();
+          return personsEntityService.getCurrent();
+        }),
+        tap(person => {
+          this.person = person;
+          this._populate();
 
-    this.subscribers = this.personsEntityService.getByKey(personId).subscribe(noop);
-    this.subscribers = personsEntityService.getCurrent()
-      .pipe(take(1))
-      .subscribe(response => {
-        this.person = response;
-        this._populate();
-      });
+        })
+      )
+      .subscribe(noop);
+
+    this.subscribers = formConfigBaseService.getValues().subscribe(values => {
+      this.values = values;
+      this.isFormValid = formConfigBaseService.isAllFormsValid();
+    });
+
+    this.subscribers = this.personsEntityService.getByKey(this.personId).subscribe(noop);
   }
 
   ngOnInit(): void {
@@ -63,18 +81,19 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
 
   private _populate() {
     const { user, address, email, phone } = this.person;
+    const { recipient } = email[0];
     let { birthday } = this.person;
     birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
-    const { number: addressNumber } = address;
-    let { number: phoneNumber } = phone;
+    const { number: addressNumber } = address[0];
+    let { number: phoneNumber } = phone[0];
     phoneNumber = this.utilsService.phoneFormat(phoneNumber);
     this.formConfigBaseService.initForm({
       ...this.person,
       birthday,
       ...user,
-      ...address,
+      ...address[0],
       addressNumber,
-      ...email,
+      recipient,
       phoneNumber,
     });
   }
@@ -162,15 +181,29 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
         placeholder: 'Digite sua cidade',
         validations: ['required'],
       }),
-      this.formFieldService.getText({
-        name: 'password',
-        inputType: 'password',
-        title: 'Senha:',
-        minValue: 8,
-        validations: ['required', 'minValue'],
-      }),
     ];
 
+    if (!this.personId) {
+      this.formConfig.push(
+        this.formFieldService.getText({
+          name: 'password',
+          inputType: 'password',
+          title: 'Senha:',
+          minValue: 8,
+          validations: ['required', 'minValue'],
+        })
+      );
+    }
+  }
+
+  save(): void {
+    if (!this.isFormValid) {
+      return;
+    }
+    const personTypeId = this.jwtAuthService.getPermission(this.typePerson.type);
+    this.values = { ...this.values, ...{ personTypeId: personTypeId.id } };
+    this.personsEntityService.save(this.values)
+      .subscribe(noop);
   }
 
 }

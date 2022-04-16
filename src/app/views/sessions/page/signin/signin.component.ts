@@ -79,8 +79,7 @@ export class SigninComponent implements OnInit, OnDestroy {
     const { username, password } = this.values;
     this.jwtAuth.signin(this.utilsService.removeCPFMask(username), password)
       .subscribe(() => {
-        this.isFormLoading = true;
-        this.router.navigateByUrl(this.jwtAuth.return);
+        this.router.navigateByUrl(this.return);
       }, err => {
         this.utilsService.toast('CPF ou Senha incorretos', 'error');
         this.isFormLoading = false;

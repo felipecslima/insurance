@@ -3,25 +3,51 @@ import { PersonListPageComponent } from './pages/person-list-page/person-list-pa
 import { PersonSetupPageComponent } from './pages/person-setup-page/person-setup-page.component';
 
 
-export const OthersRoutes: Routes = [
+export interface ChildPersonList {
+  type: string;
+  pluralName: string;
+  singularName: string;
+}
+
+const personCrud: ChildPersonList[] = [
+  {
+    type: 'cooperativa',
+    pluralName: 'Cooperados',
+    singularName: 'Cooperado'
+  },
+  {
+    type: 'consultor',
+    pluralName: 'Consultores',
+    singularName: 'Consultor'
+  }
+];
+
+const children = [];
+personCrud.forEach((p, id: number) => {
+  children.push(
+    {
+      path: `${ p.type }`,
+      component: PersonListPageComponent,
+      data: { title: `Lista de ${ p.pluralName }`, breadcrumb: `Lista de ${ p.pluralName }`, type: p }
+    },
+    {
+      path: `${ p.type }/setup`,
+      component: PersonSetupPageComponent,
+      data: { title: `Cadastro de ${ p.singularName }`, breadcrumb: `Cadastro de ${ p.singularName }`, type: p }
+    },
+    {
+      path: `${ p.type }/setup/:personId`,
+      component: PersonSetupPageComponent,
+      data: { title: `Edição de ${ p.singularName }`, breadcrumb: `Edição de ${ p.singularName }`, type: p }
+    }
+  );
+});
+
+export const PersonRoutes: Routes = [
   {
     path: '',
     children: [
-      {
-        path: '',
-        component: PersonListPageComponent,
-        data: { title: 'Lista de usuários', breadcrumb: 'Lista de usuários' }
-      },
-      {
-        path: 'setup',
-        component: PersonSetupPageComponent,
-        data: { title: 'Cadastro de usuário', breadcrumb: 'Cadastro de usuário' }
-      },
-      {
-        path: 'setup/:personId',
-        component: PersonSetupPageComponent,
-        data: { title: 'Edição de usuário', breadcrumb: 'Edição de usuário' }
-      }
+      ...children
     ]
   }
 ];

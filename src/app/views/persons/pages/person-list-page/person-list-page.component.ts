@@ -1,13 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableInfinityListColumn } from '../../../../shared/components/table-list/table-list.component';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
-import { Unsubscribable } from 'rxjs';
+import { noop, Unsubscribable } from 'rxjs';
 import { PersonListService } from '../../../../shared/services/states/person-list.service';
 import { environment } from '../../../../../environments/environment';
 import { Person } from '../../../../shared/interfaces/person.interface';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { UrlService } from '../../../../shared/services/url.service';
 import { ActivatedRoute } from '@angular/router';
+import { FormsService } from '../../../../shared/forms/services/forms.service';
+import { ChildPersonList } from '../../persons.routing';
+import { switchMap, tap } from 'rxjs/operators';
+import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
 
 @Component({
   selector: 'person-list-page',
@@ -24,77 +28,100 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
   columns: TableInfinityListColumn[];
 
   urlSetup: string;
+  typePerson: ChildPersonList;
+
+  paramPersist;
 
   constructor(
+    private jwtAuthService: JwtAuthService,
+    private formsService: FormsService,
     private route: ActivatedRoute,
     private urlService: UrlService,
     private utilsService: UtilsService,
     private personListService: PersonListService,
   ) {
+    formsService.resetForm();
     this.urlService.setBasePath(route);
 
-    this.urlSetup = this.urlService.getUserSetup();
-
-    this.personListService.load();
-
-    this.subscribers = this.personListService.getList()
-      .subscribe((persons: Person[]) => {
-        const personsFormat = persons.map(person => {
-          const { id, username, name, phone, email } = person;
-          return {
-            id,
-            username: this.utilsService.maskCpfCnpj(username),
-            name,
-            phone: phone?.number ? this.utilsService.phoneFormat(phone.number) : '',
-            email: email?.recipient || '',
+    this.subscribers = route.data
+      .pipe(
+        tap(data => {
+          this.typePerson = data.type;
+          this.urlSetup = this.urlService.getUserSetup(null, this.typePerson.type);
+          const permission = jwtAuthService.getPermission(this.typePerson.type);
+          this.paramPersist = {
+            profile: permission.id
           };
-        });
-        this.personListService.setDataTable(personsFormat);
-      });
+          this.load(false);
+          this._setListColumn();
+        }),
+        switchMap(data => {
+          return this.personListService.getList();
+        }),
+        tap(persons => {
+          const personsFormat = persons.map(person => {
+            const { id, username, name } = person;
+            const { phone, email } = person;
+            return {
+              id,
+              username: this.utilsService.maskCpfCnpj(username),
+              name,
+              phone: phone[0]?.number ? this.utilsService.phoneFormat(phone[0].number) : '',
+              email: email[0]?.recipient || '',
+            };
+          });
+          this.personListService.setDataTable(personsFormat);
+        })
+      )
+      .subscribe(noop);
 
-    this.columns = [
-      {
-        id: 'id',
-        columnName: 'id',
-        displayText: '',
-        urlBase: this.urlService.getUserSetup(),
-        maxWidth: 80,
-      },
-      {
-        id: 'id',
-        columnName: 'username',
-        displayText: 'CPF',
-        urlBase: this.urlService.getUserSetup()
-      },
-      {
-        id: 'id',
-        columnName: 'name',
-        displayText: 'Nome',
-        urlBase: this.urlService.getUserSetup()
-      },
-      {
-        id: 'id',
-        columnName: 'phone',
-        displayText: 'Telefone',
-        urlBase: this.urlService.getUserSetup()
-      },
-      {
-        id: 'id',
-        columnName: 'email',
-        displayText: 'Email',
-        urlBase: this.urlService.getUserSetup()
-      },
-    ];
   }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
+    this.personListService.resetList();
   }
 
-  load() { // LOAD MORE
-    this.personListService.load(true);
+  load(isLoadMore = true) { // LOAD MORE
+    this.personListService.load(isLoadMore, this.paramPersist);
+  }
+
+  private _setListColumn() {
+    this.columns = [
+      {
+        id: 'id',
+        columnName: 'id',
+        displayText: '',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type),
+        maxWidth: 80,
+      },
+      {
+        id: 'id',
+        columnName: 'username',
+        displayText: 'CPF',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+      {
+        id: 'id',
+        columnName: 'name',
+        displayText: 'Nome',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+      {
+        id: 'id',
+        columnName: 'phone',
+        displayText: 'Telefone',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+      {
+        id: 'id',
+        columnName: 'email',
+        displayText: 'Email',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+    ];
   }
 
 }

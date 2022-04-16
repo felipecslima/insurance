@@ -29,31 +29,16 @@ interface IBadge {
 
 @Injectable()
 export class NavigationService {
-  iconMenu: IMenuItem[] = [
-    {
-      name: 'Usuários',
-      type: 'link',
-      icon: 'person',
-      state: 'usuario',
-    },
-    // {
-    //   name: 'DOC',
-    //   type: 'extLink',
-    //   tooltip: 'Documentation',
-    //   icon: 'library_books',
-    //   state: 'http://demos.ui-lib.com/egret-doc/'
-    // }
-  ];
-
   // Icon menu TITLE at the very top of navigation.
   // This title will appear if any icon type item is present in menu.
   iconTypeMenuTitle = 'Frequently Accessed';
   // sets iconMenu as default;
-  menuItems = new BehaviorSubject<IMenuItem[]>(this.iconMenu);
+  menuItems = new BehaviorSubject<IMenuItem[]>({} as any);
   // navigation component has subscribed to this Observable
   menuItems$ = this.menuItems.asObservable();
 
   constructor() {
+    this.menuItems.next(this._createMenuCoop());
   }
 
   // Customizer component uses this method to change menu.
@@ -61,6 +46,25 @@ export class NavigationService {
   // Or you can customize this method to supply different menu for
   // different persons type.
   publishNavigationChange(menuType: string) {
-    this.menuItems.next(this.iconMenu);
+    this.menuItems.next(this._createMenuCoop());
   }
+
+  _createMenuCoop(): IMenuItem[] {
+    return [
+      {
+        name: 'Cooperados',
+        type: 'link',
+        icon: 'person',
+        state: 'usuario/cooperativa',
+      },
+      {
+        name: 'Consultores',
+        type: 'link',
+        icon: 'person',
+        state: 'usuario/consultor',
+      }
+    ];
+  }
+
+
 }

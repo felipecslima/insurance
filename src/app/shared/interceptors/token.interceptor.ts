@@ -27,7 +27,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return throwError(error);
         }
 
-        if (error && (error.status === 401 || error.status === 403)) {
+        if (error && (error.status === 401)) {
           // 401 errors are most likely going to be because we have an expired token that we need to refresh.
           this.authService.signout(this.router.url);
         }

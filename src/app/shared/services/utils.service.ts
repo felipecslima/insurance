@@ -10,7 +10,20 @@ export class UtilsService {
   timeSpinner = 0;
   Window: any = window;
 
-  constructor(public snackBar: MatSnackBar) {}
+  constructor(public snackBar: MatSnackBar) {
+  }
+
+  public removeEmpty(obj): any {
+    const newObj: any = {};
+    Object.keys(obj).forEach((key) => {
+      if (obj[key] === Object(obj[key])) {
+        newObj[key] = this.removeEmpty(obj[key]);
+      } else if (obj[key] !== undefined) {
+        newObj[key] = obj[key];
+      }
+    });
+    return newObj;
+  }
 
   public toast(message, type) {
     const timeOut = 4000;
@@ -297,7 +310,10 @@ export class UtilsService {
   }
 
   public phoneFormat(phone, removePrefixOnly?) {
-    phone = phone.replace('+55', '');
+    if (!phone) {
+      return phone;
+    }
+    phone = phone?.replace('+55', '');
     if (removePrefixOnly) {
       return phone;
     }

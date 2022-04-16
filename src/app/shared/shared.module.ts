@@ -22,6 +22,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TableListComponent } from './components/table-list/table-list.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
+import { AuthAreasGuard } from './guards/authAreas.guard';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { RouterModule } from '@angular/router';
     NavigationService,
     RoutePartsService,
     AuthGuard,
+    AuthAreasGuard,
     UserRoleGuard,
     AppConfirmService,
     AppLoaderService

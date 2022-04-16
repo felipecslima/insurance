@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationService } from '../../../shared/services/navigation.service';
+import { NavigationService } from '../../services/navigation.service';
 import { ThemeService } from '../../services/theme.service';
 import { Subscription } from 'rxjs';
 import { ILayoutConf, LayoutService } from 'app/shared/services/layout.service';

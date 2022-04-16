@@ -69,6 +69,7 @@ export class PersonListService {
     this.emptySearch = false;
     this.firstResult = 0;
     this.tableEntityService.clearCache();
+    this.personsEntityService.clearCache();
   }
 
   setDataTable(data: any) {
@@ -103,6 +104,7 @@ export class PersonListService {
     this.personsEntityService.getWithQuery({
       firstResult: this.firstResult.toString(),
       maxResults: this.maxResults.toString(),
+      ...params,
     })
       .pipe(take(1), finalize(() => this.isLoading = false))
       .subscribe(response => {

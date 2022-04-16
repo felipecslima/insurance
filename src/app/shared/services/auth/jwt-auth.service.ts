@@ -6,6 +6,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { PersonsEntityService } from '../states/persons-entity.service';
 import { Permission, Person } from '../../interfaces/person.interface';
+import { ChildPersonList } from '../../../views/persons/persons.routing';
 
 @Injectable({
   providedIn: 'root',
@@ -64,7 +65,7 @@ export class JwtAuthService {
       .subscribe(params => this.return = params['return'] || '/');
   }
 
-  getPermission(paramType: Permission['paramType']): Permission {
+  getPermission(paramType: Permission['paramType'] | ChildPersonList['type']): Permission {
     return this.permissions.find(p => p.paramType === paramType);
   }
 

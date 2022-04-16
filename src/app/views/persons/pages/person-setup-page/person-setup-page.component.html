@@ -5,11 +5,10 @@
       </cl-form-component>
     </div>
     <div clCardFooterButton [disableTop]="true">
-      <button clButtonContained [bgColor]="colors.primary">
+      <button (click)="save()" [loading]="isFormLoading" [hasDisabled]="!this.isFormValid" clButtonContained
+              [bgColor]="colors.primary">
         <span>Salvar</span>
       </button>
     </div>
   </div>
-
-
 </div>

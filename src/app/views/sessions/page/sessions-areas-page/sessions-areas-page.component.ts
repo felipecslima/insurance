@@ -13,7 +13,7 @@ export class SessionsAreasPageComponent implements OnInit, OnDestroy {
   permissionsList = [
     {
       name: 'Área da Cooperativa',
-      url: this.urlService.getUserList('cooperativa')
+      url: this.urlService.getUserList('cooperativa', 'cooperativa')
     }
   ];
 

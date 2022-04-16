@@ -4,20 +4,20 @@ export interface Person {
   birthday: string;
   document: string;
   username: string;
-  timestamp: number;
-  user: User;
-  address: Address;
-  phone: Phone;
-  email: Email;
+  timestamp?: number;
+  user: User[];
+  address: Address[];
+  phone: Phone[];
+  email: Email[];
 }
 
 export interface User {
   personTypeId: string;
-  password: string;
-  hashForgot: boolean;
-  hashTimestamp: boolean;
-  active: boolean;
-  timestamp: string;
+  password?: string;
+  hashForgot?: boolean;
+  hashTimestamp?: boolean;
+  active?: boolean;
+  timestamp?: string;
 }
 
 export interface Address {
