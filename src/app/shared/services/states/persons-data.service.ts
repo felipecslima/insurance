@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { UtilsStateService } from '../utils-state.service';
-import { Person } from '../../interfaces/person.interface';
+import { Person, PersonCrud } from '../../interfaces/person.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PersonsDataService extends DefaultDataService<Person> {
@@ -20,6 +21,22 @@ export class PersonsDataService extends DefaultDataService<Person> {
   login(username: string, password: string): Observable<any> {
     const body = { username, password };
     return this.http.post(`${ this._baseUrl }/login`, body);
+  }
+
+  save(body: PersonCrud): Observable<Person> {
+    return this.http.post(`${ this._baseUrl }`, body).pipe(
+      map(response => {
+        return response as Person;
+      })
+    );
+  }
+
+  edit(body: PersonCrud): Observable<Person> {
+    return this.http.put(`${ this._baseUrl }/${ body.id }`, body).pipe(
+      map(response => {
+        return response as Person;
+      })
+    );
   }
 
   self(): Observable<any> {

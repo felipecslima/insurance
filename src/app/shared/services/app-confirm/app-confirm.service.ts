@@ -1,29 +1,20 @@
 import { Observable } from 'rxjs';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Injectable } from '@angular/core';
 
-import { AppComfirmComponent } from './app-confirm.component';
-
-interface ConfirmData {
-  title?: string;
-  message?: string;
-}
+import { DataConfirm } from './app-confirm.component';
+import { DialogService } from '../../dialogs/dialogs-service';
 
 @Injectable()
 export class AppConfirmService {
 
-  constructor(private dialog: MatDialog) {
+  constructor(
+    private dialogService: DialogService) {
   }
 
-  public confirm(data: ConfirmData = {}): Observable<boolean> {
+  public confirm(data: DataConfirm): Observable<any> {
     data.title = data.title || 'Confirmar';
     data.message = data.message || 'Você tem certeza?';
-    let dialogRef: MatDialogRef<AppComfirmComponent>;
-    dialogRef = this.dialog.open(AppComfirmComponent, {
-      width: '380px',
-      disableClose: true,
-      data: { title: data.title, message: data.message }
-    });
-    return dialogRef.afterClosed();
+    this.dialogService.open('REGULAR', 'ConfirmDialogComponent', data);
+    return this.dialogService.dialogClose();
   }
 }

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory } from '@ngrx/data';
+import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory, MergeStrategy } from '@ngrx/data';
 import { Login, Person } from '../../interfaces/person.interface';
 import { Observable } from 'rxjs';
 import { PersonsDataService } from './persons-data.service';
 import { RouterParamsService } from '../router-params.service';
-import { filter, map, pluck, switchMap } from 'rxjs/operators';
+import { filter, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { UtilsService } from '../utils.service';
 
 @Injectable({ providedIn: 'root' })
@@ -52,30 +52,42 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     let body = this._defaultSavePerson(values);
     body = this.utilsService.removeEmpty(body);
     const { id } = values as Person; // personTypeId
+    let observable: Observable<Person>;
     if (id) {
-      return this.update(body);
+      // observable = this.update(body);
+      observable = this.personsDataService.edit(body);
+    } else {
+      observable = this.personsDataService.save(body);
     }
-    return this.add(body);
+    return observable.pipe(
+      tap(person => this.upsertOneInCache(person))
+    );
   }
 
   private _defaultSavePerson(values) {
     const {
       id,
-      name, birthday, document, username, personTypeId,
+      firstName, lastName, birthday, document, username, personTypeId,
       password, zipcode,
       description,
       city,
       addressNumber,
-      phoneNumber, recipient
+      phoneNumber, recipient, emailId,
+      addressId,
+      userId,
+      phoneId
     } = values;
     const person = {
-      id, name, birthday, document, username
+      id, firstName, lastName, birthday, document, username
     };
-    const user = [{
-      personTypeId, password
-    }];
+    const user = {
+      id: userId,
+      personTypeId,
+      password
+    };
     const address = [
       {
+        id: addressId,
         zipcode,
         description,
         city,
@@ -83,9 +95,11 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
       }
     ];
     const phone = [{
+      id: phoneId,
       number: phoneNumber,
     }];
     const email = [{
+      id: emailId,
       recipient
     }];
     return {

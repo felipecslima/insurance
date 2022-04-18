@@ -2,10 +2,9 @@ import { EntityMetadataMap } from '@ngrx/data';
 
 export const entityMetadata: EntityMetadataMap = {
   Table: {},
-  Persons: {},
-  PageLoadData: {
+  Persons: {
     entityDispatcherOptions: {
-      optimisticUpdate: true
+      optimisticUpdate: false
     }
   },
 };

@@ -31,6 +31,13 @@ export class UrlService {
     ].join('/');
   }
 
+  public getUserPreSetup(typeList: ChildPersonList['type']): string {
+    return [
+      this.getUserList(typeList),
+      'pre-setup',
+    ].join('/');
+  }
+
   public getUserSetup(id: unknown = '', typeList: ChildPersonList['type']): string {
     return [
       this.getUserList(typeList),

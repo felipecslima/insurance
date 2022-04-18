@@ -70,6 +70,7 @@
     "ngx-custom-validators": "^8.0.0",
     "ngx-echarts": "8.0.1",
     "ngx-file-drop": "^13.0.0",
+    "ngx-mask": "^13.1.9",
     "ngx-pagination": "5.1.1",
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-quill": "16.1.2",

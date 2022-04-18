@@ -35,7 +35,6 @@
 // // @import '~highlight.js/styles/github.css';
 @import '~highlight.js/styles/github-gist.css';
 
-
 // Main Variables File
 @import "scss/variables";
 
@@ -54,13 +53,11 @@
 @import "scss/components/components";
 @import "scss/palette";
 
-
 @import "scss/page-layouts";
 
 // Open _views.scss and remove unnecessary view related files
 @import "scss/views/views";
 @import "scss/ngx-datatable/table";
 @import "scss/ngx-datatable/ngx-datatable";
-
 
 

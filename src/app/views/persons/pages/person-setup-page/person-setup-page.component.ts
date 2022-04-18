@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
-import { noop, Unsubscribable } from 'rxjs';
+import { noop, Observable, Unsubscribable } from 'rxjs';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
 import { RoutePartsService } from '../../../../shared/services/route-parts.service';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
 import { Person } from '../../../../shared/interfaces/person.interface';
@@ -13,6 +13,7 @@ import { UtilsService } from '../../../../shared/services/utils.service';
 import { DateService } from '../../../../shared/services/date.service';
 import { ChildPersonList } from '../../persons.routing';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
+import { PersonFormService } from '../../services/person-form.service';
 
 @Component({
   selector: 'person-setup-page',
@@ -31,10 +32,11 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   public values: any;
   public isFormValid: boolean;
   public isFormLoading: boolean;
-  private personId: number;
+  private readonly personId: number;
   private typePerson: ChildPersonList;
 
   constructor(
+    private personFormService: PersonFormService,
     private jwtAuthService: JwtAuthService,
     private dateService: DateService,
     private utilsService: UtilsService,
@@ -80,18 +82,26 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   }
 
   private _populate() {
+    console.log(this.person);
     const { user, address, email, phone } = this.person;
-    const { recipient } = email[0];
+    const { recipient, id: emailId } = email[0];
     let { birthday } = this.person;
     birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
-    const { number: addressNumber } = address[0];
+    const { number: addressNumber, id: addressId } = address[0];
+    const { id: userId } = user[0];
     let { number: phoneNumber } = phone[0];
+    const { id: phoneId } = phone[0];
     phoneNumber = this.utilsService.phoneFormat(phoneNumber);
     this.formConfigBaseService.initForm({
       ...this.person,
       birthday,
       ...user,
       ...address[0],
+      id: this.personId,
+      emailId,
+      addressId,
+      userId,
+      phoneId,
       addressNumber,
       recipient,
       phoneNumber,
@@ -99,101 +109,7 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   }
 
   setupForm(): void {
-    const fieldAddressDescription = this.formFieldService.getText({
-      name: 'description',
-      title: 'Endereço:',
-      placeholder: 'Digite seu endereço',
-      validations: ['required'],
-    });
-    const fieldAddressNumber = this.formFieldService.getText({
-      name: 'addressNumber',
-      title: 'Número:',
-      placeholder: 'Digite o número',
-      validations: ['required'],
-    });
-
-    this.formConfig = [
-      this.formFieldService.getText({
-        name: 'name',
-        title: 'Nome:',
-        placeholder: 'Digite seu nome',
-        validations: ['required'],
-      }),
-      this.formFieldService.getText({
-        name: 'recipient',
-        title: 'Email:',
-        placeholder: 'Digite seu e-mail',
-        validations: ['required', 'email'],
-      }),
-      this.formFieldService.getText({
-        name: 'phoneNumber',
-        title: 'Telefone:',
-        placeholder: 'Digite seu telefone ou celular',
-        mask: 'PHONE',
-        validations: ['required', 'phone'],
-      }),
-      this.formFieldService.getText({
-        name: 'birthday',
-        title: 'Data de nascimento:',
-        placeholder: 'Digite sua data de nascimento',
-        mask: 'DATE',
-        validations: ['required', 'date'],
-      }),
-      this.formFieldService.getText({
-        name: 'username',
-        title: 'CPF:',
-        placeholder: 'Digite seu CPF',
-        mask: 'CPF',
-        validations: ['required', 'cpf'],
-      }),
-      this.formFieldService.getText({
-        name: 'document',
-        title: 'RG:',
-        placeholder: 'Digite seu RG',
-        validations: ['required'],
-      }),
-      this.formFieldService.getText({
-        name: 'zipcode',
-        placeholder: 'Digite seu CEP',
-        title: 'CEP:',
-        mask: 'CEP',
-        validations: ['required'],
-      }),
-      {
-        group: [
-          {
-            align: {
-              flex: 80,
-            },
-            ...fieldAddressDescription
-          },
-          {
-            align: {
-              flex: 20,
-            },
-            ...fieldAddressNumber
-          }
-        ]
-      },
-      this.formFieldService.getText({
-        name: 'city',
-        title: 'Cidade:',
-        placeholder: 'Digite sua cidade',
-        validations: ['required'],
-      }),
-    ];
-
-    if (!this.personId) {
-      this.formConfig.push(
-        this.formFieldService.getText({
-          name: 'password',
-          inputType: 'password',
-          title: 'Senha:',
-          minValue: 8,
-          validations: ['required', 'minValue'],
-        })
-      );
-    }
+    this.formConfig = this.personFormService.getDefaultForm(!!this.personId);
   }
 
   save(): void {
@@ -203,7 +119,9 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
     const personTypeId = this.jwtAuthService.getPermission(this.typePerson.type);
     this.values = { ...this.values, ...{ personTypeId: personTypeId.id } };
     this.personsEntityService.save(this.values)
-      .subscribe(noop);
+      .subscribe(noop, error => {
+        this.utilsService.setError(error);
+      });
   }
 
 }

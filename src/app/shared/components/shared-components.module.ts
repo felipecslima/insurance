@@ -27,7 +27,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { AppComfirmComponent } from '../services/app-confirm/app-confirm.component';
+import { ConfirmDialogComponent } from '../services/app-confirm/app-confirm.component';
 import { AppLoaderComponent } from '../services/app-loader/app-loader.component';
 import { ButtonLoadingComponent } from './button-loading/button-loading.component';
 import { EgretSidebarComponent, EgretSidebarTogglerDirective } from './egret-sidebar/egret-sidebar.component';
@@ -36,6 +36,8 @@ import { EgretExampleViewerComponent } from './example-viewer/example-viewer.com
 import { EgretExampleViewerTemplateComponent } from './example-viewer-template/example-viewer-template.component';
 import { EgretNotifications2Component } from './egret-notifications2/egret-notifications2.component';
 import { AdminLayoutInternalComponent } from './layouts/internal-layout/admin-layout-internal.component';
+import { CollactComponentsModule } from 'collact-components';
+import { CollactDesignSystemModule } from 'collact-design-system';
 
 
 const components = [
@@ -49,7 +51,7 @@ const components = [
   AdminLayoutComponent,
   AuthLayoutComponent,
   BreadcrumbComponent,
-  AppComfirmComponent,
+  ConfirmDialogComponent,
   AppLoaderComponent,
   EgretNotifications2Component,
   CustomizerComponent,
@@ -64,6 +66,8 @@ const components = [
 
 @NgModule({
   imports: [
+    CollactComponentsModule,
+    CollactDesignSystemModule,
     CommonModule,
     FormsModule,
     RouterModule,

@@ -1,0 +1,14 @@
+<div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+  <div clCard>
+    <div clCardContent>
+      <person-username-autocomplete (callback)="getCallback($event)"></person-username-autocomplete>
+    </div>
+    <div clCardFooterButton [disableTop]="true">
+      <button clButtonContained
+              [hasDisabled]="!isFormValid"
+              [bgColor]="colors.primary">
+        <span>Cadastrar usuário</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -27,7 +27,7 @@ export class DialogService {
   getSubscriber(): void {
     this._getOpen()
       .pipe(
-        filter(response => !!response.component),
+        filter(response => !!response?.component),
         distinct(response => response.id),
       )
       .subscribe(dialog => {

@@ -25,6 +25,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { environment } from '../environments/environment';
 import { metaReducers, reducers } from './shared/services/states/reducers';
 import { entityConfig } from './entity-metadata';
+import { reducer as DialogReducer } from './shared/dialogs/state/dialog.reducers';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -43,6 +44,7 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     HttpClientModule,
     PerfectScrollbarModule,
     StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forFeature('dialog', DialogReducer),
     EffectsModule.forRoot([]),
     EntityDataModule.forRoot(entityConfig),
     StoreDevtoolsModule.instrument({
@@ -58,7 +60,7 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
       provide: DefaultDataServiceConfig,
       useValue: defaultDataServiceConfig,
     },
-    { provide: ErrorHandler, useClass: ErrorHandlerService },
+    // { provide: ErrorHandler, useClass: ErrorHandlerService },
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
     {
       provide: HTTP_INTERCEPTORS,

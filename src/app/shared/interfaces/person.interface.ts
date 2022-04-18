@@ -1,6 +1,7 @@
 export interface Person {
   id?: number;
-  name: string;
+  firstName: string;
+  lastName: string;
   birthday: string;
   document: string;
   username: string;
@@ -11,8 +12,23 @@ export interface Person {
   email: Email[];
 }
 
+export interface PersonCrud {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  birthday: string;
+  document: string;
+  username: string;
+  timestamp?: number;
+  user: User;
+  address: Address[];
+  phone: Phone[];
+  email: Email[];
+}
+
 export interface User {
-  personTypeId: string;
+  id?: number;
+  personTypeId: number;
   password?: string;
   hashForgot?: boolean;
   hashTimestamp?: boolean;
@@ -21,6 +37,7 @@ export interface User {
 }
 
 export interface Address {
+  id?: number;
   zipcode: string;
   description: string;
   number: string;
@@ -28,10 +45,12 @@ export interface Address {
 }
 
 export interface Phone {
+  id?: number;
   number: string;
 }
 
 export interface Email {
+  id?: number;
   recipient: string;
 }
 

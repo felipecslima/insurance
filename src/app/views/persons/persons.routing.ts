@@ -4,6 +4,7 @@ import { PersonSetupPageComponent } from './pages/person-setup-page/person-setup
 import {
   AdminLayoutInternalComponent
 } from '../../shared/components/layouts/internal-layout/admin-layout-internal.component';
+import { PersonPreSetupPageComponent } from './pages/person-pre-setup-page/person-pre-setup-page.component';
 
 
 export interface ChildPersonList {
@@ -37,6 +38,11 @@ personCrud.forEach((p, id: number) => {
           path: ``,
           component: PersonListPageComponent,
           data: { title: `Lista de ${ p.pluralName }`, breadcrumb: `Lista de ${ p.pluralName }`, type: p },
+        },
+        {
+          path: `pre-setup`,
+          component: PersonPreSetupPageComponent,
+          data: { title: `Cadastro de ${ p.singularName }`, breadcrumb: `Cadastro de ${ p.singularName }`, type: p }
         },
         {
           path: `setup`,

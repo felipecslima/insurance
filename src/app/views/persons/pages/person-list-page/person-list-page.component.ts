@@ -40,6 +40,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private personListService: PersonListService,
   ) {
+    personListService.resetList();
     formsService.resetForm();
     this.urlService.setBasePath(route);
 
@@ -47,7 +48,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
       .pipe(
         tap(data => {
           this.typePerson = data.type;
-          this.urlSetup = this.urlService.getUserSetup(null, this.typePerson.type);
+          this.urlSetup = this.urlService.getUserPreSetup(this.typePerson.type);
           const permission = jwtAuthService.getPermission(this.typePerson.type);
           this.paramPersist = {
             profile: permission.id
@@ -60,12 +61,12 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         }),
         tap(persons => {
           const personsFormat = persons.map(person => {
-            const { id, username, name } = person;
+            const { id, username, firstName, lastName } = person;
             const { phone, email } = person;
             return {
               id,
               username: this.utilsService.maskCpfCnpj(username),
-              name,
+              name: `${ firstName } ${ lastName }`,
               phone: phone[0]?.number ? this.utilsService.phoneFormat(phone[0].number) : '',
               email: email[0]?.recipient || '',
             };

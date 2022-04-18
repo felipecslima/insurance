@@ -13,6 +13,12 @@ export class UtilsService {
   constructor(public snackBar: MatSnackBar) {
   }
 
+  setError(error: any): void {
+    console.log(error)
+    const { message = 'Erro desconhecido' } = error || {};
+    this.toast(message, 'error');
+  }
+
   public removeEmpty(obj): any {
     const newObj: any = {};
     Object.keys(obj).forEach((key) => {

@@ -70,16 +70,18 @@ $utilities: (
 @import "spacing";
 @import "others";
 
-
-
-
 @import "base/functions";
 @import "base/variables";
 @import "base/mixins";
 @import "base/utilities";
 @import "base/utilities/api";
+@import "src/app/shared/dialogs/styles/styles";
 
-
+.custom-dialog {
+  .mat-dialog-container {
+    padding: 0 !important;
+  }
+}
 
 
 
