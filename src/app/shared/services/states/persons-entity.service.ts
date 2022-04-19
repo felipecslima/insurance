@@ -78,7 +78,8 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
       phoneId
     } = values;
     const person = {
-      id, firstName, lastName, birthday, document, username
+      id, firstName, lastName, birthday, document,
+      username: this.utilsService.removeCPFMask(username)
     };
     const user = {
       id: userId,
