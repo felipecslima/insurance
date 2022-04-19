@@ -4,7 +4,7 @@ import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decora
 import { noop, Observable, Unsubscribable } from 'rxjs';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
 import { RoutePartsService } from '../../../../shared/services/route-parts.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
@@ -14,6 +14,7 @@ import { DateService } from '../../../../shared/services/date.service';
 import { ChildPersonList } from '../../persons.routing';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
 import { PersonFormService } from '../../services/person-form.service';
+import { UrlService } from '../../../../shared/services/url.service';
 
 @Component({
   selector: 'person-setup-page',
@@ -36,6 +37,8 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   private typePerson: ChildPersonList;
 
   constructor(
+    private router: Router,
+    private urlService: UrlService,
     private personFormService: PersonFormService,
     private jwtAuthService: JwtAuthService,
     private dateService: DateService,
@@ -82,7 +85,6 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   }
 
   private _populate() {
-    console.log(this.person);
     const { user, address, email, phone } = this.person;
     const { recipient, id: emailId } = email[0];
     let { birthday } = this.person;
@@ -119,7 +121,10 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
     const personTypeId = this.jwtAuthService.getPermission(this.typePerson.type);
     this.values = { ...this.values, ...{ personTypeId: personTypeId.id } };
     this.personsEntityService.save(this.values)
-      .subscribe(noop, error => {
+      .subscribe(() => {
+        this.utilsService.toast('Usuário salvo com sucesso!', 'success');
+        this.router.navigate([this.urlService.getUserList(this.typePerson.type)]);
+      }, error => {
         this.utilsService.setError(error);
       });
   }

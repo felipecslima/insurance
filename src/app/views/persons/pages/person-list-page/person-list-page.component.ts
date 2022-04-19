@@ -81,7 +81,6 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.personListService.resetList();
   }
 
   load(isLoadMore = true) { // LOAD MORE

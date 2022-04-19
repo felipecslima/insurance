@@ -46,7 +46,7 @@ export class PersonFormService {
         name: 'phoneNumber',
         title: 'Telefone:',
         placeholder: 'Digite seu telefone ou celular',
-        mask: 'PHONE',
+        mask: 'CELLPHONE',
         validations: ['required', 'phone'],
       }),
       this.formFieldService.getText({
