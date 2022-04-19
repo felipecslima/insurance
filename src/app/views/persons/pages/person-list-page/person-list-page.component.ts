@@ -4,7 +4,6 @@ import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decora
 import { noop, Unsubscribable } from 'rxjs';
 import { PersonListService } from '../../../../shared/services/states/person-list.service';
 import { environment } from '../../../../../environments/environment';
-import { Person } from '../../../../shared/interfaces/person.interface';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { UrlService } from '../../../../shared/services/url.service';
 import { ActivatedRoute } from '@angular/router';
@@ -51,7 +50,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
           this.urlSetup = this.urlService.getUserPreSetup(this.typePerson.type);
           const permission = jwtAuthService.getPermission(this.typePerson.type);
           this.paramPersist = {
-            profile: permission.id
+            personTypeId: permission.id
           };
           this.load(false);
           this._setListColumn();

@@ -14,7 +14,7 @@ export class UtilsService {
   }
 
   setError(error: any): void {
-    console.log(error)
+    console.log(error);
     const { message = 'Erro desconhecido' } = error || {};
     this.toast(message, 'error');
   }
@@ -379,6 +379,9 @@ export class UtilsService {
   }
 
   public maskCpfCnpj(v) {
+    if (!v) {
+      return v;
+    }
     // Remove tudo o que não é dígito
     v = v.replace(/\D/g, '');
 
@@ -413,6 +416,9 @@ export class UtilsService {
   }
 
   public setMaskCpf(v) {
+    if (!v) {
+      return v;
+    }
     const len = v.length;
     if (len > 3) {
       v.replace(/(\d{3})(\d)/, '$1.$2');

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator } from '@ngrx/data';
+import { DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator, QueryParams } from '@ngrx/data';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
@@ -41,5 +41,12 @@ export class PersonsDataService extends DefaultDataService<Person> {
 
   self(): Observable<any> {
     return this.http.get(`${ this._baseUrl }/self`);
+  }
+
+  getWithQuery(queryParams: QueryParams | string): Observable<Person[]> {
+    return super.getWithQuery(queryParams).pipe(
+      map(response => {
+        return response || [];
+      }));
   }
 }

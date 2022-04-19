@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { noop, Observable, Unsubscribable } from 'rxjs';
-import { catchError, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { noop, Observable, of, Unsubscribable } from 'rxjs';
+import { catchError, debounce, debounceTime, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
 import { Permission, Person } from '../../../../shared/interfaces/person.interface';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -39,7 +39,7 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
     private router: Router,
     private confirmService: AppConfirmService,
     private jwtAuthService: JwtAuthService,
-    private utilsService: UtilsService,
+    public utilsService: UtilsService,
     private route: ActivatedRoute,
     private urlService: UrlService,
     private personsEntityService: PersonsEntityService) {
@@ -51,17 +51,17 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
           this.urlSetup = this.urlService.getUserSetup(null, this.typePerson.type);
           this.personPermission = jwtAuthService.getPermission(this.typePerson.type);
           this.filteredOptions = this.usernameControl.valueChanges.pipe(
+            debounceTime(300),
             startWith(''),
             filter(value => {
               return value?.length > 0;
             }),
-            switchMap(value => {
-              return this.personsEntityService.getWithQuery({}
-              ).pipe(
-                catchError(e => {
-                  this.hasFind = true;
-                  return e;
-                }),
+            map(username => username.trim()),
+            map(username => this.utilsService.removeCPFMask(username)),
+            switchMap(username => {
+              return this.personsEntityService.getWithQuery({
+                  username
+                }
               );
             }),
             map((value: Person[]) => {
@@ -82,7 +82,7 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
   }
 
   onSelection($event: MatOptionSelectionChange) {
-    const person: Person = $event.source.value;
+    const { person } = $event.source.value;
     const personExistsInTypeId = !!person.user.find(pu => {
       return pu.personTypeId === this.personPermission.id;
     });
@@ -115,11 +115,12 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
     this.callback.emit(person);
   }
 
-  displayFn(person: Person): string {
+  displayFn(response): string {
+    const { person, maskCpf } = response;
     if (!person) {
       return '';
     }
-    const { username, firstName, lastName } = person;
-    return `${ username } - ${ firstName } ${ lastName }`;
+    const { username, firstName, lastName } = person || {};
+    return `${ maskCpf(username) } | ${ firstName } ${ lastName }`;
   }
 }
