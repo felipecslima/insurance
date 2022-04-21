@@ -65,6 +65,5 @@ export class HeaderSideComponent implements OnInit {
   }
 
   onSearch(e) {
-    //   console.log(e)
   }
 }

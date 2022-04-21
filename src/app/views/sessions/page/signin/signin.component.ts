@@ -94,7 +94,6 @@ export class SigninComponent implements OnInit, OnDestroy {
     this.egretLoader.open(`Automatically Signing you in! \n Return url: ${ this.jwtAuth.return.substring(0, 20) }...`, { width: '320px' });
     setTimeout(() => {
       this.signin();
-      console.log('autoSignIn');
       this.egretLoader.close();
     }, 2000);
   }

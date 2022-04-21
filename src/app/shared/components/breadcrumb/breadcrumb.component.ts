@@ -24,10 +24,8 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     private urlService: UrlService,
   ) {
     this.urlService.setBasePath(activeRoute);
-    console.log(this.urlService.basePath);
 
     this.routeParts = this.routePartsService.generateRouteParts(this.activeRoute.snapshot);
-    console.log(this.routeParts);
     this.routerEventSub = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((routeChange) => {

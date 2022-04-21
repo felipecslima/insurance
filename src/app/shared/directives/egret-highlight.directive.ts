@@ -70,7 +70,6 @@ export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
       changes["code"].currentValue !== changes["code"].previousValue
     ) {
       this.highlightElement(this.code);
-      // console.log('hljs on change', changes)
     }
   }
 
@@ -79,7 +78,6 @@ export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
       const res = this.hl.highlightAuto(code);
       this.highlightedCode = res.value;
       // this.cdr.detectChanges();
-      // console.log(languages)
     });
   }
 }

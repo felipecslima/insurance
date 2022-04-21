@@ -15,7 +15,6 @@ export class ScrollableDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(ScrollableDialogOverviewComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
     });
   }
 

@@ -31,7 +31,6 @@ export class EgretExampleViewerTemplateComponent implements OnInit, OnDestroy {
 
       const title = this.id.replace('-', ' ');
       this.title = title.charAt(0).toUpperCase() + title.substring(1);
-      // console.log(params, data);
     });
   }
 

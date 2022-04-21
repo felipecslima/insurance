@@ -43,7 +43,6 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.layoutConf = this.layout.layoutConf;
     this.layoutConfSub = this.layout.layoutConf$.subscribe((layoutConf) => {
       this.layoutConf = layoutConf;
-      // console.log(this.layoutConf);
 
       this.adminContainerClasses = this.updateAdminContainerClasses(this.layoutConf);
       this.cdr.markForCheck();
@@ -102,14 +101,12 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   sidebarMouseenter(e) {
-    // console.log(this.layoutConf);
     if (this.layoutConf.sidebarStyle === 'compact') {
       this.layout.publishLayoutChange({ sidebarStyle: 'full' }, { transitionClass: true });
     }
   }
 
   sidebarMouseleave(e) {
-    // console.log(this.layoutConf);
     if (
       this.layoutConf.sidebarStyle === 'full' &&
       this.layoutConf.sidebarCompactToggle

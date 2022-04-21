@@ -14,7 +14,6 @@ export class UtilsService {
   }
 
   setError(error: any): void {
-    console.log(error);
     const { message = 'Erro desconhecido' } = error || {};
     this.toast(message, 'error');
   }

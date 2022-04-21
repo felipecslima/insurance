@@ -10,7 +10,6 @@ export class PersonFormService {
   }
 
   public getDefaultForm(personId: boolean) {
-    console.log(personId);
     const fieldAddressDescription = this.formFieldService.getText({
       name: 'description',
       title: 'Endereço:',

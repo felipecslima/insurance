@@ -100,7 +100,6 @@ export class PersonListService {
     }
     this.isLoading = true;
 
-    console.log('aqui', this.firstResult);
     this.personsEntityService.getWithQuery({
       firstResult: this.firstResult.toString(),
       maxResults: this.maxResults.toString(),
@@ -108,7 +107,6 @@ export class PersonListService {
     })
       .pipe(take(1), finalize(() => this.isLoading = false))
       .subscribe(response => {
-        console.log(response.length);
         if (response.length < this.maxResults) {
           this.disableLoad = true;
         }

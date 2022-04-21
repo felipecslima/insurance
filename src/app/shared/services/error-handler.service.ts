@@ -11,12 +11,12 @@ export class ErrorHandlerService extends ErrorHandler {
 
   // https://github.com/angular/angular/issues/17010
   handleError(error: any) {
-    let increment = 5;
-    let max = 50;
+    const increment = 5;
+    const max = 50;
 
     // Prevents change detection
-    let debugCtx = error['ngDebugContext'];
-    let changeDetectorRef = debugCtx && debugCtx.injector.get(ChangeDetectorRef);
+    const debugCtx = error['ngDebugContext'];
+    const changeDetectorRef = debugCtx && debugCtx.injector.get(ChangeDetectorRef);
     if (changeDetectorRef) {
       changeDetectorRef.detach();
     }
@@ -33,7 +33,7 @@ export class ErrorHandlerService extends ErrorHandler {
         console.log(`Preventing recursive error after ${ this.errorCount } recursive errors.`);
         console.log(' ');
 
-        let appRef = this.injector.get(ApplicationRef);
+        const appRef = this.injector.get(ApplicationRef);
         appRef.tick();
       }
     } else if (this.errorCount === 1) {
