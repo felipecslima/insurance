@@ -56,7 +56,7 @@ export class SigninComponent implements OnInit, OnDestroy {
         name: 'password',
         inputType: 'password',
         title: 'Senha:',
-        minValue: 6,
+        minValue: 8,
         validations: ['required', 'minValue'],
       }),
     ];
@@ -85,17 +85,6 @@ export class SigninComponent implements OnInit, OnDestroy {
         this.isFormLoading = false;
         this.progressBar.mode = 'determinate';
       });
-  }
-
-  autoSignIn() {
-    if (this.jwtAuth.return === '/') {
-      return;
-    }
-    this.egretLoader.open(`Automatically Signing you in! \n Return url: ${ this.jwtAuth.return.substring(0, 20) }...`, { width: '320px' });
-    setTimeout(() => {
-      this.signin();
-      this.egretLoader.close();
-    }, 2000);
   }
 
 }

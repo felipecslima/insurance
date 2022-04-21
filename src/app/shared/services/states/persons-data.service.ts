@@ -18,6 +18,16 @@ export class PersonsDataService extends DefaultDataService<Person> {
     super('Persons', http, httpUrlGenerator, config);
   }
 
+  forgotPassword(email: string, birthday: string): Observable<any> {
+    const body = { email, birthday };
+    return this.http.post(`${ this._baseUrl }/forgetpassword`, body);
+  }
+
+  changePassword(password: string, passwordConfirm: string,  token: string): Observable<any> {
+    const body = { password, token, passwordConfirm };
+    return this.http.post(`${ this._baseUrl }/forgetpassword`, body);
+  }
+
   login(username: string, password: string): Observable<any> {
     const body = { username, password };
     return this.http.post(`${ this._baseUrl }/login`, body);

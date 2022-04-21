@@ -23,6 +23,14 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     super('Persons', serviceElementsFactory);
   }
 
+  public forgotPassword(email: string, birthday: string) {
+    return this.personsDataService.forgotPassword(email, birthday);
+  }
+
+  public changePassword(password: string, passwordConfirm: string, token: string) {
+    return this.personsDataService.changePassword(password, passwordConfirm, token);
+  }
+
   public login(username: string, password: string): Observable<Login> {
     return this.personsDataService.login(username, password);
   }
