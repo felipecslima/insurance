@@ -52,7 +52,7 @@ export class NavigationService {
   _createMenuCoop(): IMenuItem[] {
     return [
       {
-        name: 'Cooperados',
+        name: 'Usuários',
         type: 'link',
         icon: 'person',
         state: 'usuario/cooperativa',

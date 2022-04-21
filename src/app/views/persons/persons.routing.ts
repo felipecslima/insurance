@@ -16,8 +16,8 @@ export interface ChildPersonList {
 const personCrud: ChildPersonList[] = [
   {
     type: 'cooperativa',
-    pluralName: 'Cooperados',
-    singularName: 'Cooperado'
+    pluralName: 'Cooperativas',
+    singularName: 'Cooperativa'
   },
   {
     type: 'consultor',

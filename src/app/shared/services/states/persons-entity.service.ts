@@ -6,12 +6,16 @@ import { PersonsDataService } from './persons-data.service';
 import { RouterParamsService } from '../router-params.service';
 import { filter, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { UtilsService } from '../utils.service';
+import { DateService } from '../date.service';
+import { FormConfigBaseService } from '../../forms/services/form-config-base.service';
 
 @Injectable({ providedIn: 'root' })
 export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
 
 
   constructor(
+    private formConfigBaseService: FormConfigBaseService,
+    private dateService: DateService,
     private utilsService: UtilsService,
     private routerParamsService: RouterParamsService,
     private personsDataService: PersonsDataService,
@@ -39,6 +43,18 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     );
   }
 
+  /**
+   * Get the current selected business by the user, based on the
+   * router service param attribute 'businessId'
+   */
+  public getServerCurrent(): Observable<Person> {
+    return this.routerParamsService.params.pipe(
+      filter(params => !!params?.personId),
+      pluck('personId'),
+      switchMap(id => this.getByKey(id)),
+    );
+  }
+
   getEntityById(businessId): Observable<Person> {
     return this.entityMap$.pipe(
       filter(entities => entities && !!entities[businessId]),
@@ -54,7 +70,6 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     const { id } = values as Person; // personTypeId
     let observable: Observable<Person>;
     if (id) {
-      // observable = this.update(body);
       observable = this.personsDataService.edit(body);
     } else {
       observable = this.personsDataService.save(body);
@@ -62,6 +77,32 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     return observable.pipe(
       tap(person => this.upsertOneInCache(person))
     );
+  }
+
+  public populate(person: Person) {
+    const { user, address, email, phone } = person;
+    const { recipient, id: emailId } = email[0];
+    let { birthday } = person;
+    birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
+    const { number: addressNumber, id: addressId } = address[0];
+    const { id: userId } = user[0];
+    let { number: phoneNumber } = phone[0];
+    const { id: phoneId } = phone[0];
+    phoneNumber = this.utilsService.phoneFormat(phoneNumber);
+    this.formConfigBaseService.initForm({
+      ...person,
+      birthday,
+      ...user,
+      ...address[0],
+      id: person.id,
+      emailId,
+      addressId,
+      userId,
+      phoneId,
+      addressNumber,
+      recipient,
+      phoneNumber,
+    });
   }
 
   private _defaultSavePerson(values) {

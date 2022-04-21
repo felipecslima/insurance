@@ -5,6 +5,7 @@
     </div>
     <div clCardFooterButton [disableTop]="true">
       <button clButtonContained
+              (click)="save()"
               [hasDisabled]="!isFormValid"
               [bgColor]="colors.primary">
         <span>Cadastrar usuário</span>

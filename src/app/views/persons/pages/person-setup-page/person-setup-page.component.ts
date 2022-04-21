@@ -64,8 +64,7 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
         }),
         tap(person => {
           this.person = person;
-          this._populate();
-
+          this.personsEntityService.populate(person);
         })
       )
       .subscribe(noop);
@@ -75,39 +74,13 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
       this.isFormValid = formConfigBaseService.isAllFormsValid();
     });
 
-    this.subscribers = this.personsEntityService.getByKey(this.personId).subscribe(noop);
+    this.subscribers = this.personsEntityService.getServerCurrent().subscribe(noop);
   }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
-  }
-
-  private _populate() {
-    const { user, address, email, phone } = this.person;
-    const { recipient, id: emailId } = email[0];
-    let { birthday } = this.person;
-    birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
-    const { number: addressNumber, id: addressId } = address[0];
-    const { id: userId } = user[0];
-    let { number: phoneNumber } = phone[0];
-    const { id: phoneId } = phone[0];
-    phoneNumber = this.utilsService.phoneFormat(phoneNumber);
-    this.formConfigBaseService.initForm({
-      ...this.person,
-      birthday,
-      ...user,
-      ...address[0],
-      id: this.personId,
-      emailId,
-      addressId,
-      userId,
-      phoneId,
-      addressNumber,
-      recipient,
-      phoneNumber,
-    });
   }
 
   setupForm(): void {

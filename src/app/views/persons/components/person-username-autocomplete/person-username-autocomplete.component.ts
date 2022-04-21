@@ -116,7 +116,7 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
   }
 
   displayFn(response): string {
-    const { person, maskCpf } = response;
+    const { person, maskCpf } = response || {};
     if (!person) {
       return '';
     }
