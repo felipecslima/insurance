@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ThemeService } from '../../services/theme.service';
 import { LayoutService } from '../../services/layout.service';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header-top',
@@ -28,8 +29,11 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
     this.layoutConf = this.layout.layoutConf;
     this.egretThemes = this.themeService.egretThemes;
     this.menuItemSub = this.navService.menuItems$
+      .pipe(
+        filter(res => !!res && res.length > 0)
+      )
       .subscribe(res => {
-        res = res.filter(item => item.type !== 'icon' && item.type !== 'separator');
+        res = res?.filter(item => item.type !== 'icon' && item.type !== 'separator');
         const limit = 4;
         const mainItems: any[] = res.slice(0, limit);
         if (res.length <= limit) {
