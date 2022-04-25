@@ -24,6 +24,8 @@ import {
 } from './components/person-username-autocomplete/person-username-autocomplete.component';
 import { PersonPreSetupPageComponent } from './pages/person-pre-setup-page/person-pre-setup-page.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { PersonProfilePageComponent } from './pages/person-profile-page/person-profile-page.component';
+import { MatIconModule } from '@angular/material/icon';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -47,13 +49,15 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule
   ],
   declarations: [
     PersonListPageComponent,
     PersonSetupPageComponent,
     PersonUsernameAutocompleteComponent,
     PersonPreSetupPageComponent,
+    PersonProfilePageComponent,
   ]
 })
 export class PersonsModule {

@@ -188,7 +188,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         switchMap(response => {
           const { user, confirm, person } = response;
           if (!confirm) {
-            return this.personsEntityService.cancelAccount(user.id, person).pipe(
+            return this.personsEntityService.userInactive(user.id, person).pipe(
               map(() => {
                 return { error: false };
               })

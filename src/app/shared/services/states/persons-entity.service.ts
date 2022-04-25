@@ -12,7 +12,6 @@ import { FormConfigBaseService } from '../../forms/services/form-config-base.ser
 @Injectable({ providedIn: 'root' })
 export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
 
-
   constructor(
     private formConfigBaseService: FormConfigBaseService,
     private dateService: DateService,
@@ -22,12 +21,17 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     serviceElementsFactory: EntityCollectionServiceElementsFactory) {
     super('Persons', serviceElementsFactory);
   }
-  public cancelAccount(idUser: number, person: Person): Observable<Person> {
-    return this.personsDataService.cancelAccount(idUser).pipe(
+
+  public userInactive(idUser: number, person: Person): Observable<Person> {
+    return this.personsDataService.userInactive(idUser).pipe(
       tap(() => {
         this.removeOneFromCache(person);
       })
     );
+  }
+
+  public cancelAccount(): Observable<Person> {
+    return this.personsDataService.cancelAccount();
   }
 
   public forgotPassword(email: string, birthday: string) {
@@ -43,7 +47,24 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
   }
 
   public self(): Observable<Person> {
-    return this.personsDataService.self();
+    return this.personsDataService.self().pipe(
+      map(response => {
+        const person: any = response.person;
+        person.permission = response.permission;
+        return person;
+      })
+    );
+  }
+
+  public selfState(): Observable<Person> {
+    return this.personsDataService.self().pipe(
+      map(response => {
+        const person: any = response.person;
+        person.permission = response.permission;
+        this.upsertOneInCache(person);
+        return person;
+      })
+    );
   }
 
   /**
@@ -70,11 +91,11 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     );
   }
 
-  getEntityById(businessId): Observable<Person> {
+  getEntityById(id): Observable<Person> {
     return this.entityMap$.pipe(
-      filter(entities => entities && !!entities[businessId]),
+      filter(entities => entities && !!entities[id]),
       map(entities => {
-        return entities[businessId];
+        return entities[id];
       }),
     );
   }

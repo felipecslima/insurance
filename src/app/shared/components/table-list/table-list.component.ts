@@ -81,7 +81,6 @@ export class TableListComponent implements OnInit, OnDestroy, OnChanges {
         this.progressBar.mode = currentValue ? 'indeterminate' : 'determinate';
       }
     }
-    console.log(changes);
   }
 
   public onScroll(event): void {

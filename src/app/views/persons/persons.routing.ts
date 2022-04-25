@@ -5,6 +5,7 @@ import {
   AdminLayoutInternalComponent
 } from '../../shared/components/layouts/internal-layout/admin-layout-internal.component';
 import { PersonPreSetupPageComponent } from './pages/person-pre-setup-page/person-pre-setup-page.component';
+import { PersonProfilePageComponent } from './pages/person-profile-page/person-profile-page.component';
 
 
 export interface ChildPersonList {
@@ -23,6 +24,11 @@ const personCrud: ChildPersonList[] = [
     type: 'consultor',
     pluralName: 'Consultores',
     singularName: 'Consultor'
+  },
+  {
+    type: 'clinica',
+    pluralName: 'Clinicas',
+    singularName: 'Clinica'
   }
 ];
 
@@ -63,7 +69,12 @@ export const PersonRoutes: Routes = [
   {
     path: '',
     children: [
-      ...children
+      ...children,
+      {
+        path: `perfil`,
+        component: PersonProfilePageComponent,
+        data: { title: `Perfil do usuário`, breadcrumb: `Perfil do usuário` },
+      }
     ]
   }
 ];

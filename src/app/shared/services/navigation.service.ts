@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { JwtAuthService } from './auth/jwt-auth.service';
+import { Permission } from '../interfaces/person.interface';
 
 interface IMenuItem {
-  type: string; // Possible values: link/dropDown/icon/separator/extLink
+  type: 'link' | 'dropDown' | 'icon' | 'separator' | 'extLink'; // Possible values: link/dropDown/icon/separator/extLink
   name?: string; // Used as display text for item and title for separator type
   state?: string; // Router state
   icon?: string; // Material icon name
@@ -37,32 +39,67 @@ export class NavigationService {
   // navigation component has subscribed to this Observable
   menuItems$ = this.menuItems.asObservable();
 
-  constructor() {
-    this.menuItems.next(this._createMenuCoop());
+  constructor(private jwtAuthService: JwtAuthService) {
   }
 
   // Customizer component uses this method to change menu.
   // You can remove this method and customizer component.
   // Or you can customize this method to supply different menu for
   // different persons type.
-  publishNavigationChange(menuType: string) {
-    this.menuItems.next(this._createMenuCoop());
+  publishNavigationChange(typePermission: string) {
+    const permission = this.jwtAuthService.getPermission(typePermission);
+    const menuCommon = [
+      ...this.getMenuByType(permission),
+      ...this.getCommonMenu(permission.paramType),
+    ];
+    this.menuItems.next(menuCommon);
   }
 
-  _createMenuCoop(): IMenuItem[] {
+  private getCommonMenu(paramType: string): IMenuItem[] {
+    return [
+      {
+        name: 'Perfil',
+        type: 'link',
+        icon: 'person',
+        state: `${ paramType }/usuario/perfil`,
+      }
+    ];
+  }
+
+  getMenuByType(permission: Permission): IMenuItem[] {
+    if (permission.id === 1) { // Coop Menu
+      return this._createMenuCoop(permission.paramType);
+    }
+    return [];
+  }
+
+  _createMenuCoop(paramType: string): IMenuItem[] {
     return [
       {
         name: 'Usuários',
-        type: 'link',
+        type: 'dropDown',
         icon: 'person',
-        state: 'usuario/cooperativa',
+        sub: [
+          {
+            name: 'Cooperativa',
+            type: 'link',
+            icon: 'person',
+            state: `${ paramType }/usuario/cooperativa`,
+          },
+          {
+            name: 'Consultores',
+            type: 'link',
+            icon: 'person',
+            state: `${ paramType }/usuario/consultor`,
+          },
+          {
+            name: 'Clinica',
+            type: 'link',
+            icon: 'person',
+            state: `${ paramType }/usuario/clinica`,
+          }
+        ]
       },
-      {
-        name: 'Consultores',
-        type: 'link',
-        icon: 'person',
-        state: 'usuario/consultor',
-      }
     ];
   }
 

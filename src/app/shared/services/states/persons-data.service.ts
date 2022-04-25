@@ -18,8 +18,12 @@ export class PersonsDataService extends DefaultDataService<Person> {
     super('Persons', http, httpUrlGenerator, config);
   }
 
-  cancelAccount(id: number): Observable<any> {
+  userInactive(id: number): Observable<any> {
     return this.http.put(`${ this._baseUrl }/${ id }/inactive`, {});
+  }
+
+  cancelAccount(): Observable<any> {
+    return this.http.post(`${ this._baseUrl }/cancel`, {});
   }
 
   forgotPassword(email: string, birthday: string): Observable<any> {

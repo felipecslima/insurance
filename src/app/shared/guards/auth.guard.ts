@@ -14,7 +14,6 @@ export class AuthGuard implements CanActivate {
     if (this.jwtAuth.isLoggedIn() && type) {
       return true;
     } else {
-      console.log('canActivate');
       if (!type) {
         this.router.navigate(['/sessions/404']);
       } else {

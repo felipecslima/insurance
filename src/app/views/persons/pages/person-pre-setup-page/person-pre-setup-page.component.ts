@@ -28,6 +28,7 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
   private typePerson: ChildPersonList;
   public values: Record<string, string | number>;
   private person: Person;
+  public urlSetup: string;
 
   constructor(
     private jwtAuthService: JwtAuthService,
@@ -44,11 +45,13 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
     });
     routePartsService.generateRouteParts(route.snapshot);
 
+
     this.subscribers = route.data
       .pipe(
         take(1),
         tap(data => {
           this.typePerson = data.type;
+          this.urlSetup = this.urlService.getUserSetup(null, this.typePerson.type);
         }),
       )
       .subscribe(noop);
@@ -58,6 +61,7 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.formConfigBaseService.resetAllForms();
   }
 
   getCallback(person: Person) {

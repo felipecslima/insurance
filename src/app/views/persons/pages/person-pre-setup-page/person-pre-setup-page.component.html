@@ -8,8 +8,13 @@
               (click)="save()"
               [hasDisabled]="!isFormValid"
               [bgColor]="colors.primary">
-        <span>Cadastrar usuário</span>
+        <span>Associar</span>
       </button>
+      <a clButtonContainedSecondary
+         [routerLink]="urlSetup"
+      >
+        <span>Cadastrar novo usuário</span>
+      </a>
     </div>
   </div>
 </div>

@@ -24,9 +24,9 @@ export const SessionsRoutes: Routes = [
         canActivate: [AuthAreasGuard],
       },
       {
-        path: 'forgot-password',
+        path: 'mudar-senha',
         component: ForgotPasswordComponent,
-        data: { title: 'Forgot password' }
+        data: { title: 'Mudar Senha' }
       },
       {
         path: 'lockscreen',

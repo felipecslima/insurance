@@ -10,6 +10,14 @@ export interface Person {
   address: Address[];
   phone: Phone[];
   email: Email[];
+  permissions?: PersonPermission[];
+}
+
+export interface PersonPermission {
+  create: boolean;
+  delete: boolean;
+  index: boolean;
+  update: boolean;
 }
 
 export interface PersonCrud {

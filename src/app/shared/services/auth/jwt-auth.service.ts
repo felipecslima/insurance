@@ -133,3 +133,7 @@ export class JwtAuthService {
     this.user$.next(person);
   }
 }
+
+interface SelfResponse {
+  person: Person;
+}

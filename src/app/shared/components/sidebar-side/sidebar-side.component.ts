@@ -20,16 +20,14 @@ export class SidebarSideComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private navService: NavigationService,
-    public themeService: ThemeService,
     private layout: LayoutService,
-    public jwtAuth: JwtAuthService
   ) {
     const typePermission = route.snapshot.paramMap.get('type');
-
+    this.navService.publishNavigationChange(typePermission);
     this.menuItemsSub = this.navService.menuItems$.subscribe(menuItem => {
       this.menuItems = menuItem.map((mi: any) => {
         if (mi.type === 'link') {
-          mi.state = `${ typePermission }/${ mi.state }`;
+          mi.state = `/${ mi.state }`;
           return mi;
         }
         return mi;
@@ -44,7 +42,6 @@ export class SidebarSideComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.iconTypeMenuTitle = this.navService.iconTypeMenuTitle;
-
     this.layoutConf = this.layout.layoutConf;
   }
 

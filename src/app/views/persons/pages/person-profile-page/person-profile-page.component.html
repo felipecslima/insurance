@@ -1,0 +1,26 @@
+<div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+  <div clCard>
+    <div class="cardPerfil perfil" clCardContent>
+      <div>
+        <mat-icon class="profPic">person</mat-icon>
+      </div>
+      <div clCardContent> {{personShow?.username}}
+        <br><span class="name">{{personShow?.fullName}}</span>
+      </div>
+      <span class="email">{{personShow?.email}}</span>
+    </div>
+    <div clCard>
+      <div clCardFooterButton [clColumn]="true">
+        <button clButtonContainedSecondary (click)="cancelAccount()">
+          <span>Cancelar Conta</span>
+        </button>
+        <a clButtonContainedSecondary routerLink="/sessions/mudar-senha">
+          <span>Trocar Senha</span>
+        </a>
+        <button clButtonContainedSecondary (click)="jwtAuthService.signout()">
+          <span>Sair</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
