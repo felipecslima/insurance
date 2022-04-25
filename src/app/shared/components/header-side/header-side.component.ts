@@ -9,9 +9,11 @@ import { tap } from 'rxjs/operators';
 import { noop, Unsubscribable } from 'rxjs';
 import { CombineSubscriptions } from '../../decorators/auto-unsubscribe.decorator';
 import { ChildPersonList } from '../../../views/persons/persons.routing';
+import { Person } from '../../interfaces/person.interface';
 
 @Component({
   selector: 'app-header-side',
+  styles: ['.hello{font-size: 14px}'],
   templateUrl: './header-side.template.html'
 })
 export class HeaderSideComponent implements OnInit, OnDestroy {
@@ -22,7 +24,7 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
 
   public egretThemes;
   public layoutConf: any;
-  public user: User;
+  public user: Person;
 
   urlUserProfile: string;
   typePerson: string;
