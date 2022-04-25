@@ -51,8 +51,10 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   ) {
     routePartsService.generateRouteParts(route.snapshot);
 
-    const { personId } = routePartsService.params;
-    this.personId = personId;
+    const personId = route.snapshot.paramMap.get('personId');
+    if (personId) {
+      this.personId = parseInt(personId, 10);
+    }
 
     this.subscribers = route.data
       .pipe(
