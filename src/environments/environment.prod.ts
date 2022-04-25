@@ -1,5 +1,3 @@
-import { config } from 'config';
-
 export const environment = {
   production: true,
   apiUrl: 'https://clube-beneficios.herokuapp.com',
