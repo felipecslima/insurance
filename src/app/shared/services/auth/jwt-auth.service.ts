@@ -66,7 +66,7 @@ export class JwtAuthService {
   }
 
   getPermission(paramType: Permission['paramType'] | ChildPersonList['type']): Permission {
-    return this.permissions.find(p => p.paramType === paramType);
+    return this.permissions?.find(p => p.paramType === paramType);
   }
 
   getPermissions(): Permission[] {

@@ -50,7 +50,7 @@ export class NavigationService {
     const permission = this.jwtAuthService.getPermission(typePermission);
     const menuCommon = [
       ...this.getMenuByType(permission),
-      ...this.getCommonMenu(permission.paramType),
+      ...this.getCommonMenu(permission?.paramType),
     ];
     this.menuItems.next(menuCommon);
   }
