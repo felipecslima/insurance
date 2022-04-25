@@ -63,9 +63,11 @@ export class PersonsDataService extends DefaultDataService<Person> {
   }
 
   getWithQuery(queryParams: QueryParams | string): Observable<Person[]> {
-    return super.getWithQuery(queryParams).pipe(
-      map(response => {
+    const params = this.uss.objectParams(queryParams);
+    return this.http.get(`${ this._baseUrl }`, { params }).pipe(
+      map((response: Person[]) => {
         return response || [];
-      }));
+      })
+    );
   }
 }

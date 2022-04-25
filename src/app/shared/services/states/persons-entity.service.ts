@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory, MergeStrategy } from '@ngrx/data';
+import {
+  EntityActionOptions,
+  EntityCollectionServiceBase,
+  EntityCollectionServiceElementsFactory,
+  MergeStrategy,
+  QueryParams
+} from '@ngrx/data';
 import { Login, Person } from '../../interfaces/person.interface';
 import { Observable } from 'rxjs';
 import { PersonsDataService } from './persons-data.service';
@@ -28,6 +34,10 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
         this.removeOneFromCache(person);
       })
     );
+  }
+
+  public getWithQuery(queryParams: QueryParams | string, options?: EntityActionOptions): Observable<Person[]> {
+    return super.getWithQuery(queryParams, options);
   }
 
   public cancelAccount(): Observable<Person> {
