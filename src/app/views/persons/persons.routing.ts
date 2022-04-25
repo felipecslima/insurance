@@ -59,9 +59,14 @@ personCrud.forEach((p, id: number) => {
           path: `setup/:personId`,
           component: PersonSetupPageComponent,
           data: { title: `Edição de ${ p.singularName }`, breadcrumb: `Edição de ${ p.singularName }`, type: p }
-        }
+        },
       ]
     },
+    {
+      path: `perfil`,
+      component: PersonProfilePageComponent,
+      data: { title: `Perfil do usuário`, breadcrumb: `Perfil do usuário`, type: p },
+    }
   );
 });
 
@@ -70,11 +75,7 @@ export const PersonRoutes: Routes = [
     path: '',
     children: [
       ...children,
-      {
-        path: `perfil`,
-        component: PersonProfilePageComponent,
-        data: { title: `Perfil do usuário`, breadcrumb: `Perfil do usuário` },
-      }
+
     ]
   }
 ];

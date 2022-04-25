@@ -46,8 +46,16 @@ export class UrlService {
     ].join('/');
   }
 
+  public getUserProfile(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBasePath(typeList),
+      'usuario',
+      'perfil',
+    ].join('/');
+  }
+
   private getBasePath(type: ChildPersonList['type']): string {
-    return ['/', type || this.basePath].join('/');
+    return type ? `/${ type }` : `/${ this.basePath }`;
   }
 
 }

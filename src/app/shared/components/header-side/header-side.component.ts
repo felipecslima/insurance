@@ -1,25 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
 import { LayoutService } from '../../services/layout.service';
 import { JwtAuthService } from '../../services/auth/jwt-auth.service';
 import { User } from 'app/shared/models/user.model';
+import { UrlService } from '../../services/url.service';
+import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs/operators';
+import { noop, Unsubscribable } from 'rxjs';
+import { CombineSubscriptions } from '../../decorators/auto-unsubscribe.decorator';
+import { ChildPersonList } from '../../../views/persons/persons.routing';
 
 @Component({
   selector: 'app-header-side',
   templateUrl: './header-side.template.html'
 })
-export class HeaderSideComponent implements OnInit {
+export class HeaderSideComponent implements OnInit, OnDestroy {
+  @CombineSubscriptions()
+  subscribers: Unsubscribable;
+
   @Input() notificPanel;
 
   public egretThemes;
   public layoutConf: any;
   public user: User;
 
+  urlUserProfile: string;
+  typePerson: string;
+
   constructor(
+    private route: ActivatedRoute,
+    private urlService: UrlService,
     private themeService: ThemeService,
     private layout: LayoutService,
     public jwtAuth: JwtAuthService
   ) {
+    this.urlService.setBasePath(route);
+    this.typePerson = this.urlService.getParamType(route);
+    this.urlUserProfile = this.urlService.getUserProfile(this.typePerson);
   }
 
   ngOnInit() {
@@ -28,12 +45,7 @@ export class HeaderSideComponent implements OnInit {
     this.layoutConf = this.layout.layoutConf;
   }
 
-  changeTheme(theme) {
-    // this.themeService.changeTheme(theme);
-  }
-
-  toggleNotific() {
-    this.notificPanel.toggle();
+  ngOnDestroy(): void {
   }
 
   toggleSidenav() {
