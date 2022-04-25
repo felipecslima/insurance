@@ -26,6 +26,7 @@ import { PersonPreSetupPageComponent } from './pages/person-pre-setup-page/perso
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { PersonProfilePageComponent } from './pages/person-profile-page/person-profile-page.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -50,7 +51,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
   ],
   declarations: [
     PersonListPageComponent,

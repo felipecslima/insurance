@@ -1,0 +1,22 @@
+<div clCard>
+  <h2 clCardTitle>Filtrar</h2>
+  <p clCardSubTitle>Filtre a lista de acordo com os campos abaixo</p>
+  <div clCardContent>
+    <cl-form-component *ngIf="formConfig" [formConfig]="formConfig">
+    </cl-form-component>
+  </div>
+  <div clCardFooterButton [clMbColumn]="true" [disableTop]="true">
+    <button (click)="filter()" clButtonContained
+            [bgColor]="colors.primary">
+      <span>Filtrar</span>
+    </button>
+
+    <button matTooltip="Limpar Filtro" fxFlex="56px" (click)="close(true)" clButtonContainedSecondary>
+      <i clIcon name="cl-delete"></i>
+    </button>
+
+    <button matTooltip="Fechar" fxFlex="56px" (click)="close()" clButtonContainedSecondary>
+      <i clIcon name="cl-close"></i>
+    </button>
+  </div>
+</div>

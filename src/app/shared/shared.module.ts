@@ -24,9 +24,12 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { AuthAreasGuard } from './guards/authAreas.guard';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FilterListComponent } from './components/filter-list/filter-list.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
+    FilterListComponent,
     TableListComponent,
     SnackbarCustonComponent,
   ],
@@ -43,6 +46,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     NgxDatatableModule,
     RouterModule,
     MatProgressBarModule,
+    MatTooltipModule,
   ],
   providers: [
     ThemeService,
@@ -61,7 +65,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     SharedComponentsModule,
     SharedPipesModule,
     SharedDirectivesModule,
-    TableListComponent
+    TableListComponent,
+    FilterListComponent,
   ]
 })
 export class SharedModule {

@@ -9,11 +9,14 @@ import { UrlService } from '../../../../shared/services/url.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsService } from '../../../../shared/forms/services/forms.service';
 import { ChildPersonList } from '../../persons.routing';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take, tap } from 'rxjs/operators';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
-import { Person } from '../../../../shared/interfaces/person.interface';
+import { Permission, Person } from '../../../../shared/interfaces/person.interface';
 import { ConfirmService } from '../../../../shared/services/app-confirm/confirm.service';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
+import { DialogService } from '../../../../shared/dialogs/dialogs-service';
+import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
+import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 
 @Component({
   selector: 'person-list-page',
@@ -34,7 +37,12 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
 
   paramPersist;
 
+  private permission: Permission;
+
   constructor(
+    private formConfigBaseService: FormConfigBaseService,
+    private formFieldService: FormFieldService,
+    private dialogService: DialogService,
     private router: Router,
     private jwtAuthService: JwtAuthService,
     private formsService: FormsService,
@@ -54,14 +62,26 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         tap(data => {
           this.typePerson = data.type;
           this.urlSetup = this.urlService.getUserPreSetup(this.typePerson.type);
-          const permission = jwtAuthService.getPermission(this.typePerson.type);
-          this.paramPersist = {
-            personTypeId: permission.id
-          };
-          this.load(false);
-          this._setListColumn();
+          this.permission = jwtAuthService.getPermission(this.typePerson.type);
+
         }),
-        switchMap(data => {
+        mergeMap(() => {
+          return this.route.queryParams;
+        }),
+        switchMap(queryParams => {
+          personListService.resetList();
+          const { username } = queryParams;
+          this.paramPersist = {
+            ...queryParams,
+            personTypeId: this.permission.id,
+          };
+
+          if (username) {
+            this.paramPersist['username'] = utilsService.removeCPFMask(username);
+          }
+
+          this._setListColumn();
+          this.load(false);
           return this.personListService.getList();
         }),
         tap(persons => {
@@ -130,7 +150,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
       {
         id: 'id',
         columnName: 'email',
-        displayText: 'Email',
+        displayText: 'E-mail',
         type: 'text',
         urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
       },
@@ -151,6 +171,26 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         maxWidth: 145,
       },
     ];
+  }
+
+  openFilter() {
+    this.formConfigBaseService.initForm(this.paramPersist);
+    const formFields = [
+      this.formFieldService.getText({
+        title: 'Nome do usuário',
+        name: 'name',
+      }),
+      this.formFieldService.getText({
+        title: 'CPF',
+        inputType: 'tel',
+        name: 'username',
+        mask: 'CPF',
+        validations: [
+          'cpf'
+        ]
+      })
+    ];
+    this.dialogService.open('REGULAR', 'FilterListComponent', formFields);
   }
 
   cbButton($event: any) {
