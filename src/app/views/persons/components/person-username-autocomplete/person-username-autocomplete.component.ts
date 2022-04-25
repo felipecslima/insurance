@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { noop, Observable, of, Unsubscribable } from 'rxjs';
-import { catchError, debounce, debounceTime, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { catchError, debounce, debounceTime, filter, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
 import { Permission, Person } from '../../../../shared/interfaces/person.interface';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -12,6 +12,7 @@ import { UtilsService } from '../../../../shared/services/utils.service';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
 import { ConfirmService } from '../../../../shared/services/app-confirm/confirm.service';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'Òperson-username-autocomplete',
@@ -25,7 +26,9 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
 
   @Output() callback: EventEmitter<Person> = new EventEmitter<Person>();
 
-  usernameControl = new FormControl(null, [Validators.required]);
+  @ViewChild(MatProgressBar) progressBar: MatProgressBar;
+
+  usernameControl = new FormControl(null);
   public mask = [/[1-9]/, /\d/, /\d/, '.', /[1-9]/, /\d/, /\d/, '.', /[1-9]/, /\d/, /\d/, '-', /[1-9]/, /\d/];
 
   options: Person[] = [];
@@ -53,12 +56,13 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
           this.filteredOptions = this.usernameControl.valueChanges.pipe(
             debounceTime(300),
             startWith(''),
-            filter(value => {
-              return value?.length > 0;
-            }),
             map(username => username.trim()),
             map(username => this.utilsService.removeCPFMask(username)),
+            filter(value => {
+              return value?.length > 0 && this.utilsService.isCPF(value);
+            }),
             switchMap(username => {
+              this.progressBar.mode = 'indeterminate';
               return this.personsEntityService.getWithQuery({
                   username
                 }
@@ -67,12 +71,14 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
             map((value: Person[]) => {
               this.hasFind = true;
               this.options = value;
+              this.progressBar.mode = 'determinate';
               return value;
-            }),
-          );
+            }));
         })
       )
-      .subscribe(noop);
+      .subscribe(noop, () => {
+        this.progressBar.mode = 'determinate';
+      });
   }
 
   ngOnInit(): void {

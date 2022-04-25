@@ -28,12 +28,13 @@ export class PersonsDataService extends DefaultDataService<Person> {
 
   forgotPassword(email: string, birthday: string): Observable<any> {
     const body = { email, birthday };
-    return this.http.post(`${ this._baseUrl }/forgetpassword`, body);
+    return this.http.post(`${ this._baseUrl }/forgetpassword/`, body);
   }
 
+
   changePassword(password: string, passwordConfirm: string, token: string): Observable<any> {
-    const body = { password, token, passwordConfirm };
-    return this.http.post(`${ this._baseUrl }/forgetpassword`, body);
+    const body = { password, passwordConfirm };
+    return this.http.put(`${ this._baseUrl }/forgetpassword/?t=${ token }`, body);
   }
 
   login(username: string, password: string): Observable<any> {

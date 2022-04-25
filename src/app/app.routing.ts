@@ -10,6 +10,11 @@ export const rootRouterConfig: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'login',
+    redirectTo: 'sessions/login',
+    pathMatch: 'full'
+  },
+  {
     path: '',
     component: AuthLayoutComponent,
     children: [

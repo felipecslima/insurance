@@ -72,7 +72,7 @@ export class PersonProfilePageComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         switchMap(confirm => {
-          if (confirm) {
+          if (!confirm) {
             return this.personsEntityService.cancelAccount().pipe(
               map(() => {
                 return { error: false };
