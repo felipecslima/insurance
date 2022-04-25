@@ -29,6 +29,11 @@ const personCrud: ChildPersonList[] = [
     type: 'clinica',
     pluralName: 'Clinicas',
     singularName: 'Clinica'
+  },
+  {
+    type: 'medico',
+    pluralName: 'Médicos',
+    singularName: 'Médico'
   }
 ];
 

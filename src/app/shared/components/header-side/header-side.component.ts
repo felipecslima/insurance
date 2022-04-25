@@ -9,7 +9,7 @@ import { tap } from 'rxjs/operators';
 import { noop, Unsubscribable } from 'rxjs';
 import { CombineSubscriptions } from '../../decorators/auto-unsubscribe.decorator';
 import { ChildPersonList } from '../../../views/persons/persons.routing';
-import { Person } from '../../interfaces/person.interface';
+import { Permission, Person } from '../../interfaces/person.interface';
 
 @Component({
   selector: 'app-header-side',
@@ -28,6 +28,7 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
 
   urlUserProfile: string;
   typePerson: string;
+  permission: Permission;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +40,7 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
     this.urlService.setBasePath(route);
     this.typePerson = this.urlService.getParamType(route);
     this.urlUserProfile = this.urlService.getUserProfile(this.typePerson);
+    this.permission = this.jwtAuth.getPermission(this.typePerson);
   }
 
   ngOnInit() {

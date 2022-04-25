@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../decorators/auto-unsubscribe.decorator';
 import { environment } from '../../../../environments/environment';
 import { Unsubscribable } from 'rxjs';
@@ -20,6 +20,8 @@ export class FilterListComponent implements OnInit, OnDestroy {
   formConfig: any;
   values: any;
 
+  isMobile: boolean;
+
   constructor(
     private formConfigBaseService: FormConfigBaseService,
     private router: Router,
@@ -32,7 +34,15 @@ export class FilterListComponent implements OnInit, OnDestroy {
     this.subscribers = dialogsActionService.getData().subscribe(formConfig => {
       this.formConfig = formConfig;
     });
+
+    this.onResize();
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobile = window.innerWidth <= 600;
+  }
+
 
   ngOnInit(): void {
   }

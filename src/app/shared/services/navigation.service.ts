@@ -70,6 +70,10 @@ export class NavigationService {
     if (permission.id === 1) { // Coop Menu
       return this._createMenuCoop(permission.paramType);
     }
+
+    if (permission.id === 4) { // Clinic Menu
+      return this._createMenuClinic(permission.paramType);
+    }
     return [];
   }
 
@@ -98,6 +102,24 @@ export class NavigationService {
             icon: 'person',
             state: `${ paramType }/usuario/clinica`,
           }
+        ]
+      },
+    ];
+  }
+
+  _createMenuClinic(paramType: string): IMenuItem[] {
+    return [
+      {
+        name: 'Usuários',
+        type: 'dropDown',
+        icon: 'person',
+        sub: [
+          {
+            name: 'Médicos',
+            type: 'link',
+            icon: 'person',
+            state: `${ paramType }/usuario/medico`,
+          },
         ]
       },
     ];

@@ -14,6 +14,10 @@ export class SessionsAreasPageComponent implements OnInit, OnDestroy {
     {
       name: 'Área da Cooperativa',
       url: this.urlService.getUserList('cooperativa', 'cooperativa')
+    },
+    {
+      name: 'Área da Clinica',
+      url: this.urlService.getUserList('medico', 'clinica')
     }
   ];
 

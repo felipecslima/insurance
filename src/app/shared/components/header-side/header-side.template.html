@@ -9,6 +9,7 @@
   >
     <mat-icon>menu</mat-icon>
   </button>
+  <small class="hello">Área {{ permission.label }}</small>
 
   <span fxFlex></span>
 
@@ -26,6 +27,10 @@
     <button mat-menu-item [routerLink]="[urlUserProfile]">
       <mat-icon>account_box</mat-icon>
       <span>Perfil</span>
+    </button>
+    <button mat-menu-item routerLink="/sessions/areas">
+      <mat-icon>switch_account</mat-icon>
+      <span>Trocar de área</span>
     </button>
     <button mat-menu-item (click)="jwtAuth.signout()">
       <mat-icon>exit_to_app</mat-icon>

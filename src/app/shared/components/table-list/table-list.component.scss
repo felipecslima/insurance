@@ -6,14 +6,14 @@
   }
 
   .ngx-datatable {
-    height: calc(100vh - 228px);
+    height: calc(100vh - 240px);
 
     .datatable-header-cell {
       height: initial !important;
     }
 
     @media screen and (max-width: 600px) {
-      height: calc(100vh - 207px);
+      height: calc(100vh - 224px);
       datatable-header-cell {
         display: none !important;
       }
