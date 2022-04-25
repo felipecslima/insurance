@@ -1,9 +1,20 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input, OnChanges,
+  OnDestroy,
+  OnInit,
+  Output, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import { Router } from '@angular/router';
 import { TableEntityService } from '../../services/states/table-entity.service';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../decorators/auto-unsubscribe.decorator';
 import { Unsubscribable } from 'rxjs';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'table-list',
@@ -11,14 +22,16 @@ import { Unsubscribable } from 'rxjs';
   styleUrls: ['./table-list.component.scss']
 })
 @AutoUnsubscribe()
-export class TableListComponent implements OnInit, OnDestroy {
+export class TableListComponent implements OnInit, OnDestroy, OnChanges {
   @CombineSubscriptions()
   subscribe: Unsubscribable;
+  @ViewChild(MatProgressBar) progressBar: MatProgressBar;
 
-  loading: boolean;
   data: any;
+  @Input() loading: boolean;
   @Input() columns: TableInfinityListColumn[] = [];
   @Output() loadNewData = new EventEmitter();
+  @Output() cbButton = new EventEmitter();
 
   sorts = [
     {
@@ -30,7 +43,7 @@ export class TableListComponent implements OnInit, OnDestroy {
   columnModeSelected: ColumnMode;
 
   @ViewChild('ngxDataTable') datatable: ElementRef;
-
+  @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('ngxDataTable', { static: false })
   ngxDataTable: DatatableComponent;
 
@@ -39,6 +52,11 @@ export class TableListComponent implements OnInit, OnDestroy {
   headerHeight = 50;
 
   enableScrollTable = true;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.table.recalculate();
+  }
 
   constructor(
     private tableEntityService: TableEntityService,
@@ -51,7 +69,19 @@ export class TableListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
   }
+
   ngOnDestroy(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const { loading } = changes;
+    if (loading) {
+      const { currentValue } = loading;
+      if (this.progressBar) {
+        this.progressBar.mode = currentValue ? 'indeterminate' : 'determinate';
+      }
+    }
+    console.log(changes);
   }
 
   public onScroll(event): void {
@@ -87,9 +117,11 @@ export class TableListComponent implements OnInit, OnDestroy {
 
 export interface TableInfinityListColumn {
   id: string;
-  urlBase: string;
+  urlBase?: string;
+  url?: string;
   columnName: string;
   displayText: string;
+  type: 'button' | 'text';
   resizeable?: boolean;
   minWidth?: number;
   maxWidth?: number;

@@ -7,7 +7,7 @@ import { NavigationService } from './services/navigation.service';
 import { RoutePartsService } from './services/route-parts.service';
 import { AuthGuard } from './guards/auth.guard';
 import { UserRoleGuard } from './guards/user-role.guard';
-import { AppConfirmService } from './services/app-confirm/app-confirm.service';
+import { ConfirmService } from './services/app-confirm/confirm.service';
 import { AppLoaderService } from './services/app-loader/app-loader.service';
 
 import { SharedComponentsModule } from './components/shared-components.module';
@@ -23,6 +23,7 @@ import { TableListComponent } from './components/table-list/table-list.component
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { AuthAreasGuard } from './guards/authAreas.guard';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AuthAreasGuard } from './guards/authAreas.guard';
     FlexLayoutModule,
     NgxDatatableModule,
     RouterModule,
+    MatProgressBarModule,
   ],
   providers: [
     ThemeService,
@@ -49,7 +51,7 @@ import { AuthAreasGuard } from './guards/authAreas.guard';
     AuthGuard,
     AuthAreasGuard,
     UserRoleGuard,
-    AppConfirmService,
+    ConfirmService,
     AppLoaderService
   ],
   exports: [

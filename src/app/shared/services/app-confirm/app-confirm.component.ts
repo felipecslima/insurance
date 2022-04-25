@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-confirm',
+  styles: ['p{width: auto}'],
   template: `
     <div clCard *ngIf="data?.title">
       <h2 clCardTitle>{{ data.title }}</h2>

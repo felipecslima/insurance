@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChildPersonList } from '../../persons.routing';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
-import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
+import { ConfirmService } from '../../../../shared/services/app-confirm/confirm.service';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 
 @Component({
@@ -37,7 +37,7 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private confirmService: AppConfirmService,
+    private confirmService: ConfirmService,
     private jwtAuthService: JwtAuthService,
     public utilsService: UtilsService,
     private route: ActivatedRoute,

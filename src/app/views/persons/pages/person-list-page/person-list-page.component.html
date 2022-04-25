@@ -3,9 +3,10 @@
     <table-list
       [columns]="columns"
       (loadNewData)="load()"
+      (cbButton)="cbButton($event)"
+      [loading]="personListService.isLoading"
     ></table-list>
   </div>
-
   <a [routerLink]="urlSetup" clButtonContained [bgColor]="colors.primary">
     <span>Cadastrar</span>
   </a>

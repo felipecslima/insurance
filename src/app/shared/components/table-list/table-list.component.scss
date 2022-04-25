@@ -7,11 +7,17 @@
 
   .ngx-datatable {
     height: calc(100vh - 220px);
+
+    .datatable-header-cell {
+      height: initial !important;
+    }
+
     @media screen and (max-width: 600px) {
       height: calc(100vh - 204px);
       datatable-header-cell {
         display: none !important;
       }
+
 
       .datatable-body {
         position: absolute !important;
@@ -24,6 +30,10 @@
     }
   }
 
+  .wrap-table {
+    position: relative;
+  }
+
   a {
     padding: 0 24px;
     display: block;
@@ -31,5 +41,11 @@
     height: 50px;
     line-height: 50px;
     text-align: left;
+  }
+
+  .buttons {
+    width: 100%;
+    max-width: 140px;
+    padding: 0 4px;
   }
 }

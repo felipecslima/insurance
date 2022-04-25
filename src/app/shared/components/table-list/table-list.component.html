@@ -1,4 +1,5 @@
-<div #ngxDataTable>
+<div class="wrap-table" #ngxDataTable>
+  <mat-progress-bar mode="determinate" class="progress"></mat-progress-bar>
   <ngx-datatable
     *ngIf="!!data"
     class="material striped"
@@ -28,9 +29,15 @@
               </span>
       </ng-template>
       <ng-template let-element="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-        <a [routerLink]="columnData.urlBase+element[columnData.id]">
+        <a *ngIf="columnData.type === 'text'" [routerLink]="columnData.urlBase+element[columnData.id]">
           {{ element[columnData.columnName] }}
         </a>
+       <div class="buttons" *ngIf="columnData.type === 'button'">
+         <button clButtonContainedSecondary clButtonDense
+                 (click)="cbButton.emit({element, columnData})">
+           <span>{{columnData.columnName }}</span>
+         </button>
+       </div>
       </ng-template>
     </ngx-datatable-column>
   </ngx-datatable>

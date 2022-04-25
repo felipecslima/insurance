@@ -22,6 +22,13 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     serviceElementsFactory: EntityCollectionServiceElementsFactory) {
     super('Persons', serviceElementsFactory);
   }
+  public cancelAccount(idUser: number, person: Person): Observable<Person> {
+    return this.personsDataService.cancelAccount(idUser).pipe(
+      tap(() => {
+        this.removeOneFromCache(person);
+      })
+    );
+  }
 
   public forgotPassword(email: string, birthday: string) {
     return this.personsDataService.forgotPassword(email, birthday);

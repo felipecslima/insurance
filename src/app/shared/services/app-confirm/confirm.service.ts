@@ -5,7 +5,7 @@ import { DataConfirm } from './app-confirm.component';
 import { DialogService } from '../../dialogs/dialogs-service';
 
 @Injectable()
-export class AppConfirmService {
+export class ConfirmService {
 
   constructor(
     private dialogService: DialogService) {
