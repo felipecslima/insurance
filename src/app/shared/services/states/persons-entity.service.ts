@@ -126,7 +126,7 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
   }
 
   public populate(person: Person) {
-    const { user, address, email, phone } = person;
+    const { user, address, email, phone, doctor } = person;
     const { recipient, id: emailId } = email[0];
     let { birthday } = person;
     birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
@@ -134,20 +134,24 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     const { id: userId } = user[0];
     let { number: phoneNumber } = phone[0];
     const { id: phoneId } = phone[0];
+    const { id: doctorId } = doctor[0] || [] as any;
     phoneNumber = this.utilsService.phoneFormat(phoneNumber);
     this.formConfigBaseService.initForm({
       ...person,
       birthday,
       ...user,
       ...address[0],
+      ...doctor[0] || [],
       id: person.id,
       emailId,
       addressId,
       userId,
       phoneId,
+      doctorId,
       addressNumber,
       recipient,
       phoneNumber,
+
     });
   }
 
@@ -162,7 +166,10 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
       phoneNumber, recipient, emailId,
       addressId,
       userId,
-      phoneId
+      phoneId,
+      doctorId,
+      skill,
+      medicalId,
     } = values;
     const person = {
       id, firstName, lastName, birthday, document,
@@ -190,12 +197,24 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
       id: emailId,
       recipient
     }];
+
+    let doctor;
+    if (skill && medicalId) {
+      doctor = [{
+        id: doctorId,
+        skill,
+        medicalId,
+      }];
+    }
+
+
     return {
       ...person,
       user,
       address,
       phone,
       email,
+      doctor
     };
   }
 }

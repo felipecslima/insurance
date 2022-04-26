@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormFieldService } from '../../../shared/forms/services/form-field.service';
+import { Permission } from '../../../shared/interfaces/person.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,67 @@ export class PersonFormService {
   constructor(private formFieldService: FormFieldService) {
   }
 
-  public getDefaultForm(personId: boolean) {
+  public getFilterForm(permission: Permission) {
+    const formConfig = [
+      this.formFieldService.getText({
+        title: 'CPF',
+        inputType: 'tel',
+        name: 'username',
+        mask: 'CPF',
+        placeholder: 'Digite um CPF',
+        validations: [
+          'cpf'
+        ]
+      }),
+      this.formFieldService.getText({
+        title: 'Nome do usuário',
+        name: 'name',
+        placeholder: 'Digite um nome',
+      }),
+    ];
+    if (permission?.id === 3) {
+      formConfig.push(
+        this.formFieldService.getText({
+          title: 'Telefone',
+          inputType: 'tel',
+          name: 'phone',
+          mask: 'CELLPHONE',
+          placeholder: 'Digite seu Telefone',
+          validations: [
+            'phone'
+          ],
+        }),
+        this.formFieldService.getText({
+          name: 'skill',
+          title: 'Especialidade',
+          placeholder: 'Digite sua Especialidade',
+        })
+      );
+    }
+    return formConfig;
+  }
+
+  public getComplementForm(permission: Permission) {
+    if (permission?.id === 3) {
+      return [
+        this.formFieldService.getText({
+          name: 'skill',
+          title: 'Especialidade',
+          placeholder: 'Digite sua Especialidade',
+          validations: ['required'],
+        }),
+        this.formFieldService.getText({
+          title: 'CRM',
+          name: 'medicalId',
+          placeholder: 'Digite seu CRM válido',
+          validations: ['required'],
+        }),
+      ];
+    }
+    return [];
+  }
+
+  public getDefaultForm(personId: boolean, permission?: Permission) {
     const fieldAddressDescription = this.formFieldService.getText({
       name: 'description',
       title: 'Endereço:',
@@ -35,6 +96,7 @@ export class PersonFormService {
         placeholder: 'Digite seu nome',
         validations: ['required'],
       }),
+      ...this.getComplementForm(permission),
       this.formFieldService.getText({
         name: 'recipient',
         title: 'Email:',
@@ -113,6 +175,7 @@ export class PersonFormService {
           name: 'password',
           inputType: 'password',
           title: 'Senha:',
+          placeholder: 'Digite uma senha de no mínimo 8 dígitos',
           minValue: 8,
           validations: ['required', 'minValue'],
         })

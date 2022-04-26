@@ -11,6 +11,13 @@ export interface Person {
   phone: Phone[];
   email: Email[];
   permissions?: PersonPermission[];
+  doctor?: Doctor[];
+}
+
+export interface Doctor {
+  id: number;
+  skill: string;
+  medicalId: string;
 }
 
 export interface PersonPermission {
@@ -32,6 +39,7 @@ export interface PersonCrud {
   address: Address[];
   phone: Phone[];
   email: Email[];
+  doctor?: Doctor[];
 }
 
 export interface User {

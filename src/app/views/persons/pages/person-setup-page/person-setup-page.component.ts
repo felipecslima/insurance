@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
-import { Person } from '../../../../shared/interfaces/person.interface';
+import { Permission, Person } from '../../../../shared/interfaces/person.interface';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { DateService } from '../../../../shared/services/date.service';
 import { ChildPersonList } from '../../persons.routing';
@@ -36,6 +36,8 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   private readonly personId: number;
   private typePerson: ChildPersonList;
 
+  permission: Permission;
+
   constructor(
     private router: Router,
     private urlService: UrlService,
@@ -61,6 +63,7 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
         take(1),
         switchMap((data) => {
           this.typePerson = data.type;
+          this.permission = this.jwtAuthService.getPermission(this.typePerson.type);
           this.setupForm();
           return personsEntityService.getCurrent();
         }),
@@ -86,15 +89,14 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
   }
 
   setupForm(): void {
-    this.formConfig = this.personFormService.getDefaultForm(!!this.personId);
+    this.formConfig = this.personFormService.getDefaultForm(!!this.personId, this.permission);
   }
 
   save(): void {
     if (!this.isFormValid) {
       return;
     }
-    const personTypeId = this.jwtAuthService.getPermission(this.typePerson.type);
-    this.values = { ...this.values, ...{ personTypeId: personTypeId.id } };
+    this.values = { ...this.values, ...{ personTypeId: this.permission.id } };
     this.personsEntityService.save(this.values)
       .subscribe(() => {
         this.utilsService.toast('Usuário salvo com sucesso!', 'success');

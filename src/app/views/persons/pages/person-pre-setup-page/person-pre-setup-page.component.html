@@ -2,10 +2,14 @@
   <div clCard>
     <div clCardContent>
       <person-username-autocomplete (callback)="getCallback($event)"></person-username-autocomplete>
+
+      <cl-form-component *ngIf="formConfig && formConfig.length" [formConfig]="formConfig">
+      </cl-form-component>
     </div>
     <div clCardFooterButton [disableTop]="true">
       <button clButtonContained
               (click)="save()"
+              [loading]="isFormLoading"
               [hasDisabled]="!isFormValid"
               [bgColor]="colors.primary">
         <span>Associar</span>

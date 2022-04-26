@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { environment } from '../../../../../environments/environment';
 import { noop, Unsubscribable } from 'rxjs';
-import { Person } from '../../../../shared/interfaces/person.interface';
+import { Permission, Person } from '../../../../shared/interfaces/person.interface';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UrlService } from '../../../../shared/services/url.service';
@@ -12,6 +12,8 @@ import { ChildPersonList } from '../../persons.routing';
 import { switchMap, take, tap } from 'rxjs/operators';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
+import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
+import { PersonFormService } from '../../services/person-form.service';
 
 @Component({
   selector: 'person-pre-setup-page',
@@ -23,15 +25,23 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
   colors = environment.color;
   @CombineSubscriptions()
   subscribers: Unsubscribable;
-  isFormValid: boolean;
+
+  public formConfig;
+  public values: any;
+  public isFormValidAutoComplete: boolean;
+  public isFormValid: boolean;
+  public isFormLoading: boolean;
 
   private typePerson: ChildPersonList;
-  public values: Record<string, string | number>;
   private person: Person;
   public urlSetup: string;
 
+  private permission: Permission;
+
   constructor(
+    private personFormService: PersonFormService,
     private jwtAuthService: JwtAuthService,
+    private formFieldService: FormFieldService,
     private formConfigBaseService: FormConfigBaseService,
     private router: Router,
     private route: ActivatedRoute,
@@ -42,9 +52,11 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
 
     this.subscribers = formConfigBaseService.getValues().subscribe(values => {
       this.values = values;
+      const formValid = this.formConfig ? formConfigBaseService.isAllFormsValid() : true;
+      this.checkFormIsValid(formValid);
     });
-    routePartsService.generateRouteParts(route.snapshot);
 
+    routePartsService.generateRouteParts(route.snapshot);
 
     this.subscribers = route.data
       .pipe(
@@ -52,6 +64,8 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
         tap(data => {
           this.typePerson = data.type;
           this.urlSetup = this.urlService.getUserSetup(null, this.typePerson.type);
+          this.permission = this.jwtAuthService.getPermission(this.typePerson.type);
+          this.formConfig = this.personFormService.getComplementForm(this.permission);
         }),
       )
       .subscribe(noop);
@@ -64,19 +78,28 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
     this.formConfigBaseService.resetAllForms();
   }
 
+  checkFormIsValid(isValid) {
+    this.isFormValid = !!this.isFormValidAutoComplete && !!isValid;
+  }
+
+
   getCallback(person: Person) {
     this.person = person;
-    this.isFormValid = true;
+    this.isFormValidAutoComplete = true;
     this.personsEntityService.populate(person);
   }
 
   save(): void {
-    const personTypeId = this.jwtAuthService.getPermission(this.typePerson.type);
-    this.values = { ...this.values, ...{ personTypeId: personTypeId.id, userId: undefined } };
+    if (!this.isFormValid) {
+      return;
+    }
+    this.values = { ...this.values, ...{ personTypeId: this.permission.id, userId: undefined } };
+    this.isFormLoading = true;
     this.personsEntityService.save(this.values).subscribe(() => {
       this.utilsService.toast('Usuário salvo com sucesso!', 'success');
       this.router.navigate([this.urlService.getUserList(this.typePerson.type)]);
     }, error => {
+      this.isFormLoading = false;
       this.utilsService.setError(error);
     });
   }

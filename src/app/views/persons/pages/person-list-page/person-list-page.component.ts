@@ -17,6 +17,8 @@ import { PersonsEntityService } from '../../../../shared/services/states/persons
 import { DialogService } from '../../../../shared/dialogs/dialogs-service';
 import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
+import { DateService } from '../../../../shared/services/date.service';
+import { PersonFormService } from '../../services/person-form.service';
 
 @Component({
   selector: 'person-list-page',
@@ -40,6 +42,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
   private permission: Permission;
 
   constructor(
+    private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,
     private formFieldService: FormFieldService,
     private dialogService: DialogService,
@@ -50,6 +53,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
     private urlService: UrlService,
     private utilsService: UtilsService,
     private confirmService: ConfirmService,
+    private personFormService: PersonFormService,
     public personListService: PersonListService,
     private personsEntityService: PersonsEntityService
   ) {
@@ -80,21 +84,33 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
             this.paramPersist['username'] = utilsService.removeCPFMask(username);
           }
 
-          this._setListColumn();
+          if (this.permission.id === 3) { // doctor
+            this._setListColumnDoctor();
+          } else {
+            this._setListColumn();
+          }
+
+
           this.load(false);
           return this.personListService.getList();
         }),
         tap(persons => {
           const personsFormat = persons.map(person => {
-            const { id, username, firstName, lastName } = person;
+            const { id, username, firstName, lastName, doctor, birthday, address } = person;
             const { phone, email, user } = person;
+            const { skill, medicalId } = doctor[0] || [] as any;
+            const { city } = address[0];
             return {
               id,
               username: this.utilsService.maskCpfCnpj(username),
               name: `${ firstName } ${ lastName }`,
               phone: phone[0]?.number ? this.utilsService.phoneFormat(phone[0].number) : '',
               email: email[0]?.recipient || '',
-              user
+              user,
+              skill,
+              medicalId,
+              birthday: this.dateService.format(birthday, 'DD/MM/YYYY'),
+              city
             };
           });
           this.personListService.setDataTable(personsFormat);
@@ -116,14 +132,6 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
 
   private _setListColumn() {
     this.columns = [
-      {
-        id: 'id',
-        columnName: 'id',
-        displayText: '',
-        type: 'text',
-        urlBase: this.urlService.getUserSetup(null, this.typePerson.type),
-        maxWidth: 80,
-      },
       {
         id: 'id',
         columnName: 'username',
@@ -173,24 +181,81 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
     ];
   }
 
+  private _setListColumnDoctor() {
+    this.columns = [
+      {
+        id: 'id',
+        columnName: 'username',
+        displayText: 'CPF',
+        type: 'text',
+        maxWidth: 150,
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+      {
+        id: 'id',
+        columnName: 'name',
+        displayText: 'Nome',
+        type: 'text',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+      {
+        id: 'id',
+        columnName: 'skill',
+        displayText: 'Especialidade',
+        type: 'text',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+      {
+        id: 'id',
+        columnName: 'email',
+        displayText: 'E-mail',
+        type: 'text',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+      {
+        id: 'id',
+        columnName: 'birthday',
+        displayText: 'Data de Nascimento',
+        type: 'text',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
+      },
+      {
+        id: 'id',
+        columnName: 'phone',
+        displayText: 'Telefone',
+        type: 'text',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type),
+        maxWidth: 150,
+      },
+      {
+        id: 'id',
+        columnName: 'city',
+        displayText: 'Cidade',
+        type: 'text',
+        urlBase: this.urlService.getUserSetup(null, this.typePerson.type),
+      },
+      {
+        id: 'edit',
+        columnName: 'Editar',
+        displayText: 'Editar',
+        type: 'button',
+        url: this.urlService.getUserSetup(null, this.typePerson.type),
+        maxWidth: 145,
+      },
+      {
+        id: 'cancel',
+        columnName: 'Cancelar',
+        displayText: 'Cancelar Conta',
+        type: 'button',
+        url: this.urlService.getUserSetup(null, this.typePerson.type),
+        maxWidth: 145,
+      },
+    ];
+  }
+
   openFilter() {
     this.formConfigBaseService.initForm(this.paramPersist);
-    const formFields = [
-      this.formFieldService.getText({
-        title: 'Nome do usuário',
-        name: 'name',
-      }),
-      this.formFieldService.getText({
-        title: 'CPF',
-        inputType: 'tel',
-        name: 'username',
-        mask: 'CPF',
-        validations: [
-          'cpf'
-        ]
-      })
-    ];
-    this.dialogService.open('REGULAR', 'FilterListComponent', formFields);
+    this.dialogService.open('REGULAR', 'FilterListComponent', this.personFormService.getFilterForm(this.permission));
   }
 
   cbButton($event: any) {

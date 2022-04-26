@@ -56,7 +56,12 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
           this.filteredOptions = this.usernameControl.valueChanges.pipe(
             debounceTime(300),
             startWith(''),
-            map(username => username.trim()),
+            map(response => {
+              if (typeof response !== 'string') {
+                return response.username;
+              }
+              return response ? response?.trim() : '';
+            }),
             map(username => this.utilsService.removeCPFMask(username)),
             filter(value => {
               return value?.length > 0 && this.utilsService.isCPF(value);
