@@ -74,6 +74,10 @@ export class NavigationService {
     if (permission.id === 4) { // Clinic Menu
       return this._createMenuClinic(permission.paramType);
     }
+
+    if (permission.id === 2) { // Consultant Menu
+      return this._createMenuConsult(permission.paramType);
+    }
     return [];
   }
 
@@ -119,6 +123,24 @@ export class NavigationService {
             type: 'link',
             icon: 'person',
             state: `${ paramType }/usuario/medico`,
+          },
+        ]
+      },
+    ];
+  }
+
+  _createMenuConsult(paramType: string): IMenuItem[] {
+    return [
+      {
+        name: 'Usuários',
+        type: 'dropDown',
+        icon: 'person',
+        sub: [
+          {
+            name: 'Consultores',
+            type: 'link',
+            icon: 'person',
+            state: `${ paramType }/usuario/consultor`,
           },
         ]
       },

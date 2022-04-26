@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AdminLayoutComponent } from './shared/components/layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { UserSelfResolver } from './shared/resolvers/self-user.resolver';
 
 export const rootRouterConfig: Routes = [
   {
@@ -28,21 +29,18 @@ export const rootRouterConfig: Routes = [
   {
     path: ':type',
     component: AdminLayoutComponent,
+    resolve: [UserSelfResolver],
     canActivate: [AuthGuard],
     children: [
       {
         path: 'usuario',
         loadChildren: () => import('./views/persons/persons.module').then(m => m.PersonsModule),
-        data: { title: 'Usuários', breadcrumb: 'Usuários' }
+        data: { title: 'Usuários', breadcrumb: 'Usuários' },
       },
       {
         path: 'others',
         loadChildren: () => import('./views/others/others.module').then(m => m.OthersModule),
         data: { title: 'Others', breadcrumb: 'OTHERS' }
-      },
-      {
-        path: 'search',
-        loadChildren: () => import('./views/search-view/search-view.module').then(m => m.SearchViewModule)
       }
     ]
   },

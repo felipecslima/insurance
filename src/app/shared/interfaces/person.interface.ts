@@ -10,7 +10,7 @@ export interface Person {
   address: Address[];
   phone: Phone[];
   email: Email[];
-  permissions?: PersonPermission[];
+  permissions?: PermissionUser;
   doctor?: Doctor[];
 }
 
@@ -20,11 +20,22 @@ export interface Doctor {
   medicalId: string;
 }
 
-export interface PersonPermission {
+export interface PermissionUser {
+  business: PermissionUserDetail;
+  doctor: PermissionUserDetail;
+  notification: PermissionUserDetail;
+  plan: PermissionUserDetail;
+  safe: PermissionUserDetail;
+  service: PermissionUserDetail;
+  subscriberDependent: PermissionUserDetail;
+  user: PermissionUserDetail;
+}
+
+interface PermissionUserDetail {
   create: boolean;
+  update: boolean;
   delete: boolean;
   index: boolean;
-  update: boolean;
 }
 
 export interface PersonCrud {

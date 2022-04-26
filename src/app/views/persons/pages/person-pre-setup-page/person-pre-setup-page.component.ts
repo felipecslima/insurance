@@ -29,6 +29,7 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
   public formConfig;
   public values: any;
   public isFormValidAutoComplete: boolean;
+  public isFormValidValues: boolean;
   public isFormValid: boolean;
   public isFormLoading: boolean;
 
@@ -52,8 +53,8 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
 
     this.subscribers = formConfigBaseService.getValues().subscribe(values => {
       this.values = values;
-      const formValid = this.formConfig ? formConfigBaseService.isAllFormsValid() : true;
-      this.checkFormIsValid(formValid);
+      this.isFormValidValues = this.formConfig?.lenght ? formConfigBaseService.isAllFormsValid() : true;
+      this.checkFormIsValid();
     });
 
     routePartsService.generateRouteParts(route.snapshot);
@@ -78,14 +79,16 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
     this.formConfigBaseService.resetAllForms();
   }
 
-  checkFormIsValid(isValid) {
-    this.isFormValid = !!this.isFormValidAutoComplete && !!isValid;
+  checkFormIsValid() {
+    this.isFormValid = !!this.isFormValidAutoComplete && !!this.isFormValidValues;
+    console.log(this.isFormValid);
   }
 
 
   getCallback(person: Person) {
     this.person = person;
     this.isFormValidAutoComplete = true;
+    this.checkFormIsValid();
     this.personsEntityService.populate(person);
   }
 
@@ -102,9 +105,5 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
       this.isFormLoading = false;
       this.utilsService.setError(error);
     });
-  }
-
-  createObject() {
-
   }
 }

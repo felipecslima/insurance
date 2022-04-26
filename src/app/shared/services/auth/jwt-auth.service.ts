@@ -21,38 +21,7 @@ export class JwtAuthService {
   JWT_TOKEN = 'JWT_TOKEN';
   APP_USER = 'EGRET_USER';
 
-  permissions: Permission[] = [
-    {
-      id: 1,
-      name: 'coop',
-      label: 'Cooperativa',
-      paramType: 'cooperativa',
-    },
-    {
-      id: 2,
-      name: 'consultant',
-      label: 'Consultor',
-      paramType: 'consultor',
-    },
-    {
-      id: 3,
-      name: 'doctor',
-      label: 'Médico',
-      paramType: 'medico',
-    },
-    {
-      id: 4,
-      name: 'clinic',
-      label: 'Clínica',
-      paramType: 'clinica',
-    },
-    {
-      id: 5,
-      name: 'subscriber',
-      label: 'Assinante',
-      paramType: 'assinante',
-    },
-  ];
+  permissions: Permission[] = permissionsList;
 
   constructor(
     private personsEntityService: PersonsEntityService,
@@ -69,8 +38,13 @@ export class JwtAuthService {
     return this.permissions?.find(p => p.paramType === paramType);
   }
 
+  getPermissionById(id: number): Permission {
+    return this.permissions?.find(p => p.id === id);
+  }
+
   getPermissions(): Permission[] {
-    return this.permissions;
+    const person = this.getUser();
+    return this.permissions.filter(u => !!person.user.find(pu => pu.personTypeId === u.id && pu.active));
   }
 
   public signin(username, password) {
@@ -120,7 +94,7 @@ export class JwtAuthService {
     return this.ls.getItem(this.JWT_TOKEN);
   }
 
-  getUser() {
+  getUser(): Person {
     return this.ls.getItem(this.APP_USER);
   }
 
@@ -132,8 +106,47 @@ export class JwtAuthService {
     this.user = person;
     this.user$.next(person);
   }
+
+  setUser(person: Person) {
+    this.ls.setItem(this.APP_USER, person);
+    this.user = person;
+    this.user$.next(person);
+  }
 }
 
 interface SelfResponse {
   person: Person;
 }
+
+export const permissionsList: Permission[] = [
+  {
+    id: 1,
+    name: 'coop',
+    label: 'Cooperativa',
+    paramType: 'cooperativa',
+  },
+  {
+    id: 2,
+    name: 'consultant',
+    label: 'Consultor',
+    paramType: 'consultor',
+  },
+  {
+    id: 3,
+    name: 'doctor',
+    label: 'Médico',
+    paramType: 'medico',
+  },
+  {
+    id: 4,
+    name: 'clinic',
+    label: 'Clínica',
+    paramType: 'clinica',
+  },
+  {
+    id: 5,
+    name: 'subscriber',
+    label: 'Assinante',
+    paramType: 'assinante',
+  },
+];

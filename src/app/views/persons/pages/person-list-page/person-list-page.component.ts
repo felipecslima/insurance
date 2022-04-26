@@ -41,6 +41,8 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
 
   private permission: Permission;
 
+  persons: Person[];
+
   constructor(
     private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,
@@ -67,7 +69,6 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
           this.typePerson = data.type;
           this.urlSetup = this.urlService.getUserPreSetup(this.typePerson.type);
           this.permission = jwtAuthService.getPermission(this.typePerson.type);
-
         }),
         mergeMap(() => {
           return this.route.queryParams;
@@ -98,9 +99,11 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
           return this.personListService.getList();
         }),
         tap(persons => {
+          this.persons = persons;
           const personsFormat = persons.map(person => {
             const { id, username, firstName, lastName, doctor, birthday, address } = person;
             const { phone, email, user } = person;
+            const userBy = user.find(u => u.personTypeId === this.permission.id);
             const { skill, medicalId } = doctor[0] || [] as any;
             const { city } = address[0];
             return {
@@ -113,7 +116,8 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
               skill,
               medicalId,
               birthday: this.dateService.format(birthday, 'DD/MM/YYYY'),
-              city
+              city,
+              status: userBy.active ? 'Ativo' : 'Inativo',
             };
           });
           this.personListService.setDataTable(personsFormat);
@@ -169,14 +173,15 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         id: 'edit',
         columnName: 'Editar',
         displayText: 'Editar',
+        buttonLabel: 'Editar',
         type: 'button',
         url: this.urlService.getUserSetup(null, this.typePerson.type),
         maxWidth: 145,
       },
       {
         id: 'cancel',
-        columnName: 'Cancelar',
-        displayText: 'Cancelar Conta',
+        columnName: 'status',
+        displayText: 'Status',
         type: 'button',
         url: this.urlService.getUserSetup(null, this.typePerson.type),
         maxWidth: 145,
@@ -241,14 +246,15 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         id: 'edit',
         columnName: 'Editar',
         displayText: 'Editar',
+        buttonLabel: 'Editar',
         type: 'button',
         url: this.urlService.getUserSetup(null, this.typePerson.type),
         maxWidth: 145,
       },
       {
         id: 'cancel',
-        columnName: 'Cancelar',
-        displayText: 'Cancelar Conta',
+        columnName: 'status',
+        displayText: 'Status',
         type: 'button',
         url: this.urlService.getUserSetup(null, this.typePerson.type),
         maxWidth: 145,
@@ -263,7 +269,6 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
 
   cbButton($event: any) {
     const { element, columnData } = $event;
-
     if (columnData.id === 'edit') {
       this.router.navigate([this.urlService.getUserSetup(element.id, this.typePerson.type)]);
     } else if (columnData.id === 'cancel') {
@@ -271,32 +276,40 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  confirmCancelAccount(person: Person): void {
+  confirmCancelAccount(element: Person): void {
+    const person = this.persons.find(p => p.id === element.id);
+    const permission = this.jwtAuthService.getPermission(this.typePerson.type);
+    const user = person.user.find(user => {
+      return user.personTypeId === permission.id;
+    });
+    const status = user.active ? 'inativar' : 'ativar';
+    let msg = 'Ao inativar esta conta o usuário não terá mais acesso ao sistema. <br/><br/> Deseja continuar ?';
+    if (!user.active) {
+      msg = 'Ao ativar esta conta o usuário restaurará o seu acesso ao sistema. <br/><br/> Deseja continuar ?';
+    }
     this.confirmService.confirm({
-      title: 'Deseja realmente cancelar esta conta?',
-      message: 'Ao cancelar esta conta não será possível reativala novamente. Você precisará criar um novo cadastro para este usuário. <br/><br/> Deseja continuar ?',
+      title: `Deseja realmente ${ status } esta conta?`,
+      message: msg,
       buttonCancel: {
         show: true,
-        label: 'Cancelar Conta'
+        label: 'Voltar'
       },
       buttonConfirm: {
         show: true,
-        label: 'Voltar'
+        label: `${ user.active ? 'Inativar' : 'Ativar' } conta`
       }
     })
       .pipe(
         take(1),
         map((confirm) => {
-          const permission = this.jwtAuthService.getPermission(this.typePerson.type);
-          const user = person.user.find(user => {
-            return user.personTypeId === permission.id;
-          });
           return { user, confirm, person };
         }),
         switchMap(response => {
           const { user, confirm, person } = response;
-          if (!confirm) {
-            return this.personsEntityService.userInactive(user.id, person).pipe(
+          if (confirm) {
+            let valuesToSave: any = this.personsEntityService.prepareToSavePerson(person, this.permission);
+            valuesToSave = { ...valuesToSave, active: !user.active, userId: user.id };
+            return this.personsEntityService.save(valuesToSave).pipe(
               map(() => {
                 return { error: false };
               })

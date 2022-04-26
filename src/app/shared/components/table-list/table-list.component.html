@@ -32,12 +32,13 @@
         <a *ngIf="columnData.type === 'text'" [routerLink]="columnData.urlBase+element[columnData.id]">
           {{ element[columnData.columnName] }}
         </a>
-       <div class="buttons" *ngIf="columnData.type === 'button'">
-         <button clButtonContainedSecondary clButtonDense
-                 (click)="cbButton.emit({element, columnData})">
-           <span>{{columnData.columnName }}</span>
-         </button>
-       </div>
+        <div class="buttons" *ngIf="columnData.type === 'button'">
+          <button clButtonContainedSecondary clButtonDense
+                  (click)="cbButton.emit({element, columnData})">
+            <span *ngIf="columnData.buttonLabel">{{columnData.buttonLabel}}</span>
+            <span *ngIf="!columnData.buttonLabel">{{element[columnData.columnName]}}</span>
+          </button>
+        </div>
       </ng-template>
     </ngx-datatable-column>
   </ngx-datatable>

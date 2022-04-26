@@ -6,7 +6,7 @@ import {
   MergeStrategy,
   QueryParams
 } from '@ngrx/data';
-import { Login, Person } from '../../interfaces/person.interface';
+import { Login, Permission, Person } from '../../interfaces/person.interface';
 import { Observable } from 'rxjs';
 import { PersonsDataService } from './persons-data.service';
 import { RouterParamsService } from '../router-params.service';
@@ -125,6 +125,36 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     );
   }
 
+  public prepareToSavePerson(personToSave: Person, permission: Permission) {
+    const { user, address, email, phone, doctor } = personToSave;
+    let { birthday } = personToSave;
+    birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
+    const { recipient, id: emailId } = email[0];
+    const { number: addressNumber, id: addressId } = address[0];
+    const { id: userId } = user[0];
+    const { number: phoneNumber } = phone[0];
+    const { id: phoneId } = phone[0];
+    const { id: doctorId } = doctor[0] || [] as any;
+    const personTypeId = permission.id;
+    return {
+      ...personToSave,
+      birthday,
+      ...user,
+      ...address[0],
+      ...doctor[0] || [],
+      id: personToSave.id,
+      emailId,
+      addressId,
+      userId,
+      phoneId,
+      doctorId,
+      addressNumber,
+      recipient,
+      phoneNumber,
+      personTypeId,
+    };
+  }
+
   public populate(person: Person) {
     const { user, address, email, phone, doctor } = person;
     const { recipient, id: emailId } = email[0];
@@ -151,7 +181,6 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
       addressNumber,
       recipient,
       phoneNumber,
-
     });
   }
 
@@ -170,6 +199,7 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
       doctorId,
       skill,
       medicalId,
+      active = true
     } = values;
     const person = {
       id, firstName, lastName, birthday, document,
@@ -178,7 +208,8 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     const user = {
       id: userId,
       personTypeId,
-      password
+      password,
+      active,
     };
     const address = [
       {
