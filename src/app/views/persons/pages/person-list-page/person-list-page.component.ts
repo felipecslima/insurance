@@ -74,7 +74,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         }),
         switchMap(queryParams => {
           personListService.resetList();
-          const { username } = queryParams;
+          const { username, phone } = queryParams;
           this.paramPersist = {
             ...queryParams,
             personTypeId: this.permission.id,
@@ -82,6 +82,9 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
 
           if (username) {
             this.paramPersist['username'] = utilsService.removeCPFMask(username);
+          }
+          if (phone) {
+            this.paramPersist['phone'] = utilsService.removeMaskPhone(phone);
           }
 
           if (this.permission.id === 3) { // doctor

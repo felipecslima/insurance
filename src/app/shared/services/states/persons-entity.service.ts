@@ -191,7 +191,7 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     ];
     const phone = [{
       id: phoneId,
-      number: phoneNumber,
+      number: this.utilsService.removeMaskPhone(phoneNumber),
     }];
     const email = [{
       id: emailId,
