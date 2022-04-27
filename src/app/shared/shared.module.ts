@@ -26,6 +26,7 @@ import { AuthAreasGuard } from './guards/authAreas.guard';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FilterListComponent } from './components/filter-list/filter-list.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UserSelfResolver } from './resolvers/self-user.resolver';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ThemeService,
     NavigationService,
     RoutePartsService,
+    UserSelfResolver,
     AuthGuard,
     AuthAreasGuard,
     UserRoleGuard,
