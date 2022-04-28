@@ -63,6 +63,9 @@ export class ValidatorCpf {
   }
 
   static verifyCpf(cpf) {
+    if (typeof cpf !== 'string') {
+      return true;
+    }
     const nCpf = cpf.replace(/\./g, '');
 
     cpf = nCpf.replace('-', '');

@@ -14,6 +14,7 @@ import { ConfirmService } from '../../../../shared/services/app-confirm/confirm.
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { ValidatorCpf } from '../../../../shared/forms/validators/validator-cpf';
 
 @Component({
   selector: 'Òperson-username-autocomplete',
@@ -29,7 +30,7 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
 
-  usernameControl = new FormControl(null);
+  usernameControl = new FormControl(null, [ValidatorCpf.validator]);
   public mask = [/[1-9]/, /\d/, /\d/, '.', /[1-9]/, /\d/, /\d/, '.', /[1-9]/, /\d/, /\d/, '-', /[1-9]/, /\d/];
 
   options: Person[] = [];
@@ -61,22 +62,17 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
             debounceTime(300),
             startWith(''),
             map(response => {
-              console.log(response);
               if (typeof response !== 'string') {
                 return response.username;
               }
               return response ? response?.trim() : '';
             }),
             filter(value => {
-              console.log((typeof value === 'string' && !(value?.indexOf(' | ') > -1)));
               return (typeof value === 'string' && !(value?.indexOf(' | ') > -1));
-            }),
-            tap(value => {
-              console.log('pass', value);
             }),
             map(username => this.utilsService.removeCPFMask(username)),
             filter(value => {
-              return value?.length > 0 && this.utilsService.isCPF(value);
+              return value?.length > 0 && this.utilsService.verifyCpf(value);
             }),
             switchMap(username => {
               this.progressBar.mode = 'indeterminate';
@@ -91,9 +87,11 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
               this.progressBar.mode = 'determinate';
               setTimeout(() => {
                 const [person] = value || [];
-                const options = this._auto.autocomplete.options.toArray();
-                this.usernameControl.setValue(options[0].value, { emitEvent: false });
-                this.onSelection(null, { person });
+                if (person) {
+                  const options = this._auto.autocomplete.options.toArray();
+                  this.usernameControl.setValue(options[0].value, { emitEvent: false });
+                  this.onSelection(null, { person });
+                }
               }, 10);
               return value;
             }));
@@ -141,7 +139,6 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
       });
       return;
     }
-    console.log(person);
     this.callback.emit(person);
   }
 

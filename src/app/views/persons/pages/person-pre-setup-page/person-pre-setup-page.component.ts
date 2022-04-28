@@ -84,7 +84,6 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
 
   checkFormIsValid() {
     this.isFormValid = !!this.isFormValidAutoComplete && !!this.isFormValidValues;
-    console.log(this.isFormValid);
   }
 
 

@@ -28,7 +28,6 @@ export class UserSelfResolver implements Resolve<Person> {
     return this.personEntityService.self().pipe(
       delay(300),
       tap(response => {
-        console.log('set self');
         this.jwtAuthService.setUser(response);
       })
     );
