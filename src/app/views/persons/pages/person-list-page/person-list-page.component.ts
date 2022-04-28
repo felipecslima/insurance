@@ -39,7 +39,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
 
   paramPersist;
 
-  private permission: Permission;
+  public permission: Permission;
 
   persons: Person[];
 
@@ -160,13 +160,14 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
         displayText: 'Telefone',
         type: 'text',
         urlBase: this.urlService.getUserSetup(null, this.typePerson.type),
-        maxWidth: 150,
+        maxWidth: 250,
       },
       {
         id: 'id',
         columnName: 'email',
         displayText: 'E-mail',
         type: 'text',
+        minWidth: 250,
         urlBase: this.urlService.getUserSetup(null, this.typePerson.type)
       },
       {

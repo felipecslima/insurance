@@ -1,15 +1,13 @@
 <div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
   <div clCard>
-    <div class="fab">
-      <button (click)="openFilter()" clButtonIcon matTooltip="Filtro da listagem">
-        <i clIcon name="cl-filter"></i>
-      </button>
-    </div>
     <table-list
       *ngIf="!this.personListService.emptyResult"
+      [hasFilter]="true"
+      [title]="'Lista de '+typePerson?.pluralName.toLowerCase()"
       [columns]="columns"
       (loadNewData)="load()"
       (cbButton)="cbButton($event)"
+      (cbFilter)="openFilter()"
       [loading]="personListService.isLoading"
     ></table-list>
     <div class="empty-state" *ngIf="this.personListService.emptyResult">

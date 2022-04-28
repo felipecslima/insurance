@@ -13,6 +13,7 @@ import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.servic
 import { ConfirmService } from '../../../../shared/services/app-confirm/confirm.service';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'Òperson-username-autocomplete',
@@ -38,6 +39,9 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
   typePerson: ChildPersonList;
   personPermission: Permission;
 
+  @ViewChild(MatAutocompleteTrigger) _auto: MatAutocompleteTrigger;
+
+
   constructor(
     private router: Router,
     private confirmService: ConfirmService,
@@ -57,10 +61,18 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
             debounceTime(300),
             startWith(''),
             map(response => {
+              console.log(response);
               if (typeof response !== 'string') {
                 return response.username;
               }
               return response ? response?.trim() : '';
+            }),
+            filter(value => {
+              console.log((typeof value === 'string' && !(value?.indexOf(' | ') > -1)));
+              return (typeof value === 'string' && !(value?.indexOf(' | ') > -1));
+            }),
+            tap(value => {
+              console.log('pass', value);
             }),
             map(username => this.utilsService.removeCPFMask(username)),
             filter(value => {
@@ -77,6 +89,12 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
               this.hasFind = true;
               this.options = value;
               this.progressBar.mode = 'determinate';
+              setTimeout(() => {
+                const [person] = value || [];
+                const options = this._auto.autocomplete.options.toArray();
+                this.usernameControl.setValue(options[0].value, { emitEvent: false });
+                this.onSelection(null, { person });
+              }, 10);
               return value;
             }));
         })
@@ -92,8 +110,8 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  onSelection($event: MatOptionSelectionChange) {
-    const { person } = $event.source.value;
+  onSelection($event: MatOptionSelectionChange, preSelect) {
+    const { person } = $event?.source?.value || preSelect;
     const personExistsInTypeId = !!person.user.find(pu => {
       return pu.personTypeId === this.personPermission.id;
     });
@@ -123,6 +141,7 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
       });
       return;
     }
+    console.log(person);
     this.callback.emit(person);
   }
 

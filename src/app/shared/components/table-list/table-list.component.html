@@ -1,4 +1,12 @@
 <div class="wrap-table" #ngxDataTable>
+  <div class="header-table" fxLayout="row" fxLayoutAlign="space-between center">
+    <h2 fxFlex="100">
+      {{ title }}
+    </h2>
+    <button fxFlex="40px" *ngIf="hasFilter" clButtonIcon (click)="cbFilter.emit(true)">
+      <i clIcon name="cl-search" color="rgba(0, 0, 0, 0.5)"></i>
+    </button>
+  </div>
   <mat-progress-bar mode="determinate" class="progress"></mat-progress-bar>
   <ngx-datatable
     *ngIf="!!data"

@@ -44,7 +44,7 @@ export class DateService {
       if (endOf) {
         momentInstance = momentInstance.endOf('day');
       }
-      return momentInstance.format('YYYY-MM-DDTHH:mm:ss.SSS');
+      return momentInstance.format('YYYY-MM-DD');
     }
     return moment(date, 'YYYY-MM-DDTHH:mm:ss.SSS').format(format);
   }

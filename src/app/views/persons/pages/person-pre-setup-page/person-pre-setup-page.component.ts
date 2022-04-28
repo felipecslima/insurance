@@ -51,12 +51,6 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private personsEntityService: PersonsEntityService) {
 
-    this.subscribers = formConfigBaseService.getValues().subscribe(values => {
-      this.values = values;
-      this.isFormValidValues = this.formConfig?.lenght ? formConfigBaseService.isAllFormsValid() : true;
-      this.checkFormIsValid();
-    });
-
     routePartsService.generateRouteParts(route.snapshot);
 
     this.subscribers = route.data
@@ -68,6 +62,15 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
           this.permission = this.jwtAuthService.getPermission(this.typePerson.type);
           this.formConfig = this.personFormService.getComplementForm(this.permission);
         }),
+        switchMap(() => {
+          return formConfigBaseService.getValues().pipe(
+            tap((values) => {
+              this.values = values;
+              this.isFormValidValues = this.formConfig?.length ? formConfigBaseService.isAllFormsValid() : true;
+              this.checkFormIsValid();
+            })
+          );
+        })
       )
       .subscribe(noop);
   }

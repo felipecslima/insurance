@@ -28,10 +28,13 @@ export class TableListComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
 
   data: any;
+  @Input() title = 'Listagem';
+  @Input() hasFilter: boolean;
   @Input() loading: boolean;
   @Input() columns: TableInfinityListColumn[] = [];
   @Output() loadNewData = new EventEmitter();
   @Output() cbButton = new EventEmitter();
+  @Output() cbFilter = new EventEmitter();
 
   sorts = [
     {

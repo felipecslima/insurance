@@ -28,12 +28,13 @@ export class AuthGuard implements CanActivate {
   listPermissionByPath(route: ActivatedRouteSnapshot): 'LOGIN' | 'NOT_FOUND' | 'PAGE' {
     const [urlSegment] = route.url;
     const permissionType = urlSegment.path as Permission['paramType'];
-    if (this.getPermissionByUser().includes(permissionType)) {
-      return 'PAGE';
-    }
 
     if (!this.jwtAuth.isLoggedIn()) {
       return 'LOGIN';
+    }
+
+    if (this.getPermissionByUser().includes(permissionType)) {
+      return 'PAGE';
     }
 
     return 'NOT_FOUND';

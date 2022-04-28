@@ -126,9 +126,7 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
   }
 
   public prepareToSavePerson(personToSave: Person, permission: Permission) {
-    const { user, address, email, phone, doctor } = personToSave;
-    let { birthday } = personToSave;
-    birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
+    const { user, address, email, phone, doctor, birthday } = personToSave;
     const { recipient, id: emailId } = email[0];
     const { number: addressNumber, id: addressId } = address[0];
     const { id: userId } = user[0];
@@ -202,7 +200,9 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
       active = true
     } = values;
     const person = {
-      id, firstName, lastName, birthday, document,
+      id, firstName, lastName,
+      birthday: this.dateService.format(birthday, 'DD/MM/YYYY', true),
+      document,
       username: this.utilsService.removeCPFMask(username)
     };
     const user = {

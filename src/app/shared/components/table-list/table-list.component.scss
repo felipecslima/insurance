@@ -5,19 +5,29 @@
     }
   }
 
+  .header-table {
+    padding: 12px 16px 8px;
+    min-height: 60px;
+    h2 {
+      margin: 0;
+      color: rgba(0, 0, 0, 0.7);
+      font-size: 20px;
+    }
+  }
+
   .ngx-datatable {
-    height: calc(100vh - 240px);
+    height: calc(100vh - 300px);
 
     .datatable-header-cell {
       height: initial !important;
     }
 
+
     @media screen and (max-width: 600px) {
-      height: calc(100vh - 224px);
+      height: calc(100vh - 284px);
       datatable-header-cell {
         display: none !important;
       }
-
 
       .datatable-body {
         position: absolute !important;
