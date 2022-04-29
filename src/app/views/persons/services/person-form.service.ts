@@ -127,17 +127,17 @@ export class PersonFormService {
           placeholder: 'Digite seu CPF',
           mask: 'CPF',
           validations: ['required', 'cpf'],
+        }),
+        this.formFieldService.getText({
+          name: 'document',
+          title: 'RG:',
+          placeholder: 'Digite seu RG',
+          validations: ['required'],
         })
       );
     }
 
     formConfig.push(
-      this.formFieldService.getText({
-        name: 'document',
-        title: 'RG:',
-        placeholder: 'Digite seu RG',
-        validations: ['required'],
-      }),
       this.formFieldService.getText({
         name: 'zipcode',
         placeholder: 'Digite seu CEP',
