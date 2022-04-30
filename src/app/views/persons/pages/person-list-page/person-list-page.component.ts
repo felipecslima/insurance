@@ -273,8 +273,19 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
     if (columnData.id === 'edit') {
       this.router.navigate([this.urlService.getUserSetup(element.id, this.typePerson.type)]);
     } else if (columnData.id === 'cancel') {
-      this.confirmCancelAccount(element);
+      const user = this.getUser(element);
+      if (user.active) {
+        this.confirmCancelAccount(element);
+      }
     }
+  }
+
+  getUser(element) {
+    const person = this.persons.find(p => p.id === element.id);
+    const permission = this.jwtAuthService.getPermission(this.typePerson.type);
+    return person.user.find(user => {
+      return user.personTypeId === permission.id;
+    });
   }
 
   confirmCancelAccount(element: Person): void {
@@ -310,7 +321,8 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
           if (confirm) {
             let valuesToSave: any = this.personsEntityService.prepareToSavePerson(person, this.permission);
             valuesToSave = { ...valuesToSave, active: !user.active, userId: user.id };
-            return this.personsEntityService.save(valuesToSave).pipe(
+            return this.personsEntityService.userInactive({ id: user.id, personTypeId: user.personTypeId }).pipe(
+              // return this.personsEntityService.save(valuesToSave).pipe(
               map(() => {
                 return { error: false };
               })

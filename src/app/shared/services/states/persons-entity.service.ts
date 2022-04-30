@@ -28,12 +28,8 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     super('Persons', serviceElementsFactory);
   }
 
-  public userInactive(idUser: number, person: Person): Observable<Person> {
-    return this.personsDataService.userInactive(idUser).pipe(
-      tap(() => {
-        this.removeOneFromCache(person);
-      })
-    );
+  public userInactive(params: { id: number, personTypeId: number }): Observable<Person> {
+    return this.personsDataService.userInactive(params);
   }
 
   public getWithQuery(queryParams: QueryParams | string, options?: EntityActionOptions): Observable<Person[]> {

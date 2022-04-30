@@ -18,8 +18,9 @@ export class PersonsDataService extends DefaultDataService<Person> {
     super('Persons', http, httpUrlGenerator, config);
   }
 
-  userInactive(id: number): Observable<any> {
-    return this.http.put(`${ this._baseUrl }/${ id }/inactive`, {});
+  userInactive(params: { id: number, personTypeId: number }): Observable<any> {
+    const { id, personTypeId } = params;
+    return this.http.put(`${ this._baseUrl }/${ id }/inactive`, { personTypeId });
   }
 
   cancelAccount(): Observable<any> {
@@ -30,7 +31,6 @@ export class PersonsDataService extends DefaultDataService<Person> {
     const body = { email, birthday };
     return this.http.post(`${ this._baseUrl }/forgetpassword/`, body);
   }
-
 
   changePassword(password: string, passwordConfirm: string, token: string): Observable<any> {
     const body = { password, passwordConfirm };
