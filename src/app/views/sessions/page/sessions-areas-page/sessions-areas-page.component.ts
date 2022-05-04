@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { UrlService } from '../../../../shared/services/url.service';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pricing',
@@ -10,10 +11,11 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./sessions-areas-page.component.scss']
 })
 @AutoUnsubscribe()
-export class SessionsAreasPageComponent implements OnInit, OnDestroy {
+export class SessionsAreasPageComponent implements OnInit, OnDestroy, AfterViewInit {
   permissionsList = [];
 
   constructor(
+    private router: Router,
     private jwtAuthService: JwtAuthService,
     private urlService: UrlService,
   ) {
@@ -23,12 +25,22 @@ export class SessionsAreasPageComponent implements OnInit, OnDestroy {
         this.permissionsList = this.getListPermission().filter(pl => {
           return !!this.jwtAuthService.getPermissions().find(pu => pu.paramType === pl.paramType);
         });
+        setTimeout(() => {
+          if (this.permissionsList.length === 1) {
+            const [permission] = this.permissionsList;
+            this.router.navigate([permission.url]);
+          }
+        });
       })
     )
       .subscribe();
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
+
   }
 
   ngOnDestroy(): void {

@@ -114,7 +114,6 @@ export class TableListComponent implements OnInit, OnDestroy, OnChanges {
       });
     }
   }
-
 }
 
 export interface TableInfinityListColumn {
