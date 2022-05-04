@@ -38,6 +38,11 @@ export const rootRouterConfig: Routes = [
         data: { title: 'Usuários', breadcrumb: 'Usuários' },
       },
       {
+        path: 'negocios',
+        loadChildren: () => import('./views/business/business.module').then(m => m.BusinessModule),
+        data: { title: 'Negócios', breadcrumb: 'Negócios' },
+      },
+      {
         path: 'others',
         loadChildren: () => import('./views/others/others.module').then(m => m.OthersModule),
         data: { title: 'Others', breadcrumb: 'OTHERS' }

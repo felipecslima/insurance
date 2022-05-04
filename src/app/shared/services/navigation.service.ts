@@ -108,6 +108,12 @@ export class NavigationService {
           }
         ]
       },
+      {
+        name: 'Clinicas',
+        type: 'link',
+        icon: 'local_hospital',
+        state: `${ paramType }/negocios/clinica`,
+      }
     ];
   }
 
@@ -144,6 +150,12 @@ export class NavigationService {
           },
         ]
       },
+      {
+        name: 'Clinicas',
+        type: 'link',
+        icon: 'local_hospital',
+        state: `${ paramType }/negocios/clinica`,
+      }
     ];
   }
 
