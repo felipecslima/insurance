@@ -23,7 +23,7 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage
+/coveragen
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log
