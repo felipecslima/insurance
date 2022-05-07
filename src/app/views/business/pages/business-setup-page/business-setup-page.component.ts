@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UrlService } from '../../../../shared/services/url.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
 import { Permission } from '../../../../shared/interfaces/person.interface';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
@@ -37,6 +37,7 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private utilsService: UtilsService,
     private urlService: UrlService,
     private jwtAuthService: JwtAuthService,
@@ -48,6 +49,8 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
     this.urlService.setBasePath(route);
     this.typePermission = utilsService.getParamType(route);
     this.permissions = this.jwtAuthService.getPermission(this.typePermission);
+
+    this.subscribers = this.businessEntityService.getServerCurrent().subscribe(noop);
 
     this.subscribers = route.data
       .pipe(
@@ -62,6 +65,11 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(noop);
+
+    this.subscribers = formConfigBaseService.getValues().subscribe(values => {
+      this.values = values;
+      this.isFormValid = formConfigBaseService.isAllFormsValid();
+    });
   }
 
   ngOnInit(): void {
@@ -75,18 +83,17 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    // TODO: Business save/update
-    // if (!this.isFormValid) {
-    //   return;
-    // }
-    // this.values = { ...this.values, ...{ personTypeId: this.permission.id } };
-    // this.personsEntityService.save(this.values)
-    //   .subscribe(() => {
-    //     this.utilsService.toast('Usuário salvo com sucesso!', 'success');
-    //     this.router.navigate([this.urlService.getUserList(this.typePerson.type)]);
-    //   }, error => {
-    //     this.utilsService.setError(error);
-    //   });
+    if (!this.isFormValid) {
+      return;
+    }
+    this.values = { ...this.values, ...{ personTypeId: this.permissions.id } };
+    this.subscribers = this.businessEntityService.save(this.values)
+      .subscribe(() => {
+        this.utilsService.toast('Clínica salva com sucesso!', 'success');
+        this.router.navigate([this.urlService.getBusinessList(this.typePermission)]);
+      }, error => {
+        this.utilsService.setError(error);
+      });
   }
 
 }
