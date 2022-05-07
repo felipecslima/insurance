@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ClinicPageComponent } from './pages/clinic-page/clinic-page.component';
 import { BusinessRoutes } from './business.routing';
+import { BusinessSetupPageComponent } from './pages/business-setup-page/business-setup-page.component';
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { BusinessRoutes } from './business.routing';
   ],
   declarations: [
     ClinicPageComponent,
+    BusinessSetupPageComponent,
   ]
 })
 export class BusinessModule {

@@ -15,6 +15,22 @@ export class UrlService {
     this.basePath = this.getParamType(route);
   }
 
+  public getBusinessList(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBasePath(typeList),
+      'negocios',
+      'clinica',
+    ].join('/');
+  }
+
+  public getBusinessEdit(id: unknown = '', typeList: ChildPersonList['type']): string {
+    return [
+      this.getBusinessList(typeList),
+      'setup',
+      id,
+    ].join('/');
+  }
+
   getParamType(route: ActivatedRoute) {
     const type = route.snapshot.paramMap.get('type');
     if (type) {

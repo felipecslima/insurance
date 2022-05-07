@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarCustonComponent } from './snackbar-custon/snackbar-custon.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,14 @@ export class UtilsService {
   Window: any = window;
 
   constructor(public snackBar: MatSnackBar) {
+  }
+
+  getParamType(route: ActivatedRoute) {
+    const type = route.snapshot.paramMap.get('type');
+    if (type) {
+      return type;
+    }
+    return this.getParamType(route.parent);
   }
 
   setError(error: any): void {
