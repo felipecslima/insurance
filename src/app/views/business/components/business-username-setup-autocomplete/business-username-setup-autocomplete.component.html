@@ -15,7 +15,7 @@
         {{utilsService.maskCpfCnpj(option.username)}} | {{option.firstName}} {{option.lastName}}
       </mat-option>
       <mat-option *ngIf="hasFind">
-        <a [routerLink]="urlSetup">Se não encontrou o usuário crie um novo clicando aqui</a>
+        Se não encontrou o usuário crie um novo ou verifique as informações e tente novamente.
       </mat-option>
     </mat-autocomplete>
     <mat-error *ngIf="usernameControl.hasError('validateCpf') && !usernameControl.hasError('required')">
