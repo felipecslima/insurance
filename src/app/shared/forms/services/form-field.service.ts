@@ -8,6 +8,7 @@ import { ValidatorEmail } from '../validators/validator-email';
 import { ValidatorCpf } from '../validators/validator-cpf';
 import { ValidatorMin } from '../validators/validator-min';
 import { ValidatorPhone } from '../validators/validator-phone';
+import { ValidatorCnpj } from '../validators/validator-cnpj';
 
 @Injectable({
   providedIn: 'root',
@@ -131,6 +132,14 @@ export class FormFieldService {
       });
     }
 
+    if (validationsArr.find(v => v === 'cnpj')) {
+      validations.push({
+        name: 'validateCnpj',
+        validator: ValidatorCnpj.validator,
+        message: 'CNJP inválido',
+      });
+    }
+
     if (validationsArr.find(v => v === 'url')) {
       validations.push({
         name: 'validateUrl',
@@ -175,6 +184,7 @@ export class FormFieldService {
 }
 
 export type validations =
+  | 'cnpj'
   | 'cpf'
   | 'maxValue'
   | 'minValue'

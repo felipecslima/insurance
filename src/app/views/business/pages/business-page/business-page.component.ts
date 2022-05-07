@@ -18,6 +18,7 @@ import { BusinessListService } from '../../../../shared/services/states/business
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { Business, BusinessEmail, BusinessPhone } from '../../../../shared/interfaces/business.interface';
 import { BusinessEntityService } from '../../../../shared/services/states/business-entity.service';
+import { BusinessFormService } from '../../services/business-form.service';
 
 @Component({
   selector: 'business-page',
@@ -43,6 +44,7 @@ export class BusinessPageComponent implements OnInit, OnDestroy {
   permissions: Permission;
 
   constructor(
+    private businessFormService: BusinessFormService,
     private businessEntityService: BusinessEntityService,
     private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,
@@ -68,6 +70,28 @@ export class BusinessPageComponent implements OnInit, OnDestroy {
     this.subscribers = this.route.queryParams
       .pipe(
         switchMap(queryParams => {
+          this.paramPersist = {};
+          const {
+            document,
+            fantasyName,
+            phone,
+            businessUserName,
+          } = queryParams;
+
+          if (document) {
+            this.paramPersist['document'] = this.utilsService.removeMask(document);
+          }
+          if (phone) {
+            this.paramPersist['phone'] = this.utilsService.removeMask(phone);
+          }
+          if (fantasyName) {
+            this.paramPersist['fantasyName'] = fantasyName;
+          }
+          if (businessUserName) {
+            this.paramPersist['businessUserName'] = businessUserName;
+          }
+
+          console.log(this.paramPersist);
           businessListService.resetList();
           this.load(false);
           this._setListColumn();
@@ -96,7 +120,7 @@ export class BusinessPageComponent implements OnInit, OnDestroy {
 
   openFilter() {
     this.formConfigBaseService.initForm(this.paramPersist);
-    this.dialogService.open('REGULAR', 'FilterListComponent', this.personFormService.getFilterForm(this.permission));
+    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessFormService.getFilterForm());
   }
 
   cbButton($event: any) {
@@ -133,7 +157,10 @@ export class BusinessPageComponent implements OnInit, OnDestroy {
         switchMap(response => {
           const { confirm } = response;
           if (confirm) {
-            return this.businessEntityService.businessInactive({ id: business.id, personTypeId: user.personTypeId }).pipe(
+            return this.businessEntityService.businessInactive({
+              id: business.id,
+              personTypeId: user.personTypeId
+            }).pipe(
               map(() => {
                 return { error: false };
               })

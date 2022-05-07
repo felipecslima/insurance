@@ -7,7 +7,37 @@ import { FormFieldService } from '../../../shared/forms/services/form-field.serv
 })
 export class BusinessFormService {
 
-  constructor(private formFieldService: FormFieldService) { }
+  constructor(private formFieldService: FormFieldService) {
+  }
+
+  getFilterForm() {
+    return [
+      this.formFieldService.getText({
+        name: 'document',
+        title: 'CNPJ:',
+        placeholder: 'Digite um CNPJ',
+        validations: ['cnpj'],
+        mask: 'CNPJ',
+      }),
+      this.formFieldService.getText({
+        name: 'fantasyName',
+        title: 'Nome Fantasia:',
+        placeholder: 'Digite um nome fantasia',
+      }),
+      this.formFieldService.getText({
+        name: 'phone',
+        title: 'Telefone:',
+        placeholder: 'Digite um número de telefone/celular',
+        mask: 'CELLPHONE',
+        validations: ['phone'],
+      }),
+      this.formFieldService.getText({
+        name: 'businessUserName',
+        title: 'Responsável:',
+        placeholder: 'Digite um responsável',
+      }),
+    ];
+  }
 
   getDefaultForm(businessId: boolean, permissions: Permission) {
     const formConfig = [
@@ -27,7 +57,7 @@ export class BusinessFormService {
         name: 'document',
         title: 'CNPJ:',
         placeholder: 'Digite o CNPJ',
-        validations: ['required'],
+        validations: ['required', 'cnpj'],
         mask: 'CNPJ',
       }),
       this.formFieldService.getText({

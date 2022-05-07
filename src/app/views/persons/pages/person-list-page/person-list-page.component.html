@@ -11,6 +11,9 @@
       [loading]="personListService.isLoading"
     ></table-list>
     <div class="empty-state" *ngIf="this.personListService.emptyResult">
+      <button fxFlex="40px" clButtonIcon (click)="openFilter()">
+        <i clIcon name="cl-search" color="rgba(0, 0, 0, 0.5)"></i>
+      </button>
       <h2>Lista vazia</h2>
       <p>Não foram encontrados resultados para sua lista</p>
     </div>
