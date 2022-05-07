@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { PersonsEntityService } from './persons-entity.service';
-import { Person } from '../../interfaces/person.interface';
 import { finalize, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TableEntityService } from './table-entity.service';
+import { BusinessEntityService } from './business-entity.service';
+import { Business } from '../../interfaces/business.interface';
 
 @Injectable({ providedIn: 'root' })
-export class PersonListService {
+export class BusinessListService {
 
   /**
    * The first search
@@ -48,11 +48,11 @@ export class PersonListService {
    */
   filterArray = [];
 
-  list: Person[] = [];
+  list: Business[] = [];
 
   constructor(
     private tableEntityService: TableEntityService,
-    private businessEntityService: PersonsEntityService,
+    private businessEntityService: BusinessEntityService,
   ) {
   }
 
@@ -77,7 +77,7 @@ export class PersonListService {
   /**
    * Get array list
    */
-  getList(): Observable<Person[]> {
+  getList(): Observable<Business[]> {
     return this.businessEntityService.entities$;
   }
 

@@ -67,10 +67,14 @@ export class TableListComponent implements OnInit, OnDestroy, OnChanges {
     this.columnModeSelected = ColumnMode.force;
     this.subscribe = this.tableEntityService.entities$.subscribe(response => {
       this.data = response;
+      if (this.table) {
+        this.table.recalculate();
+      }
     });
   }
 
   ngOnInit(): void {
+
   }
 
   ngOnDestroy(): void {
@@ -127,6 +131,7 @@ export interface TableInfinityListColumn {
   resizeable?: boolean;
   minWidth?: number;
   maxWidth?: number;
+  width?: number;
   draggable?: boolean;
   sortable?: boolean;
 }

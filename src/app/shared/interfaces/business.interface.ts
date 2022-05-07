@@ -1,5 +1,3 @@
-import { User } from './person.interface';
-
 export interface Business {
   id?: number;
   name: string;
@@ -8,7 +6,7 @@ export interface Business {
   description: string;
   image: string;
   active: string;
-  businessUser: User[];
+  businessUser: BusinessUser[];
   businessAddress: BusinessAddress[];
   businessPhone: BusinessPhone[];
   businessEmail: BusinessEmail[];
@@ -30,4 +28,18 @@ export interface BusinessPhone {
 export interface BusinessEmail {
   id?: number;
   recipient: string;
+}
+
+export interface BusinessUser {
+  id: number;
+  personTypeId?: number;
+  hashForget?: boolean;
+  hashTimestamp?: string;
+  active?: boolean;
+  timestamp?: string;
+  person?: {
+    id: number;
+    name: string;
+    username: string;
+  };
 }

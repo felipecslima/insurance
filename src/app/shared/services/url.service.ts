@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RouterParamsService } from './router-params.service';
-import { noop } from 'rxjs';
-import { pluck, tap } from 'rxjs/operators';
 import { ChildPersonList } from '../../views/persons/persons.routing';
 
 @Injectable({
@@ -23,7 +20,7 @@ export class UrlService {
     ].join('/');
   }
 
-  public getBusinessEdit(id: unknown = '', typeList: ChildPersonList['type']): string {
+  public getBusinessSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
     return [
       this.getBusinessList(typeList),
       'setup',
