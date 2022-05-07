@@ -116,6 +116,12 @@ export class NavigationService {
         type: 'link',
         icon: 'local_hospital',
         state: this.urlService.getBusinessList(paramType),
+      },
+      {
+        name: 'Serviços',
+        type: 'link',
+        icon: 'medical_services',
+        state: this.urlService.getBusinessServiceList(paramType),
       }
     ];
   }

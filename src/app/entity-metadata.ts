@@ -8,11 +8,13 @@ export const entityMetadata: EntityMetadataMap = {
     }
   },
   Businesses: {},
+  Services: {},
 };
 
 const entity = {
   Table: 'Table',
   Persons: 'Persons',
+  Services: 'Services',
   Businesses: 'Businesses',
 };
 const pluralNames = entity;

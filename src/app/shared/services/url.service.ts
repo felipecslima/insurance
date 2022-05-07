@@ -12,6 +12,22 @@ export class UrlService {
     this.basePath = this.getParamType(route);
   }
 
+  public getBusinessServiceList(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBasePath(typeList),
+      'negocios',
+      'servicos',
+    ].join('/');
+  }
+
+  public getBusinessServiceSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
+    return [
+      this.getBusinessServiceList(typeList),
+      'setup',
+      id,
+    ].join('/');
+  }
+
   public getBusinessList(typeList: ChildPersonList['type']): string {
     return [
       this.getBasePath(typeList),

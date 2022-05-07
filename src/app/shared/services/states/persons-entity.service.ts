@@ -3,7 +3,6 @@ import {
   EntityActionOptions,
   EntityCollectionServiceBase,
   EntityCollectionServiceElementsFactory,
-  MergeStrategy,
   QueryParams
 } from '@ngrx/data';
 import { Login, Permission, Person } from '../../interfaces/person.interface';

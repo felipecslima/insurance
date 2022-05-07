@@ -15,6 +15,7 @@ import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decora
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ValidatorCpf } from '../../../../shared/forms/validators/validator-cpf';
+import { GetFormValues } from '../../../../shared/decorators/get-form-values.decorator';
 
 @Component({
   selector: 'Òperson-username-autocomplete',

@@ -23,6 +23,7 @@ import { environment } from '../environments/environment';
 import { metaReducers, reducers } from './shared/services/states/reducers';
 import { entityConfig } from './entity-metadata';
 import { reducer as DialogReducer } from './shared/dialogs/state/dialog.reducers';
+import { DecoratorService } from './shared/decorators/decorator.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -68,4 +69,8 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {
+  public constructor(service: DecoratorService) {
+    // this is necessary to init Decorator Service
+    // ^^^ forces an instance to be created
+  }
 }
