@@ -88,12 +88,12 @@ export class BusinessUsernameSetupAutocompleteComponent implements OnInit, OnDes
         }, 10);
         return value;
       }));
-
-    this.progressBar.mode = 'determinate';
   }
 
   ngOnInit(): void {
-    this.usernameControl.setValue(this.username || '');
+    if (this.username) {
+      this.usernameControl.setValue(this.username);
+    }
   }
 
   ngOnDestroy(): void {
