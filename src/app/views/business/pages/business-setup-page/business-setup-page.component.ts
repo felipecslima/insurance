@@ -62,8 +62,6 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(noop);
-
-    console.log(this.permissions);
   }
 
   ngOnInit(): void {

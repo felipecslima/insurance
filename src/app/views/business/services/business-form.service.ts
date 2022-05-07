@@ -40,7 +40,8 @@ export class BusinessFormService {
   }
 
   getDefaultForm(businessId: boolean, permissions: Permission) {
-    const formConfig = [
+    const formConfig = [];
+    formConfig.push(
       this.formFieldService.getText({
         name: 'name',
         title: 'Razão Social:',
@@ -59,6 +60,22 @@ export class BusinessFormService {
         placeholder: 'Digite o CNPJ',
         validations: ['required', 'cnpj'],
         mask: 'CNPJ',
+      })
+    );
+
+    formConfig.push(
+      this.formFieldService.getText({
+        name: 'recipient',
+        title: 'E-mail:',
+        placeholder: 'Digite um endereço de e-mail',
+        validations: ['email'],
+      }),
+      this.formFieldService.getText({
+        name: 'phone_number',
+        title: 'Telefone:',
+        placeholder: 'Digite um número de telefone/celular',
+        mask: 'CELLPHONE',
+        validations: ['phone'],
       }),
       this.formFieldService.getText({
         name: 'description',
@@ -91,24 +108,8 @@ export class BusinessFormService {
         title: 'Número:',
         placeholder: 'Digite o número',
         validations: ['required'],
-      }),
-      // Dados de contato
-      this.formFieldService.getText({
-        name: 'phone_number',
-        title: 'Telefone:',
-        placeholder: 'Digite um número de telefone/celular',
-        mask: 'CELLPHONE',
-        validations: ['phone'],
-      }),
-      // Dados de Endereço eletrônico
-      this.formFieldService.getText({
-        name: 'recipient',
-        title: 'E-mail:',
-        placeholder: 'Digite um endereço de e-mail',
-        validations: ['email'],
-      }),
-    ];
-
+      })
+    );
     return formConfig;
   }
 }

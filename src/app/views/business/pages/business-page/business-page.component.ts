@@ -91,7 +91,6 @@ export class BusinessPageComponent implements OnInit, OnDestroy {
             this.paramPersist['businessUserName'] = businessUserName;
           }
 
-          console.log(this.paramPersist);
           businessListService.resetList();
           this.load(false);
           this._setListColumn();
@@ -193,7 +192,6 @@ export class BusinessPageComponent implements OnInit, OnDestroy {
       const { person } = bUser;
       const { name: userFullName, username } = person;
       const user = `${ this.utilsService.maskCpfCnpj(username) } - ${ userFullName }`;
-      console.log(number);
       return {
         id,
         name,
