@@ -108,7 +108,7 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  onSelection($event: MatOptionSelectionChange, preSelect) {
+  onSelection($event: MatOptionSelectionChange, preSelect?) {
     const { person } = $event?.source?.value || preSelect;
     const personExistsInTypeId = !!person.user.find(pu => {
       return pu.personTypeId === this.personPermission.id;

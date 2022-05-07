@@ -18,9 +18,12 @@ import { MatInputModule } from '@angular/material/input';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ClinicPageComponent } from './pages/clinic-page/clinic-page.component';
 import { BusinessRoutes } from './business.routing';
 import { BusinessSetupPageComponent } from './pages/business-setup-page/business-setup-page.component';
+import { BusinessPageComponent } from './pages/business-page/business-page.component';
+import {
+  BusinessUsernameSetupAutocompleteComponent
+} from './components/business-username-setup-autocomplete/business-username-setup-autocomplete.component';
 
 @NgModule({
   imports: [
@@ -43,8 +46,9 @@ import { BusinessSetupPageComponent } from './pages/business-setup-page/business
     MatTooltipModule
   ],
   declarations: [
-    ClinicPageComponent,
+    BusinessUsernameSetupAutocompleteComponent,
     BusinessSetupPageComponent,
+    BusinessPageComponent,
   ]
 })
 export class BusinessModule {
