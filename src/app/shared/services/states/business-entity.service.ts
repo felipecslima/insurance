@@ -68,8 +68,8 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       city: address_city,
       number: address_number,
     } = businessAddress[0];
-    const { id: phoneId } = businessPhone[0];
-    const { id: emailId } = businessEmail[0];
+    const { id: phoneId, number: phone_number } = businessPhone[0];
+    const { id: emailId, recipient } = businessEmail[0];
 
     this.formConfigBaseService.initForm({
       ...business,
@@ -80,6 +80,8 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       businessAddress: undefined,
       businessPhone: undefined,
       businessEmail: undefined,
+      phone_number,
+      recipient,
       businessUserId,
       emailId,
       addressId,
