@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { FormControl, } from '@angular/forms';
 import { Observable, Unsubscribable } from 'rxjs';
 import { debounceTime, filter, map, startWith, switchMap } from 'rxjs/operators';
@@ -21,7 +31,7 @@ import { ValidatorCpf } from '../../../../shared/forms/validators/validator-cpf'
   styleUrls: ['./business-username-setup-autocomplete.component.scss']
 })
 @AutoUnsubscribe()
-export class BusinessUsernameSetupAutocompleteComponent implements OnInit, OnDestroy {
+export class BusinessUsernameSetupAutocompleteComponent implements OnInit, OnDestroy, OnChanges {
   @CombineSubscriptions()
   subscribers: Unsubscribable;
 
@@ -91,13 +101,25 @@ export class BusinessUsernameSetupAutocompleteComponent implements OnInit, OnDes
   }
 
   ngOnInit(): void {
+
+  }
+
+  ngOnDestroy(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const { username } = changes;
+    if (username) {
+      this.populate();
+    }
+  }
+
+  populate() {
     if (this.username) {
       this.usernameControl.setValue(this.username);
     }
   }
 
-  ngOnDestroy(): void {
-  }
 
   onSelection($event: MatOptionSelectionChange, preSelect?) {
     const { person } = $event?.source?.value || preSelect;

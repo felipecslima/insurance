@@ -12,7 +12,7 @@ import { FormFieldService } from '../../../../shared/forms/services/form-field.s
 import { switchMap, take, tap } from 'rxjs/operators';
 import { BusinessFormService } from '../../services/business-form.service';
 import { BusinessEntityService } from '../../../../shared/services/states/business-entity.service';
-import { Business } from '../../../../shared/interfaces/business.interface';
+import { Business, BusinessUser } from '../../../../shared/interfaces/business.interface';
 
 @Component({
   selector: 'business-setup-page',
@@ -34,7 +34,7 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
   public isFormLoading: boolean;
   private readonly businessId: number;
   private business: Business;
-  person: Person;
+  person: Person | BusinessUser['person'];
   private userId: number;
   private isFormValidAutoComplete = false;
 
@@ -64,6 +64,12 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
         }),
         tap(entity => {
           this.business = entity;
+          if (this.business) {
+            const { businessUser } = this.business;
+            const [bUser] = businessUser;
+            const { person } = bUser;
+            this.person = person;
+          }
           this.businessEntityService.populate(entity);
         })
       )
