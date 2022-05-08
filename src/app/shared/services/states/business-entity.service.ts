@@ -60,7 +60,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       businessPhone,
       businessEmail,
     } = business;
-    const { id: businessUserId } = businessUser[0];
+    const { id: businessUserId, active: businessUserActive, personTypeId } = businessUser[0];
     const {
       id: addressId,
       zipcode: address_zipcode,
@@ -69,7 +69,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       number: address_number,
     } = businessAddress[0];
     const { id: phoneId, number: phone_number } = businessPhone[0];
-    const { id: emailId, recipient } = businessEmail[0];
+    const { id: emailId, recipient,  } = businessEmail[0];
 
     this.formConfigBaseService.initForm({
       ...business,
@@ -80,6 +80,8 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       businessAddress: undefined,
       businessPhone: undefined,
       businessEmail: undefined,
+      personTypeId,
+      businessUserActive,
       phone_number,
       recipient,
       businessUserId,
@@ -123,6 +125,8 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       active = true,
       // Business user
       businessUserId,
+      businessUserActive = true,
+      personTypeId,
       // Address data
       addressId,
       address_zipcode,
@@ -133,7 +137,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       phoneId,
       phone_number,
       // email data
-      recipientId,
+      emailId,
       recipient,
     } = values;
 
@@ -152,10 +156,9 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       number: phone_number
     }];
     const businessEmail = [{
-      id: recipientId,
+      id: emailId,
       recipient
     }];
-
     return {
       id,
       name,

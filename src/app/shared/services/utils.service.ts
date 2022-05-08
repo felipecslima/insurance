@@ -28,11 +28,27 @@ export class UtilsService {
   }
 
   public removeEmpty(obj): any {
+    const firstEmpty = this.removeEmptyP2(obj);
+    return this.removeEmptyP2(firstEmpty);
+  }
+
+  public removeEmptyP2(obj): any {
     const newObj: any = {};
+    if (Array.isArray(obj)) {
+      const nArr = obj.map(o => {
+        return this.removeEmptyP2(o);
+      });
+      const returnA = nArr.filter(a => {
+        return !!(typeof a === 'object' &&
+          !Array.isArray(a) &&
+          Object.keys(a).length);
+      });
+      return returnA.length ? returnA : undefined;
+    }
     Object.keys(obj).forEach((key) => {
       if (obj[key] === Object(obj[key])) {
-        newObj[key] = this.removeEmpty(obj[key]);
-      } else if (obj[key] !== undefined) {
+        newObj[key] = this.removeEmptyP2(obj[key]);
+      } else if (obj[key] !== undefined && obj[key] !== null && obj[key] !== '') {
         newObj[key] = obj[key];
       }
     });
