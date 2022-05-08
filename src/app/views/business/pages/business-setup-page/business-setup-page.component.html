@@ -1,6 +1,8 @@
 <div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
   <div clCard>
     <div clCardContent>
+      <business-username-setup-autocomplete (callback)="getCallback($event)"></business-username-setup-autocomplete>
+
       <cl-form-component *ngIf="formConfig" [formConfig]="formConfig">
       </cl-form-component>
     </div>

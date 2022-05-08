@@ -76,6 +76,10 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       ...businessPhone,
       ...businessEmail,
       id: business.id,
+      businessUser: undefined,
+      businessAddress: undefined,
+      businessPhone: undefined,
+      businessEmail: undefined,
       businessUserId,
       emailId,
       addressId,
@@ -117,7 +121,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       active = true,
       // Business user
       businessUserId,
-      // Adress data
+      // Address data
       addressId,
       address_zipcode,
       address_description,

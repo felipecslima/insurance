@@ -3,7 +3,7 @@ import { UrlService } from '../../../../shared/services/url.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtAuthService } from '../../../../shared/services/auth/jwt-auth.service';
-import { Permission } from '../../../../shared/interfaces/person.interface';
+import { Permission, Person } from '../../../../shared/interfaces/person.interface';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { noop, Unsubscribable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
@@ -34,6 +34,9 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
   public isFormLoading: boolean;
   private readonly businessId: number;
   private business: Business;
+  person: Person;
+  private userId: number;
+  private isFormValidAutoComplete = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,7 +71,7 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
 
     this.subscribers = formConfigBaseService.getValues().subscribe(values => {
       this.values = values;
-      this.isFormValid = formConfigBaseService.isAllFormsValid();
+      this.checkFormIsValid();
     });
   }
 
@@ -82,11 +85,15 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
     this.formConfig = this.businessFormService.getDefaultForm(!!this.businessId, this.permissions);
   }
 
+  checkFormIsValid() {
+    this.isFormValid = !!this.isFormValidAutoComplete && this.formConfigBaseService.isAllFormsValid();
+  }
+
   save(): void {
     if (!this.isFormValid) {
       return;
     }
-    this.values = { ...this.values, ...{ personTypeId: this.permissions.id } };
+    this.values = { ...this.values, ...{ personTypeId: this.permissions.id }, ...{ businessUserId: this.userId } };
     this.subscribers = this.businessEntityService.save(this.values)
       .subscribe(() => {
         this.utilsService.toast('Clínica salva com sucesso!', 'success');
@@ -96,4 +103,10 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
       });
   }
 
+  getCallback(person: Person) {
+    this.person = person;
+    this.userId = person.user.find(u => u.personTypeId === this.permissions.id)?.id;
+    this.isFormValidAutoComplete = true;
+    this.checkFormIsValid();
+  }
 }
