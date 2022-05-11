@@ -86,6 +86,7 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
             this.paramPersist['fantasyName'] = fantasyName;
           }
           servicesListService.resetList();
+          this.urlSetup = this.urlService.getBusinessServiceSetup();
           this.load(false);
           this._setListColumn();
           return this.servicesListService.getList();
