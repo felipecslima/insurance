@@ -67,6 +67,7 @@ export class BusinessPageComponent implements OnInit, OnDestroy {
     this.permissions = this.jwtAuthService.getPermission(this.typePermission);
 
     this.person = this.jwtAuthService.getUser();
+    this.urlSetup = this.urlService.getBusinessSetup();
     this.subscribers = this.route.queryParams
       .pipe(
         switchMap(queryParams => {

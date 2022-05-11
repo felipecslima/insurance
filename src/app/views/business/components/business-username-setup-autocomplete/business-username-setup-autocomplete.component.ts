@@ -101,7 +101,7 @@ export class BusinessUsernameSetupAutocompleteComponent implements OnInit, OnDes
   }
 
   ngOnInit(): void {
-
+    this.populate();
   }
 
   ngOnDestroy(): void {

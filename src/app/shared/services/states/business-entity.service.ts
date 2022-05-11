@@ -24,6 +24,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
   ) {
     super('Businesses', serviceElementsFactory);
   }
+
   public businessInactive(params: { id: number, personTypeId: number }): Observable<Business> {
     return this.businessDataService.businessInactive(params);
   }
@@ -33,6 +34,13 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       filter(params => !!params?.businessId),
       pluck('businessId'),
       switchMap(id => this.getEntityById(id)),
+    );
+  }
+
+  getParamId(): Observable<string> {
+    return this.routerParamsService.params.pipe(
+      filter(params => !!params?.businessId),
+      pluck('businessId'),
     );
   }
 
@@ -69,7 +77,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       number: address_number,
     } = businessAddress[0];
     const { id: phoneId, number: phone_number } = businessPhone[0];
-    const { id: emailId, recipient,  } = businessEmail[0];
+    const { id: emailId, recipient, } = businessEmail[0];
 
     this.formConfigBaseService.initForm({
       ...business,

@@ -10,13 +10,13 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class BusinessDataService extends DefaultDataService<Business> {
-  private entityKey = '/business';
+  private entityKey = '/businesses';
   private _baseUrl = this.uss.baseUrl(this.entityKey);
 
   constructor(
     private uss: UtilsStateService,
     http: HttpClient, httpUrlGenerator: HttpUrlGenerator, config: DefaultDataServiceConfig) {
-    super('Business', http, httpUrlGenerator, config);
+    super('Businesses', http, httpUrlGenerator, config);
   }
 
   businessInactive(params: { id: number, personTypeId: number }): Observable<any> {

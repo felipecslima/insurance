@@ -1,5 +1,6 @@
 <div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
   <div clCard>
+    <mat-progress-bar #progress mode="determinate" class="progress"></mat-progress-bar>
     <div clCardContent>
       <business-username-setup-autocomplete [username]="person?.username" (callback)="getCallback($event)"></business-username-setup-autocomplete>
 

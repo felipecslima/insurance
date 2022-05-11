@@ -1,4 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { UrlService } from '../../../../shared/services/url.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +21,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 import { BusinessFormService } from '../../services/business-form.service';
 import { BusinessEntityService } from '../../../../shared/services/states/business-entity.service';
 import { Business, BusinessUser } from '../../../../shared/interfaces/business.interface';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'business-setup-page',
@@ -20,10 +29,12 @@ import { Business, BusinessUser } from '../../../../shared/interfaces/business.i
   styleUrls: ['./business-setup-page.component.scss']
 })
 @AutoUnsubscribe()
-export class BusinessSetupPageComponent implements OnInit, OnDestroy {
+export class BusinessSetupPageComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
   colors = environment.color;
   @CombineSubscriptions()
   subscribers: Unsubscribable;
+
+  @ViewChild('progress') progressBar: MatProgressBar;
 
   typePermission: string;
   permissions: Permission;
@@ -39,6 +50,7 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
   private isFormValidAutoComplete = false;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
     private utilsService: UtilsService,
@@ -55,25 +67,6 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
 
     this.subscribers = this.businessEntityService.getServerCurrent().subscribe(noop);
 
-    this.subscribers = route.data
-      .pipe(
-        take(1),
-        switchMap(() => {
-          this.setupForm();
-          return this.businessEntityService.getCurrent();
-        }),
-        tap(entity => {
-          this.business = entity;
-          if (this.business) {
-            const { businessUser } = this.business;
-            const [bUser] = businessUser;
-            const { person } = bUser;
-            this.person = person;
-          }
-          this.businessEntityService.populate(entity);
-        })
-      )
-      .subscribe(noop);
 
     this.subscribers = formConfigBaseService.getValues().subscribe(values => {
       this.values = values;
@@ -85,6 +78,48 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  ngAfterViewChecked() {
+    this.cdr.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    this.subscribers = this.route.data
+      .pipe(
+        take(1),
+        switchMap(() => {
+          this.setupForm();
+          return this.businessEntityService.getParamId();
+        }),
+        switchMap((businessId) => {
+          if (businessId) {
+            this.setProgress(true);
+          }
+          this.setupForm();
+          return this.businessEntityService.getCurrent();
+        }),
+        tap(entity => {
+          this.setProgress(false);
+          this.business = entity;
+          if (this.business) {
+            const { businessUser } = this.business;
+            const [bUser] = businessUser;
+            const { person } = bUser;
+            this.person = person;
+          }
+          this.businessEntityService.populate(entity);
+        })
+      )
+      .subscribe(noop, () => {
+        this.setProgress(false);
+      });
+  }
+
+  setProgress(status: boolean): void {
+    if (this.progressBar) {
+      this.progressBar.mode = status ? 'indeterminate' : 'determinate';
+    }
   }
 
   setupForm(): void {
