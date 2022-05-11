@@ -27,8 +27,19 @@ export class NumeralService {
     numeraljs.language('pt-br');
   }
 
-  public formatMoney(value) {
-    return numeraljs(value).format('$0,0.00');
+  public formatMoney(amount) {
+    if (!amount) {
+      return 'R$ 0,00';
+    }
+    const centsToMoney = (parseInt(amount, 10) / 100).toFixed(2);
+    return numeraljs(centsToMoney).format('$0,0.00');
+  }
+
+  public moneyToDb(amount) {
+    if (!amount) {
+      return 0;
+    }
+    return parseFloat(amount) * 100;
   }
 
   public format(value, mask) {
@@ -58,10 +69,11 @@ export class NumeralService {
   public getNumeralAutoFormatted(number, format = ''): string {
     const numberFormatted = number.toFixed(number % 1 === 0 ? 0 : 1);
     if (format === '0%') {
-      return `${parseFloat(numberFormatted).toFixed(
+      return `${ parseFloat(numberFormatted).toFixed(
         numberFormatted % 1 === 0 ? 0 : 1,
-      )}%`;
+      ) }%`;
     }
+    // tslint:disable-next-line:triple-equals
     if (format != '') {
       return numeraljs(numberFormatted).format(format);
     }
