@@ -63,7 +63,7 @@ export class NumeralService {
       )}%`;
     }
     if (format != '') {
-      return numeral(numberFormatted).format(format);
+      return numeraljs(numberFormatted).format(format);
     }
     return numberFormatted;
   }

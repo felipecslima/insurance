@@ -25,6 +25,7 @@ import {
   BusinessUsernameSetupAutocompleteComponent
 } from './components/business-username-setup-autocomplete/business-username-setup-autocomplete.component';
 import { BusinessServicePageComponent } from './pages/business-service-page/business-service-page.component';
+import { BusinessServiceSetupPageComponent } from './pages/business-service-setup-page/business-service-setup-page.component';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { BusinessServicePageComponent } from './pages/business-service-page/busi
     BusinessSetupPageComponent,
     BusinessPageComponent,
     BusinessServicePageComponent,
+    BusinessServiceSetupPageComponent,
   ]
 })
 export class BusinessModule {

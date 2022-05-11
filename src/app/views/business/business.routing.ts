@@ -5,6 +5,9 @@ import {
 } from '../../shared/components/layouts/internal-layout/admin-layout-internal.component';
 import { BusinessPageComponent } from './pages/business-page/business-page.component';
 import { BusinessServicePageComponent } from './pages/business-service-page/business-service-page.component';
+import {
+  BusinessServiceSetupPageComponent
+} from './pages/business-service-setup-page/business-service-setup-page.component';
 
 export const BusinessRoutes: Routes = [
   {
@@ -44,12 +47,12 @@ export const BusinessRoutes: Routes = [
           },
           {
             path: `setup`,
-            component: BusinessSetupPageComponent,
+            component: BusinessServiceSetupPageComponent,
             data: { title: `Cadastrar de serviço`, breadcrumb: `Cadastro de serviço` },
           },
           {
-            path: `setup/:businessId`,
-            component: BusinessSetupPageComponent,
+            path: `setup/:serviceId`,
+            component: BusinessServiceSetupPageComponent,
             data: { title: `Cadastrar de serviço`, breadcrumb: `Cadastro de serviço` },
           },
         ]
