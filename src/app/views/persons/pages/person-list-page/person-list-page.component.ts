@@ -314,15 +314,12 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         map((confirm) => {
-          return { user, confirm, person };
+          return { user, confirm };
         }),
         switchMap(response => {
-          const { user, confirm, person } = response;
+          const { user, confirm } = response;
           if (confirm) {
-            let valuesToSave: any = this.personsEntityService.prepareToSavePerson(person, this.permission);
-            valuesToSave = { ...valuesToSave, active: !user.active, userId: user.id };
             return this.personsEntityService.userInactive({ id: user.id, personTypeId: user.personTypeId }).pipe(
-              // return this.personsEntityService.save(valuesToSave).pipe(
               map(() => {
                 return { error: false };
               })

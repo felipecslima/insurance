@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RouterParamsService } from './router-params.service';
-import { noop } from 'rxjs';
-import { pluck, tap } from 'rxjs/operators';
 import { ChildPersonList } from '../../views/persons/persons.routing';
 
 @Injectable({
@@ -13,6 +10,22 @@ export class UrlService {
 
   public setBasePath(route: ActivatedRoute): void {
     this.basePath = this.getParamType(route);
+  }
+
+  public getBusinessList(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBasePath(typeList),
+      'negocios',
+      'clinica',
+    ].join('/');
+  }
+
+  public getBusinessSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
+    return [
+      this.getBusinessList(typeList),
+      'setup',
+      id,
+    ].join('/');
   }
 
   getParamType(route: ActivatedRoute) {

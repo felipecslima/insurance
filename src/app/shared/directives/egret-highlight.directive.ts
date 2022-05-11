@@ -10,18 +10,18 @@ import {
   OnChanges,
   OnDestroy,
   ChangeDetectorRef
-} from "@angular/core";
-import * as hljs from "highlight.js";
-import { HttpClient } from "@angular/common/http";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+} from '@angular/core';
+import * as hljs from 'highlight.js';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Directive({
   host: {
-    "[class.hljs]": "true",
-    "[innerHTML]": "highlightedCode"
+    '[class.hljs]': 'true',
+    '[innerHTML]': 'highlightedCode'
   },
-  selector: "[egretHighlight]"
+  selector: '[egretHighlight]'
 })
 export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
 
@@ -35,11 +35,12 @@ export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
   ) {
     this.unsubscribeAll = new Subject();
   }
+
   // Inner highlighted html
   highlightedCode: string;
 
   @Input() path: string;
-  @Input("egretHighlight") code: string;
+  @Input('egretHighlight') code: string;
   private unsubscribeAll: Subject<any>;
   @Input() languages: string[];
 
@@ -48,9 +49,9 @@ export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
       this.highlightElement(this.code);
     }
     if (this.path) {
-      this.highlightedCode = "Loading..."
+      this.highlightedCode = 'Loading...';
       this.http
-        .get(this.path, { responseType: "text" })
+        .get(this.path, { responseType: 'text' })
         .pipe(takeUntil(this.unsubscribeAll))
         .subscribe(response => {
           this.highlightElement(response, this.languages);
@@ -59,15 +60,15 @@ export class EgretHighlightDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-      this.unsubscribeAll.next('');
-      this.unsubscribeAll.complete();
+    this.unsubscribeAll.next('');
+    this.unsubscribeAll.complete();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      changes["code"] &&
-      changes["code"].currentValue &&
-      changes["code"].currentValue !== changes["code"].previousValue
+      changes['code'] &&
+      changes['code'].currentValue &&
+      changes['code'].currentValue !== changes['code'].previousValue
     ) {
       this.highlightElement(this.code);
     }

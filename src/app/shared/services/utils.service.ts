@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarCustonComponent } from './snackbar-custon/snackbar-custon.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,17 +14,41 @@ export class UtilsService {
   constructor(public snackBar: MatSnackBar) {
   }
 
+  getParamType(route: ActivatedRoute) {
+    const type = route.snapshot.paramMap.get('type');
+    if (type) {
+      return type;
+    }
+    return this.getParamType(route.parent);
+  }
+
   setError(error: any): void {
     const { message = 'Erro desconhecido' } = error || {};
     this.toast(message, 'error');
   }
 
   public removeEmpty(obj): any {
+    const firstEmpty = this.removeEmptyP2(obj);
+    return this.removeEmptyP2(firstEmpty);
+  }
+
+  public removeEmptyP2(obj): any {
     const newObj: any = {};
+    if (Array.isArray(obj)) {
+      const nArr = obj.map(o => {
+        return this.removeEmptyP2(o);
+      });
+      const returnA = nArr.filter(a => {
+        return !!(typeof a === 'object' &&
+          !Array.isArray(a) &&
+          Object.keys(a).length);
+      });
+      return returnA.length ? returnA : undefined;
+    }
     Object.keys(obj).forEach((key) => {
       if (obj[key] === Object(obj[key])) {
-        newObj[key] = this.removeEmpty(obj[key]);
-      } else if (obj[key] !== undefined) {
+        newObj[key] = this.removeEmptyP2(obj[key]);
+      } else if (obj[key] !== undefined && obj[key] !== null && obj[key] !== '') {
         newObj[key] = obj[key];
       }
     });
@@ -273,6 +298,13 @@ export class UtilsService {
     return nCpf.replace('-', '');
   }
 
+  public removeMask(value) {
+    if (!value) {
+      return value;
+    }
+    return value.replace(/\D+/g, '');
+  }
+
   isCPF(value: string): boolean {
     const regexToCheckIsCpf = /(^)\d{2,3}\.?\d{3}\.?\d{3}\-?\d{2}(?:$|\W)/;
     const result = regexToCheckIsCpf.exec(value);
@@ -327,6 +359,63 @@ export class UtilsService {
     // TODO - Phone sem o digito 9
     phone = phone.replace(/(\d{5})(\d)/, '$1-$2');
     return phone;
+  }
+
+  public verifyCnpj(cnpj) {
+    if (!cnpj) {
+      return cnpj;
+    }
+    cnpj = cnpj.replace(/[^\d]+/g, '');
+    if (cnpj === '') {
+      return false;
+    }
+
+    if (cnpj.length !== 14) {
+      return false;
+    }
+
+    if (cnpj === '00000000000000' ||
+      cnpj === '11111111111111' ||
+      cnpj === '22222222222222' ||
+      cnpj === '33333333333333' ||
+      cnpj === '44444444444444' ||
+      cnpj === '55555555555555' ||
+      cnpj === '66666666666666' ||
+      cnpj === '77777777777777' ||
+      cnpj === '88888888888888' ||
+      cnpj === '99999999999999') {
+      return false;
+    }
+
+    let size = cnpj.length - 2;
+    let cpfNumber = cnpj.substring(0, size);
+    const digit = cnpj.substring(size);
+    let sum = 0;
+    let pos = size - 7;
+    for (let i = size; i >= 1; i--) {
+      sum += cpfNumber.charAt(size - i) * pos--;
+      if (pos < 2) {
+        pos = 9;
+      }
+    }
+    let result = sum % 11 < 2 ? 0 : 11 - sum % 11;
+    if (result !== parseInt(digit.charAt(0), 10)) {
+      return false;
+    }
+
+    size = size + 1;
+    cpfNumber = cnpj.substring(0, size);
+    sum = 0;
+    pos = size - 7;
+    for (let i = size; i >= 1; i--) {
+      sum += cpfNumber.charAt(size - i) * pos--;
+      if (pos < 2) {
+        pos = 9;
+      }
+    }
+    result = sum % 11 < 2 ? 0 : 11 - sum % 11;
+
+    return result === parseInt(digit.charAt(1), 10);
   }
 
   public verifyCpf(cpf) {

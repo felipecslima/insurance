@@ -50,18 +50,17 @@ $utilities: (
       null: 1px solid rgba(255, 255, 255, 0.1)
     )
   ),
-
   "font-weight": (
-      property: font-weight,
-      values: (
-        light: 300,
-        lighter: lighter,
-        normal: 400,
-        semi: 500,
-        bold: 600,
-        bolder: bolder
-      )
-    ),
+    property: font-weight,
+    values: (
+      light: 300,
+      lighter: lighter,
+      normal: 400,
+      semi: 500,
+      bold: 600,
+      bolder: bolder
+    )
+  ),
 );
 
 @import "avatar";
@@ -83,6 +82,44 @@ $utilities: (
   }
 }
 
+.width-100 {
+  width: 100% !important;
+}
 
 
+table {
+  width: 100%;
+}
 
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.empty-state {
+  padding: 24px;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  button {
+    position: absolute;
+    right: 36px;
+    top: 84px;
+  }
+
+
+  h2 {
+    font-size: 24px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  p {
+    margin-top: 8px;
+    font-size: 16px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.56);
+  }
+}

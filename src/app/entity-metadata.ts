@@ -7,11 +7,13 @@ export const entityMetadata: EntityMetadataMap = {
       optimisticUpdate: false
     }
   },
+  Businesses: {},
 };
 
 const entity = {
   Table: 'Table',
   Persons: 'Persons',
+  Businesses: 'Businesses',
 };
 const pluralNames = entity;
 const singularNames = entity;

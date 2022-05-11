@@ -5,8 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ChartsModule } from 'ng2-charts';
-import { FileUploadModule } from 'ng2-file-upload';
 import { SharedModule } from '../../shared/shared.module';
 
 import { PersonRoutes } from './persons.routing';
@@ -23,24 +21,17 @@ import {
   PersonUsernameAutocompleteComponent
 } from './components/person-username-autocomplete/person-username-autocomplete.component';
 import { PersonPreSetupPageComponent } from './pages/person-pre-setup-page/person-pre-setup-page.component';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { PersonProfilePageComponent } from './pages/person-profile-page/person-profile-page.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
-
-
 @NgModule({
   imports: [
-    NgxMaskModule.forRoot(),
     CommonModule,
     FormsModule,
     MatProgressBarModule,
     FlexLayoutModule,
     NgxDatatableModule,
-    ChartsModule,
-    FileUploadModule,
     SharedModule,
     RouterModule.forChild(PersonRoutes),
     MatDividerModule,

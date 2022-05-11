@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { JwtAuthService } from './auth/jwt-auth.service';
 import { Permission } from '../interfaces/person.interface';
+import { UrlService } from './url.service';
 
 interface IMenuItem {
   type: 'link' | 'dropDown' | 'icon' | 'separator' | 'extLink'; // Possible values: link/dropDown/icon/separator/extLink
@@ -39,7 +40,9 @@ export class NavigationService {
   // navigation component has subscribed to this Observable
   menuItems$ = this.menuItems.asObservable();
 
-  constructor(private jwtAuthService: JwtAuthService) {
+  constructor(
+    private urlService: UrlService,
+    private jwtAuthService: JwtAuthService) {
   }
 
   // Customizer component uses this method to change menu.
@@ -112,7 +115,7 @@ export class NavigationService {
         name: 'Clinicas',
         type: 'link',
         icon: 'local_hospital',
-        state: `${ paramType }/negocios/clinica`,
+        state: this.urlService.getBusinessList(paramType),
       }
     ];
   }

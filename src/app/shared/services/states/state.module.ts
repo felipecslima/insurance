@@ -5,10 +5,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PersonsDataService } from './persons-data.service';
 import { PersonsEntityService } from './persons-entity.service';
 import { TokenInterceptor } from '../../interceptors/token.interceptor';
+import { BusinessDataService } from './business-data.service';
 
 
 const entityMetadata: EntityMetadataMap = {
   Persons: {},
+  Businesses: {},
   Table: {},
 };
 
@@ -31,9 +33,11 @@ export class StateModule {
     private eds: EntityDefinitionService,
     private entityDataService: EntityDataService,
     private personsDataService: PersonsDataService,
+    private businessDataService: BusinessDataService,
   ) {
     eds.registerMetadataMap(entityMetadata);
     entityDataService.registerService('Persons', personsDataService);
+    entityDataService.registerService('Businesses', businessDataService);
 
   }
 }
