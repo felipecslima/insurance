@@ -8,6 +8,7 @@ import { BusinessServicePageComponent } from './pages/business-service-page/busi
 import {
   BusinessServiceSetupPageComponent
 } from './pages/business-service-setup-page/business-service-setup-page.component';
+import { BusinessPlainPageComponent } from './pages/business-plain-page/business-plain-page.component';
 
 export const BusinessRoutes: Routes = [
   {
@@ -53,7 +54,29 @@ export const BusinessRoutes: Routes = [
           {
             path: `setup/:serviceId`,
             component: BusinessServiceSetupPageComponent,
-            data: { title: `Cadastrar de serviço`, breadcrumb: `Cadastro de serviço` },
+            data: { title: `Editar de serviço`, breadcrumb: `Cadastro de serviço` },
+          },
+        ]
+      },
+      {
+        path: `planos`,
+        component: AdminLayoutInternalComponent,
+        data: { title: `Lista de planos`, breadcrumb: `Lista de planos` },
+        children: [
+          {
+            path: ``,
+            component: BusinessPlainPageComponent,
+            data: { title: `Lista de planos`, breadcrumb: `Lista de planos` },
+          },
+          {
+            path: `setup`,
+            component: BusinessServiceSetupPageComponent,
+            data: { title: `Cadastrar de plano`, breadcrumb: `Cadastro de plano` },
+          },
+          {
+            path: `setup/:serviceId`,
+            component: BusinessServiceSetupPageComponent,
+            data: { title: `Editar de plano`, breadcrumb: `Cadastro de plano` },
           },
         ]
       },

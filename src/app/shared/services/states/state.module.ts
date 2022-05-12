@@ -7,9 +7,11 @@ import { PersonsEntityService } from './persons-entity.service';
 import { TokenInterceptor } from '../../interceptors/token.interceptor';
 import { BusinessDataService } from './business-data.service';
 import { ServicesDataService } from './services-data.service';
+import { PlainsDataService } from './plains-data.service';
 
 
 const entityMetadata: EntityMetadataMap = {
+  Plains: {},
   Services: {},
   Persons: {},
   Businesses: {},
@@ -37,11 +39,12 @@ export class StateModule {
     private personsDataService: PersonsDataService,
     private businessDataService: BusinessDataService,
     private servicesDataService: ServicesDataService,
+    private plainsDataService: PlainsDataService,
   ) {
     eds.registerMetadataMap(entityMetadata);
+    entityDataService.registerService('Plains', plainsDataService);
     entityDataService.registerService('Persons', personsDataService);
     entityDataService.registerService('Businesses', businessDataService);
     entityDataService.registerService('Services', servicesDataService);
-
   }
 }

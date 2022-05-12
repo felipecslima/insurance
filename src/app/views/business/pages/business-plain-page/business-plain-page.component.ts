@@ -1,9 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
-import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
+import { CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { noop, of, Unsubscribable } from 'rxjs';
 import { TableInfinityListColumn } from '../../../../shared/components/table-list/table-list.component';
+import { Business } from '../../../../shared/interfaces/business.interface';
 import { Permission, Person } from '../../../../shared/interfaces/person.interface';
+import { DecoratorFormValues, GetFormValues } from '../../../../shared/decorators/get-form-values.decorator';
+import { NumeralService } from '../../../../shared/services/numeral.service';
+import { BusinessFormService } from '../../services/business-form.service';
+import { ServicesEntityService } from '../../../../shared/services/states/services-entity.service';
 import { DateService } from '../../../../shared/services/date.service';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
@@ -14,21 +19,17 @@ import { FormsService } from '../../../../shared/forms/services/forms.service';
 import { UrlService } from '../../../../shared/services/url.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { ConfirmService } from '../../../../shared/services/app-confirm/confirm.service';
-import { ServicesEntityService } from '../../../../shared/services/states/services-entity.service';
-import { ServicesListService } from '../../../../shared/services/states/services-list.service';
 import { map, switchMap, take, tap } from 'rxjs/operators';
-import { Service } from '../../../../shared/interfaces/service.interface';
-import { NumeralService } from '../../../../shared/services/numeral.service';
-import { DecoratorFormValues, GetFormValues } from '../../../../shared/decorators/get-form-values.decorator';
-import { BusinessServiceFormService } from '../../services/business-service-form.service';
+import { PlainsListService } from '../../../../shared/services/states/plains-list.service';
+import { Plain } from '../../../../shared/interfaces/plain.interface';
+import { PlainsEntityService } from '../../../../shared/services/states/plains-entity.service';
 
 @Component({
-  selector: 'business-service-page',
-  templateUrl: './business-service-page.component.html',
-  styleUrls: ['./business-service-page.component.scss']
+  selector: 'business-plain-page',
+  templateUrl: './business-plain-page.component.html',
+  styleUrls: ['./business-plain-page.component.scss']
 })
-@AutoUnsubscribe()
-export class BusinessServicePageComponent implements OnInit, OnDestroy {
+export class BusinessPlainPageComponent implements OnInit, OnDestroy {
   colors = environment.color;
   @CombineSubscriptions()
   subscribers: Unsubscribable;
@@ -39,7 +40,7 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
   urlSetup: string;
   paramPersist;
 
-  value: Service[];
+  business: Business[];
   person: Person;
 
   typePermission: string;
@@ -50,8 +51,8 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private numeralService: NumeralService,
-    private businessServiceFormService: BusinessServiceFormService,
-    private servicesEntityService: ServicesEntityService,
+    private businessFormService: BusinessFormService,
+    private plainsEntityService: PlainsEntityService,
     private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,
     private formFieldService: FormFieldService,
@@ -63,9 +64,9 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
     private urlService: UrlService,
     private utilsService: UtilsService,
     private confirmService: ConfirmService,
-    public servicesListService: ServicesListService,
+    public plainsListService: PlainsListService,
   ) {
-    servicesListService.resetList();
+    plainsListService.resetList();
     formsService.resetForm();
     this.urlService.setBasePath(route);
     this.subscribers = this.formValues.subscription;
@@ -78,22 +79,22 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(queryParams => {
           this.paramPersist = {};
-          const { serviceTypeId, name } = queryParams;
-          if (serviceTypeId) {
-            this.paramPersist['serviceTypeId'] = serviceTypeId;
-          }
+          const { name, type } = queryParams;
           if (name) {
             this.paramPersist['name'] = name;
           }
-          servicesListService.resetList();
-          this.urlSetup = this.urlService.getBusinessServiceSetup();
+          if (type) {
+            this.paramPersist['type'] = type;
+          }
+          plainsListService.resetList();
+          this.urlSetup = this.urlService.getBusinessPlainSetup();
           this.load(false);
           this._setListColumn();
-          return this.servicesListService.getList();
+          return this.plainsListService.getList();
         }),
-        tap(value => {
-          this.servicesListService.setDataTable(
-            this.getListColumnValues(value)
+        tap(response => {
+          this.plainsListService.setDataTable(
+            this.getListColumnValues(response)
           );
         })
       )
@@ -107,19 +108,18 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
   }
 
   load(isLoadMore = true) { // LOAD MORE
-    this.servicesListService.load(isLoadMore, this.paramPersist);
+    this.plainsListService.load(isLoadMore, this.paramPersist);
   }
 
   openFilter() {
     this.formConfigBaseService.initForm(this.paramPersist);
-    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessServiceFormService.getFilterForm());
+    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessFormService.getFilterForm());
   }
 
   cbButton($event: any) {
-
     const { element, columnData } = $event;
     if (columnData.id === 'edit') {
-      this.router.navigate([this.urlService.getBusinessServiceSetup(element.id)]);
+      this.router.navigate([this.urlService.getBusinessPlainSetup(element.id)]);
     } else if (columnData.id === 'cancel') {
       if (element.active) {
         this.confirmInactive(element);
@@ -127,11 +127,11 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  confirmInactive(value: Service): void {
+  confirmInactive(value: Plain): void {
     const user = this.person.user.find(p => p.personTypeId === this.permissions.id);
     const msg = 'Ao inativar este serviço todas as clinicas vinculadas a ele também perderão acesso a este serviço. <br/><br/> Deseja continuar ?';
     this.confirmService.confirm({
-      title: `Deseja realmente inativar este serviço?`,
+      title: `Deseja realmente inativar este plano?`,
       message: msg,
       buttonCancel: {
         show: true,
@@ -139,7 +139,7 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
       },
       buttonConfirm: {
         show: true,
-        label: `Inativar serviço`
+        label: `Inativar plano`
       }
     })
       .pipe(
@@ -150,7 +150,7 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
         switchMap(response => {
           const { confirm } = response;
           if (confirm) {
-            return this.servicesEntityService.inactive({
+            return this.plainsEntityService.inactive({
               id: value.id,
               personTypeId: user.personTypeId
             }).pipe(
@@ -166,21 +166,22 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
         if (error) {
           return;
         }
-        this.utilsService.toast('Serviço inativado!', 'success');
+        this.utilsService.toast('Plano inativado!', 'success');
       }, error => {
         this.utilsService.setError(error);
       });
   }
 
-  getListColumnValues(values: Service[]) {
+  getListColumnValues(values: Plain[]) {
     return values.map(val => {
-      const { id, value, active, serviceType, description, name } = val;
+      const { id, active, name, quantityLife, value, expirationDay, type } = val;
       return {
         id,
-        serviceTypeName: serviceType.name,
         name,
-        description,
+        quantityLife,
         value: this.numeralService.formatMoney(value),
+        expirationDay: `Dia ${ expirationDay }`,
+        type: type === 'E' ? 'Empresarial' : 'Pessoal',
         status: active ? 'Ativo' : 'Inativo',
         active
       };
@@ -188,34 +189,42 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
   }
 
   private _setListColumn() {
+
     this.columns = [
       {
         id: 'id',
-        columnName: 'serviceTypeName',
-        displayText: 'Tipo',
-        type: 'text',
-        urlBase: this.urlService.getBusinessServiceSetup()
-      },
-      {
-        id: 'id',
         columnName: 'name',
-        displayText: 'Serviço',
+        displayText: 'Plano',
         type: 'text',
-        urlBase: this.urlService.getBusinessServiceSetup()
+        urlBase: this.urlService.getBusinessPlainSetup()
       },
       {
         id: 'id',
-        columnName: 'description',
-        displayText: 'Descrição',
+        columnName: 'quantityLife',
+        displayText: 'Qtd de Vidas',
         type: 'text',
-        urlBase: this.urlService.getBusinessServiceSetup()
+        urlBase: this.urlService.getBusinessPlainSetup()
       },
       {
         id: 'id',
         columnName: 'value',
         displayText: 'Valor',
         type: 'text',
-        urlBase: this.urlService.getBusinessServiceSetup()
+        urlBase: this.urlService.getBusinessPlainSetup()
+      },
+      {
+        id: 'id',
+        columnName: 'type',
+        displayText: 'Tipo ',
+        type: 'text',
+        urlBase: this.urlService.getBusinessPlainSetup()
+      },
+      {
+        id: 'id',
+        columnName: 'expirationDay',
+        displayText: 'Vencimento ',
+        type: 'text',
+        urlBase: this.urlService.getBusinessPlainSetup()
       },
       {
         id: 'edit',
@@ -223,7 +232,7 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
         displayText: 'Editar',
         buttonLabel: 'Editar',
         type: 'button',
-        url: this.urlService.getBusinessServiceSetup(),
+        url: this.urlService.getBusinessPlainSetup(),
         maxWidth: 145,
       },
       {
@@ -231,7 +240,7 @@ export class BusinessServicePageComponent implements OnInit, OnDestroy {
         columnName: 'status',
         displayText: 'Status',
         type: 'button',
-        url: this.urlService.getBusinessServiceSetup(),
+        url: this.urlService.getBusinessPlainSetup(),
         maxWidth: 145,
       },
     ];

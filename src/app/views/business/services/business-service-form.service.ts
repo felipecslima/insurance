@@ -12,104 +12,40 @@ export class BusinessServiceFormService {
 
   getFilterForm() {
     return [
-      this.formFieldService.getText({
-        name: 'document',
-        title: 'CNPJ:',
-        placeholder: 'Digite um CNPJ',
-        validations: ['cnpj'],
-        mask: 'CNPJ',
+      this.formFieldService.getSelect({
+        name: 'serviceTypeId',
+        label: 'Tipos de serviços',
+        options: optionsTypeService
       }),
       this.formFieldService.getText({
-        name: 'fantasyName',
-        title: 'Nome Fantasia:',
-        placeholder: 'Digite um nome fantasia',
-      }),
-      this.formFieldService.getText({
-        name: 'phone',
-        title: 'Telefone:',
-        placeholder: 'Digite um número de telefone/celular',
-        mask: 'CELLPHONE',
-        validations: ['phone'],
-      }),
-      this.formFieldService.getText({
-        name: 'businessUserName',
-        title: 'Responsável:',
-        placeholder: 'Digite um responsável',
+        name: 'name',
+        title: 'Nome do serviço:',
+        placeholder: 'Digite um nome de serviço',
       }),
     ];
   }
 
-  getDefaultForm(businessId: boolean, permissions: Permission) {
-    const formConfig = [];
-    formConfig.push(
-      this.formFieldService.getText({
-        name: 'name',
-        title: 'Razão Social:',
-        placeholder: 'Digite a Razão Social',
-        validations: ['required'],
-      }),
-      this.formFieldService.getText({
-        name: 'fantasyName',
-        title: 'Nome Fantasia:',
-        placeholder: 'Digite o nome fantasia',
-        validations: ['required'],
-      }),
-      this.formFieldService.getText({
-        name: 'document',
-        title: 'CNPJ:',
-        placeholder: 'Digite o CNPJ',
-        validations: ['required', 'cnpj'],
-        mask: 'CNPJ',
-      })
-    );
-
-    formConfig.push(
-      this.formFieldService.getText({
-        name: 'recipient',
-        title: 'E-mail:',
-        placeholder: 'Digite um endereço de e-mail',
-        validations: ['email'],
-      }),
-      this.formFieldService.getText({
-        name: 'phone_number',
-        title: 'Telefone:',
-        placeholder: 'Digite um número de telefone/celular',
-        mask: 'CELLPHONE',
-        validations: ['phone'],
-      }),
-      this.formFieldService.getText({
-        name: 'description',
-        title: 'Descrição:',
-        placeholder: 'Digite a descrição',
-        validations: ['required'],
-      }),
-      // Dados de endereço
-      this.formFieldService.getText({
-        name: 'address_zipcode',
-        title: 'CEP:',
-        placeholder: 'Digite o CEP',
-        validations: ['required'],
-        mask: 'CEP',
-      }),
-      this.formFieldService.getText({
-        name: 'address_description',
-        title: 'Logradouro:',
-        placeholder: 'Digite o logradouro',
-        validations: ['required'],
-      }),
-      this.formFieldService.getText({
-        name: 'address_city',
-        title: 'Cidade:',
-        placeholder: 'Digite a cidade',
-        validations: ['required'],
-      }),
-      this.formFieldService.getText({
-        name: 'address_number',
-        title: 'Número:',
-        placeholder: 'Digite o número',
-        validations: ['required'],
-      })
-    );
-    return formConfig;
-  }
 }
+
+const optionsTypeService = [
+  {
+    value: '1',
+    label: 'Consulta'
+  },
+  {
+    value: '2',
+    label: 'Exame'
+  },
+  {
+    value: '3',
+    label: 'Diagnóstico'
+  },
+  {
+    value: '4',
+    label: 'Procedimento'
+  },
+  {
+    value: null,
+    label: 'Limpar tipo de serviço'
+  }
+];
