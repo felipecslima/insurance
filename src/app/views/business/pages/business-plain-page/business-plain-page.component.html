@@ -3,7 +3,7 @@
     <table-list
       *ngIf="!this.plainsListService.emptyResult"
       [hasFilter]="true"
-      [title]="'Lista de serviços'"
+      [title]="'Lista de planos'"
       [columns]="columns"
       (loadNewData)="load()"
       (cbButton)="cbButton($event)"
