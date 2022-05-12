@@ -43,6 +43,15 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
     );
   }
 
+  /**
+   * Fetch entity by ID from route of the API
+   */
+  public fetchCurrent(): Observable<Business> {
+    return this.getParamId().pipe(
+      switchMap(id => this.getByKey(id)),
+    );
+  }
+
   getEntityById(id): Observable<Business> {
     return this.entityMap$.pipe(
       filter(entities => entities && !!entities[id]),
