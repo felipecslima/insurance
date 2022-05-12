@@ -27,6 +27,7 @@ import {
 import { BusinessServicePageComponent } from './pages/business-service-page/business-service-page.component';
 import { BusinessServiceSetupPageComponent } from './pages/business-service-setup-page/business-service-setup-page.component';
 import { BusinessPlainPageComponent } from './pages/business-plain-page/business-plain-page.component';
+import { BusinessSafePageComponent } from './pages/business-safe-page/business-safe-page.component';
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { BusinessPlainPageComponent } from './pages/business-plain-page/business
     BusinessServicePageComponent,
     BusinessServiceSetupPageComponent,
     BusinessPlainPageComponent,
+    BusinessSafePageComponent,
   ]
 })
 export class BusinessModule {

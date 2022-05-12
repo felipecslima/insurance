@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableInfinityListColumn } from '../../../../shared/components/table-list/table-list.component';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { noop, of, Unsubscribable } from 'rxjs';
-import { PersonListService } from '../../../../shared/services/states/person-list.service';
+import { PersonsListService } from '../../../../shared/services/states/persons-list.service';
 import { environment } from '../../../../../environments/environment';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { UrlService } from '../../../../shared/services/url.service';
@@ -56,7 +56,7 @@ export class PersonListPageComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private confirmService: ConfirmService,
     private personFormService: PersonFormService,
-    public personListService: PersonListService,
+    public personListService: PersonsListService,
     private personsEntityService: PersonsEntityService
   ) {
     personListService.resetList();

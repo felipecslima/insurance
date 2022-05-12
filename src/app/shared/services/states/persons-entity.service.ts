@@ -13,6 +13,7 @@ import { filter, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { UtilsService } from '../utils.service';
 import { DateService } from '../date.service';
 import { FormConfigBaseService } from '../../forms/services/form-config-base.service';
+import { Safe } from '../../interfaces/safe.interface';
 
 @Injectable({ providedIn: 'root' })
 export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
@@ -76,10 +77,15 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
    * Get the current selected business by the user, based on the
    * router service param attribute 'businessId'
    */
-  public getCurrent(): Observable<Person> {
+  getParamId(): Observable<string> {
     return this.routerParamsService.params.pipe(
       filter(params => !!params?.personId),
       pluck('personId'),
+    );
+  }
+
+  public getCurrent(): Observable<Person> {
+    return this.getParamId().pipe(
       switchMap(id => this.getEntityById(id)),
     );
   }

@@ -5,41 +5,40 @@ import {
 import { Observable } from 'rxjs';
 import { filter, map, pluck, switchMap } from 'rxjs/operators';
 import { RouterParamsService } from '../router-params.service';
-import { Plain } from '../../interfaces/plain.interface';
-import { PlainsDataService } from './plains-data.service';
+import { SafesDataService } from './safes-data.service';
 import { Safe } from '../../interfaces/safe.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlainsEntityService extends EntityCollectionServiceBase<Plain> {
+export class SafesEntityService extends EntityCollectionServiceBase<Safe> {
 
   constructor(
-    private dataService: PlainsDataService,
+    private dataService: SafesDataService,
     private routerParamsService: RouterParamsService,
     serviceElementsFactory: EntityCollectionServiceElementsFactory
   ) {
-    super('Plains', serviceElementsFactory);
+    super('Safes', serviceElementsFactory);
   }
 
-  public inactive(params: { id: number, personTypeId: number }): Observable<Plain> {
+  public inactive(params: { id: number, personTypeId: number }): Observable<Safe> {
     return this.dataService.inactive(params);
   }
 
   getParamId(): Observable<string> {
     return this.routerParamsService.params.pipe(
-      filter(params => !!params?.plainId),
-      pluck('plainId'),
+      filter(params => !!params?.safeId),
+      pluck('safeId'),
     );
   }
 
-  public getCurrent(): Observable<Plain> {
+  public getCurrent(): Observable<Safe> {
     return this.getParamId().pipe(
       switchMap(id => this.getEntityById(id)),
     );
   }
 
-  getEntityById(id): Observable<Plain> {
+  getEntityById(id): Observable<Safe> {
     return this.entityMap$.pipe(
       filter(entities => entities && !!entities[id]),
       map(entities => {
@@ -48,7 +47,7 @@ export class PlainsEntityService extends EntityCollectionServiceBase<Plain> {
     );
   }
 
-  populate(value: Plain) {
+  populate(value: Safe) {
     // TODO: Edit populate
   }
 }

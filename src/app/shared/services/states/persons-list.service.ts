@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { TableEntityService } from './table-entity.service';
 
 @Injectable({ providedIn: 'root' })
-export class PersonListService {
+export class PersonsListService {
 
   /**
    * The first search

@@ -12,6 +12,23 @@ export class UrlService {
     this.basePath = this.getParamType(route);
   }
 
+  public getBusinessSafeList(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBasePath(typeList),
+      'negocios',
+      'seguros',
+    ].join('/');
+  }
+
+  public getBusinessSafeSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
+    return [
+      this.getBusinessSafeList(typeList),
+      'setup',
+      id,
+    ].join('/');
+  }
+
+
   public getBusinessPlainList(typeList: ChildPersonList['type']): string {
     return [
       this.getBasePath(typeList),

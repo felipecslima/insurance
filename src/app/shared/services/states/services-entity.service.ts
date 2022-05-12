@@ -7,6 +7,7 @@ import { filter, map, pluck, switchMap } from 'rxjs/operators';
 import { RouterParamsService } from '../router-params.service';
 import { Service } from '../../interfaces/service.interface';
 import { ServicesDataService } from './services-data.service';
+import { Plain } from '../../interfaces/plain.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,17 +21,24 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
   ) {
     super('Services', serviceElementsFactory);
   }
+
   public inactive(params: { id: number, personTypeId: number }): Observable<Service> {
     return this.servicesDataService.inactive(params);
   }
 
-  public getCurrent(): Observable<Service> {
+  getParamId(): Observable<string> {
     return this.routerParamsService.params.pipe(
       filter(params => !!params?.serviceId),
       pluck('serviceId'),
+    );
+  }
+
+  public getCurrent(): Observable<Service> {
+    return this.getParamId().pipe(
       switchMap(id => this.getEntityById(id)),
     );
   }
+
 
   getEntityById(id): Observable<Service> {
     return this.entityMap$.pipe(

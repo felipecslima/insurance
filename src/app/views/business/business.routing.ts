@@ -80,6 +80,28 @@ export const BusinessRoutes: Routes = [
           },
         ]
       },
+      {
+        path: `seguros`,
+        component: AdminLayoutInternalComponent,
+        data: { title: `Lista de seguros`, breadcrumb: `Lista de seguros` },
+        children: [
+          {
+            path: ``,
+            component: BusinessPlainPageComponent,
+            data: { title: `Lista de seguros`, breadcrumb: `Lista de seguros` },
+          },
+          {
+            path: `setup`,
+            component: BusinessServiceSetupPageComponent,
+            data: { title: `Cadastrar de seguro`, breadcrumb: `Cadastro de seguro` },
+          },
+          {
+            path: `setup/:safeId`,
+            component: BusinessServiceSetupPageComponent,
+            data: { title: `Editar de seguro`, breadcrumb: `Cadastro de seguro` },
+          },
+        ]
+      },
     ]
   }
 ];

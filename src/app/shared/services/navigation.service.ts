@@ -128,6 +128,12 @@ export class NavigationService {
         type: 'link',
         icon: 'health_and_safety',
         state: this.urlService.getBusinessPlainList(paramType),
+      },
+      {
+        name: 'Seguros',
+        type: 'link',
+        icon: 'verified_user',
+        state: this.urlService.getBusinessSafeList(paramType),
       }
     ];
   }

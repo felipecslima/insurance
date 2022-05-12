@@ -9,6 +9,7 @@ import { RouterParamsService } from '../router-params.service';
 import { BusinessDataService } from './business-data.service';
 import { UtilsService } from '../utils.service';
 import { FormConfigBaseService } from '../../forms/services/form-config-base.service';
+import { Person } from '../../interfaces/person.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -29,14 +30,6 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
     return this.businessDataService.businessInactive(params);
   }
 
-  public getCurrent(): Observable<Business> {
-    return this.routerParamsService.params.pipe(
-      filter(params => !!params?.businessId),
-      pluck('businessId'),
-      switchMap(id => this.getEntityById(id)),
-    );
-  }
-
   getParamId(): Observable<string> {
     return this.routerParamsService.params.pipe(
       filter(params => !!params?.businessId),
@@ -44,11 +37,9 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
     );
   }
 
-  public getServerCurrent(): Observable<Business> {
-    return this.routerParamsService.params.pipe(
-      filter(params => !!params?.businessId),
-      pluck('businessId'),
-      switchMap(id => this.getByKey(id)),
+  public getCurrent(): Observable<Business> {
+    return this.getParamId().pipe(
+      switchMap(id => this.getEntityById(id)),
     );
   }
 
