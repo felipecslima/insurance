@@ -22,7 +22,7 @@ export class UrlService {
 
   public getBusinessPlainSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
     return [
-      this.getBusinessServiceList(typeList),
+      this.getBusinessPlainList(typeList),
       'setup',
       id,
     ].join('/');
