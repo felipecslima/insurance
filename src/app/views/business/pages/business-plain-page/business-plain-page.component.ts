@@ -23,6 +23,7 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 import { PlainsListService } from '../../../../shared/services/states/plains-list.service';
 import { Plain } from '../../../../shared/interfaces/plain.interface';
 import { PlainsEntityService } from '../../../../shared/services/states/plains-entity.service';
+import { BusinessPlainFormService } from '../../services/business-plain-form.service';
 
 @Component({
   selector: 'business-plain-page',
@@ -51,7 +52,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private numeralService: NumeralService,
-    private businessFormService: BusinessFormService,
+    private businessPlainFormService: BusinessPlainFormService,
     private plainsEntityService: PlainsEntityService,
     private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,
@@ -113,7 +114,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
 
   openFilter() {
     this.formConfigBaseService.initForm(this.paramPersist);
-    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessFormService.getFilterForm());
+    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessPlainFormService.getFilterForm());
   }
 
   cbButton($event: any) {
@@ -201,7 +202,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
       {
         id: 'id',
         columnName: 'quantityLife',
-        displayText: 'Qtd de Vidas',
+        displayText: 'Qtd de vidas',
         type: 'text',
         urlBase: this.urlService.getBusinessPlainSetup()
       },
