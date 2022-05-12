@@ -25,6 +25,31 @@ export class BusinessServiceFormService {
     ];
   }
 
+  getDefaultForm(serviceId: boolean, permissions: Permission) {
+    const formConfig = [];
+    formConfig.push(
+      this.formFieldService.getText({
+        name: 'name',
+        title: 'Nome:',
+        placeholder: 'Digite o nome do serviço',
+        validations: ['required'],
+      }),
+      this.formFieldService.getTextarea({
+        name: 'description',
+        title: 'Descrição:',
+        placeholder: 'Digite uma descrição para o serviço',
+        validations: ['required'],
+      }),
+      this.formFieldService.getCurrency({
+        name: 'value',
+        title: 'Custo:',
+        validations: ['required'],
+      }),
+    );
+
+    return formConfig;
+  }
+
 }
 
 const optionsTypeService = [

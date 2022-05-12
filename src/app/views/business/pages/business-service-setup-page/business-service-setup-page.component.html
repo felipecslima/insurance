@@ -1,1 +1,15 @@
-<p>business-service-setup-page works!</p>
+<div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+  <div clCard>
+    <mat-progress-bar #progress mode="determinate" class="progress"></mat-progress-bar>
+    <div clCardContent>
+      <cl-form-component *ngIf="formConfig" [formConfig]="formConfig">
+      </cl-form-component>
+    </div>
+    <div clCardFooterButton [disableTop]="true">
+      <button (click)="save()" [loading]="isFormLoading" [hasDisabled]="!this.isFormValid" clButtonContained
+              [bgColor]="colors.primary">
+        <span>Salvar</span>
+      </button>
+    </div>
+  </div>
+</div>
