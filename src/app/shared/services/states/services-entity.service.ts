@@ -17,7 +17,7 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
 
   static _defaultSaveEntity(values: any): Service {
     const { id,
-      serviceType,
+      serviceTypeId,
       name,
       description,
       value,
@@ -25,14 +25,14 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
       active = true,
       timestamp,
     } = values;
-    const { id: serviceTypeId } = serviceType;
+    const serviceType = { id: parseInt(serviceTypeId, 10) } ;
     return {
       id,
       serviceType,
       serviceTypeId,
       name,
       description,
-      value,
+      value: (value * 100),
       image,
       active,
       timestamp,
@@ -66,6 +66,15 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
     );
   }
 
+  /**
+   * Fetch entity by ID from route of the API
+   */
+  public fetchCurrent(): Observable<Service> {
+    return this.getParamId().pipe(
+      switchMap(id => this.getByKey(id)),
+    );
+  }
+
   getEntityById(id): Observable<Service> {
     return this.entityMap$.pipe(
       filter(entities => entities && !!entities[id]),
@@ -76,8 +85,12 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
   }
 
   populate(service: Service) {
+    const { serviceType, value } = service;
+    const { id: serviceTypeId } = serviceType;
     this.formConfigBaseService.initForm({
       ...service,
+      serviceTypeId: serviceTypeId.toString(),
+      value: (value / 100),
     });
   }
 
@@ -88,7 +101,7 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
   save(values: any): Observable<Service> {
     let body: Service = ServicesEntityService._defaultSaveEntity(values);
     body = this.utilsService.removeEmpty(body);
-    const { id } = values as Service; // personTypeId
+    const { id } = values as Service;
     let observable: Observable<Service>;
     if (id) {
       observable = this.update(body);

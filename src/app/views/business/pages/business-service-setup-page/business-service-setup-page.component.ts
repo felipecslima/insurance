@@ -63,8 +63,7 @@ export class BusinessServiceSetupPageComponent implements OnInit, OnDestroy, Aft
     this.typePermission = utilsService.getParamType(route);
     this.permissions = this.jwtAuthService.getPermission(this.typePermission);
 
-    this.subscribers = this.entityService.getCurrent().subscribe(noop);
-
+    this.subscribers = this.entityService.fetchCurrent().subscribe(noop);
 
     this.subscribers = formConfigBaseService.getValues().subscribe(values => {
       this.values = values;
@@ -126,8 +125,8 @@ export class BusinessServiceSetupPageComponent implements OnInit, OnDestroy, Aft
     if (!this.isFormValid) {
       return;
     }
-    this.values = { ...this.values, };
-    this.subscribers = this.entityService.save(this.values)
+    const values = { ...this.values, };
+    this.subscribers = this.entityService.save(values)
       .subscribe(() => {
         this.utilsService.toast('Serviço salvo com sucesso!', 'success');
         this.router.navigate([this.urlService.getBusinessServiceList(this.typePermission)]);

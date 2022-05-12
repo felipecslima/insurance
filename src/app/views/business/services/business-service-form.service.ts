@@ -34,6 +34,12 @@ export class BusinessServiceFormService {
         placeholder: 'Digite o nome do serviço',
         validations: ['required'],
       }),
+      this.formFieldService.getSelect({
+        name: 'serviceTypeId',
+        label: 'Tipos de serviços',
+        options: optionsTypeService,
+        validations: ['required'],
+      }),
       this.formFieldService.getTextarea({
         name: 'description',
         title: 'Descrição:',
