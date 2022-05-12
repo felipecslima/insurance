@@ -9,6 +9,7 @@ import {
   BusinessServiceSetupPageComponent
 } from './pages/business-service-setup-page/business-service-setup-page.component';
 import { BusinessPlainPageComponent } from './pages/business-plain-page/business-plain-page.component';
+import { BusinessSafePageComponent } from './pages/business-safe-page/business-safe-page.component';
 
 export const BusinessRoutes: Routes = [
   {
@@ -87,7 +88,7 @@ export const BusinessRoutes: Routes = [
         children: [
           {
             path: ``,
-            component: BusinessPlainPageComponent,
+            component: BusinessSafePageComponent,
             data: { title: `Lista de seguros`, breadcrumb: `Lista de seguros` },
           },
           {

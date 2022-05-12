@@ -12,15 +12,10 @@ export class BusinessSafeFormService {
 
   getFilterForm() {
     return [
-      this.formFieldService.getSelect({
-        name: 'type',
-        label: 'Tipos de plano',
-        options: optionsType
-      }),
       this.formFieldService.getText({
         name: 'name',
-        title: 'Nome do plano:',
-        placeholder: 'Digite um nome do plano',
+        title: 'Nome do seguro:',
+        placeholder: 'Digite um nome do seguro',
       }),
     ];
   }
