@@ -1,4 +1,4 @@
-export interface Plain {
+export interface Plan {
   id?: number;
   type: 'E' | 'F' ; // E = Business  F- Person
   name: string;

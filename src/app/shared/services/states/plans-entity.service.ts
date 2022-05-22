@@ -5,41 +5,41 @@ import {
 import { Observable } from 'rxjs';
 import { filter, map, pluck, switchMap } from 'rxjs/operators';
 import { RouterParamsService } from '../router-params.service';
-import { Plain } from '../../interfaces/plain.interface';
-import { PlainsDataService } from './plains-data.service';
+import { Plan } from '../../interfaces/plan.interface';
+import { PlansDataService } from './plans-data.service';
 import { Safe } from '../../interfaces/safe.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlainsEntityService extends EntityCollectionServiceBase<Plain> {
+export class PlansEntityService extends EntityCollectionServiceBase<Plan> {
 
   constructor(
-    private dataService: PlainsDataService,
+    private dataService: PlansDataService,
     private routerParamsService: RouterParamsService,
     serviceElementsFactory: EntityCollectionServiceElementsFactory
   ) {
-    super('Plains', serviceElementsFactory);
+    super('Plans', serviceElementsFactory);
   }
 
-  public inactive(params: { id: number, personTypeId: number }): Observable<Plain> {
+  public inactive(params: { id: number, personTypeId: number }): Observable<Plan> {
     return this.dataService.inactive(params);
   }
 
   getParamId(): Observable<string> {
     return this.routerParamsService.params.pipe(
-      filter(params => !!params?.plainId),
-      pluck('plainId'),
+      filter(params => !!params?.planId),
+      pluck('planId'),
     );
   }
 
-  public getCurrent(): Observable<Plain> {
+  public getCurrent(): Observable<Plan> {
     return this.getParamId().pipe(
       switchMap(id => this.getEntityById(id)),
     );
   }
 
-  getEntityById(id): Observable<Plain> {
+  getEntityById(id): Observable<Plan> {
     return this.entityMap$.pipe(
       filter(entities => entities && !!entities[id]),
       map(entities => {
@@ -48,7 +48,7 @@ export class PlainsEntityService extends EntityCollectionServiceBase<Plain> {
     );
   }
 
-  populate(value: Plain) {
+  populate(value: Plan) {
     // TODO: Edit populate
   }
 }

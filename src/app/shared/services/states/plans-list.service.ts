@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { finalize, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TableEntityService } from './table-entity.service';
-import { Plain } from '../../interfaces/plain.interface';
-import { PlainsEntityService } from './plains-entity.service';
+import { Plan } from '../../interfaces/plan.interface';
+import { PlansEntityService } from './plans-entity.service';
 
 @Injectable({ providedIn: 'root' })
-export class PlainsListService {
+export class PlansListService {
 
   /**
    * The first search
@@ -48,11 +48,11 @@ export class PlainsListService {
    */
   filterArray = [];
 
-  list: Plain[] = [];
+  list: Plan[] = [];
 
   constructor(
     private tableEntityService: TableEntityService,
-    private entityService: PlainsEntityService,
+    private entityService: PlansEntityService,
   ) {
   }
 
@@ -77,7 +77,7 @@ export class PlainsListService {
   /**
    * Get array list
    */
-  getList(): Observable<Plain[]> {
+  getList(): Observable<Plan[]> {
     return this.entityService.entities$;
   }
 

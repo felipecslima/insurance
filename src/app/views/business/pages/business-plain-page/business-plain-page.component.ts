@@ -20,9 +20,9 @@ import { UrlService } from '../../../../shared/services/url.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { ConfirmService } from '../../../../shared/services/app-confirm/confirm.service';
 import { map, switchMap, take, tap } from 'rxjs/operators';
-import { PlainsListService } from '../../../../shared/services/states/plains-list.service';
-import { Plain } from '../../../../shared/interfaces/plain.interface';
-import { PlainsEntityService } from '../../../../shared/services/states/plains-entity.service';
+import { PlansListService } from '../../../../shared/services/states/plans-list.service';
+import { Plan } from '../../../../shared/interfaces/plan.interface';
+import { PlansEntityService } from '../../../../shared/services/states/plans-entity.service';
 import { BusinessPlainFormService } from '../../services/business-plain-form.service';
 
 @Component({
@@ -53,7 +53,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
   constructor(
     private numeralService: NumeralService,
     private businessPlainFormService: BusinessPlainFormService,
-    private plainsEntityService: PlainsEntityService,
+    private plainsEntityService: PlansEntityService,
     private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,
     private formFieldService: FormFieldService,
@@ -65,7 +65,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
     private urlService: UrlService,
     private utilsService: UtilsService,
     private confirmService: ConfirmService,
-    public plainsListService: PlainsListService,
+    public plainsListService: PlansListService,
   ) {
     plainsListService.resetList();
     formsService.resetForm();
@@ -128,7 +128,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  confirmInactive(value: Plain): void {
+  confirmInactive(value: Plan): void {
     const user = this.person.user.find(p => p.personTypeId === this.permissions.id);
     const msg = 'Ao inativar este serviço todas as clinicas vinculadas a ele também perderão acesso a este serviço. <br/><br/> Deseja continuar ?';
     this.confirmService.confirm({
@@ -173,7 +173,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  getListColumnValues(values: Plain[]) {
+  getListColumnValues(values: Plan[]) {
     return values.map(val => {
       const { id, active, name, quantityLife, value, expirationDay, type } = val;
       return {
