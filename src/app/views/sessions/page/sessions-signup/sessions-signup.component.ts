@@ -32,7 +32,7 @@ export class SessionsSignupComponent implements OnInit {
       value: 'E',
       description: 'Planos categoria pessoa fisica que podem ser contratados por qualquer usuário e tambem os coletivos por adesão por categoria profissional através de entidades de classe',
       selected: false,
-    }
+    },
   ];
 
   selectSignupPlan: CustomPrice[];
@@ -83,7 +83,7 @@ export class SessionsSignupComponent implements OnInit {
   }
 
   stepperChange(stepper: StepperSelectionEvent) {
-    this.changeLayout = false;
+    this.changeLayout = true;
     this.selectedIndex = stepper.selectedIndex;
   }
 }

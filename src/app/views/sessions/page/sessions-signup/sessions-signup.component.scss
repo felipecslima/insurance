@@ -20,10 +20,12 @@
 
 .form-holder {
   transition: left 1s linear;
+  max-width: 40%
 }
 
 .width-100 {
   min-width: 100% !important;
+  max-width: 100% !important;
   width: 100% !important;
 }
 
