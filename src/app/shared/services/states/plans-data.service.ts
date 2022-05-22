@@ -19,6 +19,14 @@ export class PlansDataService extends DefaultDataService<Plan> {
     super('Plans', http, httpUrlGenerator, config);
   }
 
+  add(entity: Plan): Observable<Plan> {
+    return this.http.post(`${ this._baseUrl }`, entity).pipe(
+      map(response => {
+        return response as Plan;
+      })
+    );
+  }
+
   inactive(params: { id: number, personTypeId: number }): Observable<any> {
     const { id, personTypeId } = params;
     return this.http.put(`${ this._baseUrl }/${ id }/inactive`, { personTypeId });

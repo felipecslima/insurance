@@ -7,8 +7,6 @@ import { Business } from '../../../../shared/interfaces/business.interface';
 import { Permission, Person } from '../../../../shared/interfaces/person.interface';
 import { DecoratorFormValues, GetFormValues } from '../../../../shared/decorators/get-form-values.decorator';
 import { NumeralService } from '../../../../shared/services/numeral.service';
-import { BusinessFormService } from '../../services/business-form.service';
-import { ServicesEntityService } from '../../../../shared/services/states/services-entity.service';
 import { DateService } from '../../../../shared/services/date.service';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
@@ -23,14 +21,14 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 import { PlansListService } from '../../../../shared/services/states/plans-list.service';
 import { Plan } from '../../../../shared/interfaces/plan.interface';
 import { PlansEntityService } from '../../../../shared/services/states/plans-entity.service';
-import { BusinessPlainFormService } from '../../services/business-plain-form.service';
+import { BusinessPlanFormService } from '../../services/business-plan-form.service';
 
 @Component({
-  selector: 'business-plain-page',
-  templateUrl: './business-plain-page.component.html',
-  styleUrls: ['./business-plain-page.component.scss']
+  selector: 'business-plan-page',
+  templateUrl: './business-plan-page.component.html',
+  styleUrls: ['./business-plan-page.component.scss']
 })
-export class BusinessPlainPageComponent implements OnInit, OnDestroy {
+export class BusinessPlanPageComponent implements OnInit, OnDestroy {
   colors = environment.color;
   @CombineSubscriptions()
   subscribers: Unsubscribable;
@@ -52,7 +50,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private numeralService: NumeralService,
-    private businessPlainFormService: BusinessPlainFormService,
+    private businessPlanFormService: BusinessPlanFormService,
     private plainsEntityService: PlansEntityService,
     private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,
@@ -88,7 +86,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
             this.paramPersist['type'] = type;
           }
           plainsListService.resetList();
-          this.urlSetup = this.urlService.getBusinessPlainSetup();
+          this.urlSetup = this.urlService.getBusinessPlanSetup();
           this.load(false);
           this._setListColumn();
           return this.plainsListService.getList();
@@ -114,13 +112,13 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
 
   openFilter() {
     this.formConfigBaseService.initForm(this.paramPersist);
-    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessPlainFormService.getFilterForm());
+    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessPlanFormService.getFilterForm());
   }
 
   cbButton($event: any) {
     const { element, columnData } = $event;
     if (columnData.id === 'edit') {
-      this.router.navigate([this.urlService.getBusinessPlainSetup(element.id)]);
+      this.router.navigate([this.urlService.getBusinessPlanSetup(element.id)]);
     } else if (columnData.id === 'cancel') {
       if (element.active) {
         this.confirmInactive(element);
@@ -197,35 +195,35 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
         columnName: 'name',
         displayText: 'Plano',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'id',
         columnName: 'quantityLife',
         displayText: 'Qtd de vidas',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'id',
         columnName: 'value',
         displayText: 'Valor',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'id',
         columnName: 'type',
         displayText: 'Tipo ',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'id',
         columnName: 'expirationDay',
         displayText: 'Vencimento ',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'edit',
@@ -233,7 +231,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
         displayText: 'Editar',
         buttonLabel: 'Editar',
         type: 'button',
-        url: this.urlService.getBusinessPlainSetup(),
+        url: this.urlService.getBusinessPlanSetup(),
         maxWidth: 145,
       },
       {
@@ -241,7 +239,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
         columnName: 'status',
         displayText: 'Status',
         type: 'button',
-        url: this.urlService.getBusinessPlainSetup(),
+        url: this.urlService.getBusinessPlanSetup(),
         maxWidth: 145,
       },
     ];

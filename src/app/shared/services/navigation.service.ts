@@ -127,7 +127,7 @@ export class NavigationService {
         name: 'Planos',
         type: 'link',
         icon: 'health_and_safety',
-        state: this.urlService.getBusinessPlainList(paramType),
+        state: this.urlService.getBusinessPlanList(paramType),
       },
       {
         name: 'Seguros',
