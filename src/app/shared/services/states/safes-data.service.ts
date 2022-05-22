@@ -19,6 +19,14 @@ export class SafesDataService extends DefaultDataService<Safe> {
     super('Safes', http, httpUrlGenerator, config);
   }
 
+  add(entity: Safe): Observable<Safe> {
+    return this.http.post(`${ this._baseUrl }`, entity).pipe(
+      map(response => {
+        return response as Safe;
+      })
+    );
+  }
+
   inactive(params: { id: number, personTypeId: number }): Observable<any> {
     const { id, personTypeId } = params;
     return this.http.put(`${ this._baseUrl }/${ id }/inactive`, { personTypeId });

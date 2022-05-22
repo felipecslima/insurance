@@ -19,6 +19,14 @@ export class ServicesDataService extends DefaultDataService<Service> {
     super('Services', http, httpUrlGenerator, config);
   }
 
+  add(entity: Service): Observable<Service> {
+    return this.http.post(`${ this._baseUrl }`, entity).pipe(
+      map(response => {
+        return response as Service;
+      })
+    );
+  }
+
   inactive(params: { id: number, personTypeId: number }): Observable<any> {
     const { id, personTypeId } = params;
     return this.http.put(`${ this._baseUrl }/${ id }/inactive`, { personTypeId });

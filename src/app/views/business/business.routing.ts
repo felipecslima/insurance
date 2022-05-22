@@ -10,6 +10,7 @@ import {
 } from './pages/business-service-setup-page/business-service-setup-page.component';
 import { BusinessPlainPageComponent } from './pages/business-plain-page/business-plain-page.component';
 import { BusinessSafePageComponent } from './pages/business-safe-page/business-safe-page.component';
+import { BusinessSafeSetupPageComponent } from './pages/business-safe-setup-page/business-safe-setup-page.component';
 
 export const BusinessRoutes: Routes = [
   {
@@ -93,12 +94,12 @@ export const BusinessRoutes: Routes = [
           },
           {
             path: `setup`,
-            component: BusinessServiceSetupPageComponent,
+            component: BusinessSafeSetupPageComponent,
             data: { title: `Cadastrar de seguro`, breadcrumb: `Cadastro de seguro` },
           },
           {
             path: `setup/:safeId`,
-            component: BusinessServiceSetupPageComponent,
+            component: BusinessSafeSetupPageComponent,
             data: { title: `Editar de seguro`, breadcrumb: `Cadastro de seguro` },
           },
         ]

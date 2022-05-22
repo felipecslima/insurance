@@ -20,15 +20,28 @@ export class BusinessSafeFormService {
     ];
   }
 
-}
+  getDefaultForm(safeId: boolean, permissions: Permission) {
+    const formConfig = [];
+    formConfig.push(
+      this.formFieldService.getText({
+        name: 'name',
+        title: 'Nome:',
+        placeholder: 'Digite o nome do seguro',
+        validations: ['required'],
+      }),
+      this.formFieldService.getCurrency({
+        name: 'value',
+        title: 'Custo:',
+        validations: ['required'],
+      }),
+      this.formFieldService.getTextarea({
+        name: 'description',
+        title: 'Descrição:',
+        placeholder: 'Digite uma descrição para o seguro',
+        validations: ['required'],
+      }),
+    );
+    return formConfig;
+  }
 
-const optionsType = [
-  {
-    value: 'E',
-    label: 'Empresarial'
-  },
-  {
-    value: 'F',
-    label: 'Pessoa física'
-  },
-];
+}
