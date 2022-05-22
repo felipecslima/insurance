@@ -7,8 +7,6 @@ import { Business } from '../../../../shared/interfaces/business.interface';
 import { Permission, Person } from '../../../../shared/interfaces/person.interface';
 import { DecoratorFormValues, GetFormValues } from '../../../../shared/decorators/get-form-values.decorator';
 import { NumeralService } from '../../../../shared/services/numeral.service';
-import { BusinessFormService } from '../../services/business-form.service';
-import { ServicesEntityService } from '../../../../shared/services/states/services-entity.service';
 import { DateService } from '../../../../shared/services/date.service';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 import { FormFieldService } from '../../../../shared/forms/services/form-field.service';
@@ -23,14 +21,14 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 import { PlansListService } from '../../../../shared/services/states/plans-list.service';
 import { Plan } from '../../../../shared/interfaces/plan.interface';
 import { PlansEntityService } from '../../../../shared/services/states/plans-entity.service';
-import { BusinessPlainFormService } from '../../services/business-plain-form.service';
+import { BusinessPlanFormService } from '../../services/business-plan-form.service';
 
 @Component({
-  selector: 'business-plain-page',
-  templateUrl: './business-plain-page.component.html',
-  styleUrls: ['./business-plain-page.component.scss']
+  selector: 'business-plan-page',
+  templateUrl: './business-plan-page.component.html',
+  styleUrls: ['./business-plan-page.component.scss']
 })
-export class BusinessPlainPageComponent implements OnInit, OnDestroy {
+export class BusinessPlanPageComponent implements OnInit, OnDestroy {
   colors = environment.color;
   @CombineSubscriptions()
   subscribers: Unsubscribable;
@@ -52,7 +50,7 @@ export class BusinessPlainPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private numeralService: NumeralService,
-    private businessPlainFormService: BusinessPlainFormService,
+    private businessPlainFormService: BusinessPlanFormService,
     private plainsEntityService: PlansEntityService,
     private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,

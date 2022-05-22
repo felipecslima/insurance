@@ -8,9 +8,10 @@ import { BusinessServicePageComponent } from './pages/business-service-page/busi
 import {
   BusinessServiceSetupPageComponent
 } from './pages/business-service-setup-page/business-service-setup-page.component';
-import { BusinessPlainPageComponent } from './pages/business-plain-page/business-plain-page.component';
+import { BusinessPlanPageComponent } from './pages/business-plan-page/business-plan-page.component';
 import { BusinessSafePageComponent } from './pages/business-safe-page/business-safe-page.component';
 import { BusinessSafeSetupPageComponent } from './pages/business-safe-setup-page/business-safe-setup-page.component';
+import { BusinessPlanSetupPageComponent } from './pages/business-plan-setup-page/business-plan-setup-page.component';
 
 export const BusinessRoutes: Routes = [
   {
@@ -67,17 +68,17 @@ export const BusinessRoutes: Routes = [
         children: [
           {
             path: ``,
-            component: BusinessPlainPageComponent,
+            component: BusinessPlanPageComponent,
             data: { title: `Lista de planos`, breadcrumb: `Lista de planos` },
           },
           {
             path: `setup`,
-            component: BusinessServiceSetupPageComponent,
+            component: BusinessPlanSetupPageComponent,
             data: { title: `Cadastrar de plano`, breadcrumb: `Cadastro de plano` },
           },
           {
-            path: `setup/:serviceId`,
-            component: BusinessServiceSetupPageComponent,
+            path: `setup/:planId`,
+            component: BusinessPlanSetupPageComponent,
             data: { title: `Editar de plano`, breadcrumb: `Cadastro de plano` },
           },
         ]
