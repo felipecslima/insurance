@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 export class SessionsCustomCheckboxComponent implements OnInit, OnChanges {
   @Input() options: CustomCheckbox[];
   @Input() direction: 'row' | 'column' = 'row';
+  @Input() single = true;
   @Output() value: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() {
@@ -20,7 +21,17 @@ export class SessionsCustomCheckboxComponent implements OnInit, OnChanges {
   }
 
   select(option) {
-    this.value.emit(option.value);
+    if (this.single) {
+      this.options = this.options.map(o => {
+        o.selected = false;
+        if (option.value === o.value) {
+          o.selected = !option.selected;
+        }
+        return o;
+      });
+      const selected = this.options.find(o => o.selected === true);
+      this.value.emit(selected?.value);
+    }
   }
 }
 

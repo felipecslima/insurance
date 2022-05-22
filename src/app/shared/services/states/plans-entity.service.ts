@@ -16,7 +16,8 @@ import { UtilsService } from '../utils.service';
 export class PlansEntityService extends EntityCollectionServiceBase<Plan> {
 
   static _defaultSaveEntity(values: any): Plan {
-    const { id,
+    const {
+      id,
       name,
       type,
       quantityLife,
@@ -80,6 +81,15 @@ export class PlansEntityService extends EntityCollectionServiceBase<Plan> {
       filter(entities => entities && !!entities[id]),
       map(entities => {
         return entities[id];
+      }),
+    );
+  }
+
+  getPlanByType(type: 'E' | 'P'): Observable<Plan[]> {
+    return this.entities$.pipe(
+      filter(response => !!response),
+      map(response => {
+        return response.filter(e => e.type === type);
       }),
     );
   }

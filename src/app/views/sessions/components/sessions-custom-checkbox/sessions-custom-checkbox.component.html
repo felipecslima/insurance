@@ -1,4 +1,4 @@
-<div [fxLayout]="direction">
+<div [fxLayout]="direction" fxLayoutGap="16px">
   <div fxFlex="100" *ngFor="let option of options" clCardAction [class.cl-card__outline]="option.selected"
        (click)="select(option)">
     <div clCardContent fxLayout="row" fxLayoutAlign="center center">

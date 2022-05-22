@@ -17,6 +17,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { SessionsAreasPageComponent } from './page/sessions-areas-page/sessions-areas-page.component';
 import { SessionsSignupComponent } from './page/sessions-signup/sessions-signup.component';
 import { SessionsCustomCheckboxComponent } from './components/sessions-custom-checkbox/sessions-custom-checkbox.component';
+import { SessionsCustomPricingComponent } from './components/sessions-custom-pricing/sessions-custom-pricing.component';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { SessionsCustomCheckboxComponent } from './components/sessions-custom-ch
     NotFoundComponent,
     ErrorComponent,
     SessionsCustomCheckboxComponent,
+    SessionsCustomPricingComponent,
   ]
 })
 export class SessionsModule {
