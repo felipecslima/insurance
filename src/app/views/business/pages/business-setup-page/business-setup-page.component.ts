@@ -65,8 +65,7 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy, AfterViewI
     this.typePermission = utilsService.getParamType(route);
     this.permissions = this.jwtAuthService.getPermission(this.typePermission);
 
-    this.subscribers = this.businessEntityService.getServerCurrent().subscribe(noop);
-
+    this.subscribers = this.businessEntityService.fetchCurrent().subscribe(noop);
 
     this.subscribers = formConfigBaseService.getValues().subscribe(values => {
       this.values = values;
@@ -96,7 +95,6 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy, AfterViewI
           if (businessId) {
             this.setProgress(true);
           }
-          this.setupForm();
           return this.businessEntityService.getCurrent();
         }),
         tap(entity => {

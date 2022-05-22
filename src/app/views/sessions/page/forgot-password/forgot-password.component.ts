@@ -8,6 +8,7 @@ import { Unsubscribable } from 'rxjs';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { ActivatedRoute } from '@angular/router';
+import { DateService } from '../../../../shared/services/date.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -35,6 +36,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   token: string;
 
   constructor(
+    private dateService: DateService,
     private route: ActivatedRoute,
     private utilsService: UtilsService,
     private personsEntityService: PersonsEntityService,
@@ -145,7 +147,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     }
     this.isFormLoading = true;
     this.progressBar.mode = 'indeterminate';
-    const { email, birthday } = this.values;
+    const { email, birthday: bday } = this.values;
+    const birthday = this.dateService.getDateFormatted(bday, 'DD/MM/YYYY', 'YYYY-MM-DD');
     this.personsEntityService.forgotPassword(email, birthday)
       .subscribe(() => {
         this.isFormLoading = false;

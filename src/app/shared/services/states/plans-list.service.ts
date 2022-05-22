@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { PersonsEntityService } from './persons-entity.service';
-import { Person } from '../../interfaces/person.interface';
 import { finalize, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TableEntityService } from './table-entity.service';
+import { Plan } from '../../interfaces/plan.interface';
+import { PlansEntityService } from './plans-entity.service';
 
 @Injectable({ providedIn: 'root' })
-export class PersonListService {
+export class PlansListService {
 
   /**
    * The first search
@@ -46,15 +46,13 @@ export class PersonListService {
   /**
    * Array with all the fields to search in the query string
    */
-  filterArray = [
-    'q',
-  ];
+  filterArray = [];
 
-  list: Person[] = [];
+  list: Plan[] = [];
 
   constructor(
     private tableEntityService: TableEntityService,
-    private personsEntityService: PersonsEntityService,
+    private entityService: PlansEntityService,
   ) {
   }
 
@@ -69,7 +67,7 @@ export class PersonListService {
     this.emptySearch = false;
     this.firstResult = 0;
     this.tableEntityService.clearCache();
-    this.personsEntityService.clearCache();
+    this.entityService.clearCache();
   }
 
   setDataTable(data: any) {
@@ -79,8 +77,8 @@ export class PersonListService {
   /**
    * Get array list
    */
-  getList(): Observable<Person[]> {
-    return this.personsEntityService.entities$;
+  getList(): Observable<Plan[]> {
+    return this.entityService.entities$;
   }
 
   isLoadMore(isLoadMore): void {
@@ -100,7 +98,7 @@ export class PersonListService {
     }
     this.isLoading = true;
 
-    this.personsEntityService.getWithQuery({
+    this.entityService.getWithQuery({
       firstResult: this.firstResult.toString(),
       maxResults: this.maxResults.toString(),
       ...params,

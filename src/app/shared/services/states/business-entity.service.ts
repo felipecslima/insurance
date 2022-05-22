@@ -29,14 +29,6 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
     return this.businessDataService.businessInactive(params);
   }
 
-  public getCurrent(): Observable<Business> {
-    return this.routerParamsService.params.pipe(
-      filter(params => !!params?.businessId),
-      pluck('businessId'),
-      switchMap(id => this.getEntityById(id)),
-    );
-  }
-
   getParamId(): Observable<string> {
     return this.routerParamsService.params.pipe(
       filter(params => !!params?.businessId),
@@ -44,10 +36,17 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
     );
   }
 
-  public getServerCurrent(): Observable<Business> {
-    return this.routerParamsService.params.pipe(
-      filter(params => !!params?.businessId),
-      pluck('businessId'),
+  public getCurrent(): Observable<Business> {
+    return this.getParamId().pipe(
+      switchMap(id => this.getEntityById(id)),
+    );
+  }
+
+  /**
+   * Fetch entity by ID from route of the API
+   */
+  public fetchCurrent(): Observable<Business> {
+    return this.getParamId().pipe(
       switchMap(id => this.getByKey(id)),
     );
   }
