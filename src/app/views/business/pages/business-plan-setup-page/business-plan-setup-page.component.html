@@ -6,9 +6,13 @@
       </cl-form-component>
     </div>
     <div clCardFooterButton [disableTop]="true">
-      <button (click)="save()" [loading]="isFormLoading" [hasDisabled]="!this.isFormValid" clButtonContained
+      <button *ngIf="!this.entityId" (click)="save()" [loading]="isFormLoading" [hasDisabled]="!this.isFormValid" clButtonContained
               [bgColor]="colors.primary">
         <span>Salvar</span>
+      </button>
+      <button *ngIf="!!this.entityId" (click)="back()" clButtonContained
+              [bgColor]="colors.primary">
+        <span>Voltar</span>
       </button>
     </div>
   </div>

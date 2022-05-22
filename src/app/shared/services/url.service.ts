@@ -29,7 +29,7 @@ export class UrlService {
   }
 
 
-  public getBusinessPlainList(typeList: ChildPersonList['type']): string {
+  public getBusinessPlanList(typeList: ChildPersonList['type']): string {
     return [
       this.getBasePath(typeList),
       'negocios',
@@ -37,9 +37,9 @@ export class UrlService {
     ].join('/');
   }
 
-  public getBusinessPlainSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
+  public getBusinessPlanSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
     return [
-      this.getBusinessPlainList(typeList),
+      this.getBusinessPlanList(typeList),
       'setup',
       id,
     ].join('/');

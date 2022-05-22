@@ -91,6 +91,7 @@ export class BusinessPlanSetupPageComponent implements OnInit, OnDestroy, AfterV
         }),
         switchMap((entityId) => {
           if (entityId) {
+            this.entityId = parseInt(entityId, 10);
             this.setProgress(true);
           }
           this.setupForm();
@@ -129,10 +130,13 @@ export class BusinessPlanSetupPageComponent implements OnInit, OnDestroy, AfterV
     this.subscribers = this.entityService.save(values)
       .subscribe(() => {
         this.utilsService.toast('Serviço salvo com sucesso!', 'success');
-        this.router.navigate([this.urlService.getBusinessSafeList(this.typePermission)]);
+        this.back();
       }, error => {
         this.utilsService.setError(error);
       });
   }
 
+  back() {
+    this.router.navigate([this.urlService.getBusinessPlanList(this.typePermission)]);
+  }
 }

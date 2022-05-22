@@ -50,7 +50,7 @@ export class BusinessPlanPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private numeralService: NumeralService,
-    private businessPlainFormService: BusinessPlanFormService,
+    private businessPlanFormService: BusinessPlanFormService,
     private plainsEntityService: PlansEntityService,
     private dateService: DateService,
     private formConfigBaseService: FormConfigBaseService,
@@ -86,7 +86,7 @@ export class BusinessPlanPageComponent implements OnInit, OnDestroy {
             this.paramPersist['type'] = type;
           }
           plainsListService.resetList();
-          this.urlSetup = this.urlService.getBusinessPlainSetup();
+          this.urlSetup = this.urlService.getBusinessPlanSetup();
           this.load(false);
           this._setListColumn();
           return this.plainsListService.getList();
@@ -112,13 +112,13 @@ export class BusinessPlanPageComponent implements OnInit, OnDestroy {
 
   openFilter() {
     this.formConfigBaseService.initForm(this.paramPersist);
-    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessPlainFormService.getFilterForm());
+    this.dialogService.open('REGULAR', 'FilterListComponent', this.businessPlanFormService.getFilterForm());
   }
 
   cbButton($event: any) {
     const { element, columnData } = $event;
     if (columnData.id === 'edit') {
-      this.router.navigate([this.urlService.getBusinessPlainSetup(element.id)]);
+      this.router.navigate([this.urlService.getBusinessPlanSetup(element.id)]);
     } else if (columnData.id === 'cancel') {
       if (element.active) {
         this.confirmInactive(element);
@@ -195,35 +195,35 @@ export class BusinessPlanPageComponent implements OnInit, OnDestroy {
         columnName: 'name',
         displayText: 'Plano',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'id',
         columnName: 'quantityLife',
         displayText: 'Qtd de vidas',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'id',
         columnName: 'value',
         displayText: 'Valor',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'id',
         columnName: 'type',
         displayText: 'Tipo ',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'id',
         columnName: 'expirationDay',
         displayText: 'Vencimento ',
         type: 'text',
-        urlBase: this.urlService.getBusinessPlainSetup()
+        urlBase: this.urlService.getBusinessPlanSetup()
       },
       {
         id: 'edit',
@@ -231,7 +231,7 @@ export class BusinessPlanPageComponent implements OnInit, OnDestroy {
         displayText: 'Editar',
         buttonLabel: 'Editar',
         type: 'button',
-        url: this.urlService.getBusinessPlainSetup(),
+        url: this.urlService.getBusinessPlanSetup(),
         maxWidth: 145,
       },
       {
@@ -239,7 +239,7 @@ export class BusinessPlanPageComponent implements OnInit, OnDestroy {
         columnName: 'status',
         displayText: 'Status',
         type: 'button',
-        url: this.urlService.getBusinessPlainSetup(),
+        url: this.urlService.getBusinessPlanSetup(),
         maxWidth: 145,
       },
     ];
