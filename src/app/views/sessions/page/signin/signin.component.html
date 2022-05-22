@@ -17,6 +17,12 @@
             [hasDisabled]="!isFormValid" (click)="signin()" clButtonContained [bgColor]="colors.primary">
             <span>Entrar</span>
           </button>
+          <button
+            [routerLink]="'/sessions/cadastro'"
+            clButtonDense
+            clButtonContained>
+            <span>Cadastre-se</span>
+          </button>
           <div class="text-center">
             <a clButtonSecondary [routerLink]="'/sessions/mudar-senha'" class="mat-primary text-center full-width">Esqueci
               minha senha</a>

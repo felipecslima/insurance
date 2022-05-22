@@ -15,6 +15,8 @@ import { NotFoundComponent } from './page/not-found/not-found.component';
 import { ErrorComponent } from './page/error/error.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SessionsAreasPageComponent } from './page/sessions-areas-page/sessions-areas-page.component';
+import { SessionsSignupComponent } from './page/sessions-signup/sessions-signup.component';
+import { SessionsCustomCheckboxComponent } from './components/sessions-custom-checkbox/sessions-custom-checkbox.component';
 
 @NgModule({
   imports: [
@@ -28,12 +30,14 @@ import { SessionsAreasPageComponent } from './page/sessions-areas-page/sessions-
     RouterModule.forChild(SessionsRoutes)
   ],
   declarations: [
+    SessionsSignupComponent,
     SessionsAreasPageComponent,
     ForgotPasswordComponent,
     LockscreenComponent,
     SigninComponent,
     NotFoundComponent,
     ErrorComponent,
+    SessionsCustomCheckboxComponent,
   ]
 })
 export class SessionsModule {

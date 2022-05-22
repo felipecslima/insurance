@@ -7,6 +7,7 @@ import { NotFoundComponent } from './page/not-found/not-found.component';
 import { ErrorComponent } from './page/error/error.component';
 import { SessionsAreasPageComponent } from './page/sessions-areas-page/sessions-areas-page.component';
 import { AuthAreasGuard } from '../../shared/guards/authAreas.guard';
+import { SessionsSignupComponent } from './page/sessions-signup/sessions-signup.component';
 
 export const SessionsRoutes: Routes = [
   {
@@ -16,6 +17,11 @@ export const SessionsRoutes: Routes = [
         path: 'login',
         component: SigninComponent,
         data: { title: 'Signin' }
+      },
+      {
+        path: 'cadastro',
+        component: SessionsSignupComponent,
+        data: { title: 'Cadastro' }
       },
       {
         path: 'areas',
