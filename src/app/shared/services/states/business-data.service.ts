@@ -32,4 +32,12 @@ export class BusinessDataService extends DefaultDataService<Business> {
       })
     );
   }
+
+  add(entity: Business): Observable<Business> {
+    return this.http.post(`${ this._baseUrl }`, entity).pipe(
+      map(response => {
+        return response as Business;
+      })
+    );
+  }
 }

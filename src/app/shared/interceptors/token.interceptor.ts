@@ -4,6 +4,7 @@ import { Observable, Subject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { JwtAuthService } from '../services/auth/jwt-auth.service';
+import { UtilsService } from '../services/utils.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -13,7 +14,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private refreshTokenSubject = new Subject<any>();
   private authService: any;
 
-  constructor(private inj: Injector, private router: Router) {
+  constructor(private inj: Injector, private router: Router, private utilsService: UtilsService) {
     this.refreshTokenSubject.next(null);
     this.authService = this.inj.get(JwtAuthService);
   }
@@ -27,11 +28,13 @@ export class TokenInterceptor implements HttpInterceptor {
           return throwError(error);
         }
 
+        const { error: err } = error;
         if (error && (error?.status === 401)) {
           // 401 errors are most likely going to be because we have an expired token that we need to refresh.
           this.authService.signout(this.router.url);
+        } else if (error && (error?.status === 403)) {
+          this.utilsService.setError(err);
         }
-        const { error: err } = error;
         if (err) {
           return throwError(err);
         }

@@ -137,15 +137,18 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy, AfterViewI
       .subscribe(() => {
         this.utilsService.toast('Clínica salva com sucesso!', 'success');
         this.router.navigate([this.urlService.getBusinessList(this.typePermission)]);
-      }, error => {
-        this.utilsService.setError(error);
+      }, () => {
+        // this.utilsService.setError(error);
       });
   }
 
   getCallback(person: Person) {
     this.person = person;
     this.userId = person.user.find(u => u.personTypeId === this.permissions.id)?.id;
-    this.isFormValidAutoComplete = true;
+    if (!this.userId) {
+      this.utilsService.toast('Atenção: A pessoa selecionada não possui permissão para ser vinculada!', 'error');
+    }
+    this.isFormValidAutoComplete = !!this.userId;
     this.checkFormIsValid();
   }
 }

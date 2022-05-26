@@ -335,6 +335,15 @@ export class UtilsService {
     return cpf;
   }
 
+  public removeCNPJMask(cnpj) {
+    if (cnpj) {
+      cnpj = cnpj.replace(/\./g, '');
+      cnpj = cnpj.replace(/\//g, '');
+      cnpj = cnpj.replace(/-/g, '');
+    }
+    return cnpj;
+  }
+
   public removePhoneMask(phoneValid) {
     if (phoneValid) {
       phoneValid = phoneValid.replace(/\s/g, '');

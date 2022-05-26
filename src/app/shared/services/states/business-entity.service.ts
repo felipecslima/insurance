@@ -126,7 +126,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       id,
       name,
       fantasyName,
-      document,
+      document: maskedDocument,
       description,
       image,
       active = true,
@@ -147,6 +147,8 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       emailId,
       recipient,
     } = values;
+
+    const document = this.utilsService.removeCNPJMask(maskedDocument);
 
     const businessUser = [{
       id: businessUserId,
