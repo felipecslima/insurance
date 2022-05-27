@@ -17,7 +17,8 @@ import { FormConfigBaseService } from '../../forms/services/form-config-base.ser
 export class SafesEntityService extends EntityCollectionServiceBase<Safe> {
 
   static _defaultSaveEntity(values: any): Safe {
-    const { id,
+    const {
+      id,
       name,
       value,
       description,
@@ -76,6 +77,15 @@ export class SafesEntityService extends EntityCollectionServiceBase<Safe> {
       filter(entities => entities && !!entities[id]),
       map(entities => {
         return entities[id];
+      }),
+    );
+  }
+
+  getSafesActive(): Observable<Safe[]> {
+    return this.entities$.pipe(
+      filter(entities => entities && entities.length > 0),
+      map(entities => {
+        return entities.filter(e => e.active === true);
       }),
     );
   }

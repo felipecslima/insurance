@@ -20,7 +20,8 @@
 
 .form-holder {
   transition: left 1s linear;
-  max-width: 40%
+  max-width: 40%;
+  overflow-y: scroll;
 }
 
 .width-100 {
