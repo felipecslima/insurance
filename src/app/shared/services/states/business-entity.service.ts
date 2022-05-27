@@ -67,6 +67,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
       businessPhone,
       businessEmail,
     } = business;
+
     const { id: businessUserId, active: businessUserActive, personTypeId } = businessUser[0];
     const {
       id: addressId,

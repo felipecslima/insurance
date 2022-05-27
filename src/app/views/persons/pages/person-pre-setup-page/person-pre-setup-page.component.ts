@@ -91,7 +91,7 @@ export class PersonPreSetupPageComponent implements OnInit, OnDestroy {
     this.person = person;
     this.isFormValidAutoComplete = true;
     this.checkFormIsValid();
-    this.personsEntityService.populate(person);
+    this.personsEntityService.populate(person, this.permission);
   }
 
   save(): void {

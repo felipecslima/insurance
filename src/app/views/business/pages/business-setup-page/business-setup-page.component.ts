@@ -38,6 +38,7 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy, AfterViewI
 
   typePermission: string;
   permissions: Permission;
+  businessPermission: Permission;
 
   public formConfig;
   public values: any;
@@ -61,10 +62,11 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy, AfterViewI
     private businessFormService: BusinessFormService,
     private businessEntityService: BusinessEntityService,
   ) {
+
+    this.businessPermission = this.jwtAuthService.getPermission('clinica');
     this.urlService.setBasePath(route);
     this.typePermission = utilsService.getParamType(route);
     this.permissions = this.jwtAuthService.getPermission(this.typePermission);
-
     this.subscribers = this.businessEntityService.fetchCurrent().subscribe(noop);
 
     this.subscribers = formConfigBaseService.getValues().subscribe(values => {
@@ -137,14 +139,12 @@ export class BusinessSetupPageComponent implements OnInit, OnDestroy, AfterViewI
       .subscribe(() => {
         this.utilsService.toast('Clínica salva com sucesso!', 'success');
         this.router.navigate([this.urlService.getBusinessList(this.typePermission)]);
-      }, () => {
-        // this.utilsService.setError(error);
       });
   }
 
   getCallback(person: Person) {
     this.person = person;
-    this.userId = person.user.find(u => u.personTypeId === this.permissions.id)?.id;
+    this.userId = person.user.find(u => u.personTypeId === this.businessPermission.id)?.id;
     if (!this.userId) {
       this.utilsService.toast('Atenção: A pessoa selecionada não possui permissão para ser vinculada!', 'error');
     }

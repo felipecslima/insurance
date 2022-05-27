@@ -94,11 +94,16 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
    * Get the current selected business by the user, based on the
    * router service param attribute 'businessId'
    */
-  public getServerCurrent(): Observable<Person> {
+  public getServerCurrent(personTypeId): Observable<Person> {
     return this.routerParamsService.params.pipe(
       filter(params => !!params?.personId),
       pluck('personId'),
-      switchMap(id => this.getByKey(id)),
+      switchMap(id => this.personsDataService.detail(id, personTypeId)),
+      map(response => {
+        this.removeOneFromCache(response);
+        this.upsertOneInCache(response);
+        return response;
+      })
     );
   }
 
@@ -157,13 +162,15 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     };
   }
 
-  public populate(person: Person) {
+  public populate(person: Person, permission: Permission) {
     const { user, address, email, phone, doctor } = person;
     const { recipient, id: emailId } = email[0];
     let { birthday } = person;
     birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
     const { number: addressNumber, id: addressId } = address[0];
-    const { id: userId } = user[0];
+
+    const { id: userId } = user.find(u => u.personTypeId === permission.id);
+
     let { number: phoneNumber } = phone[0];
     const { id: phoneId } = phone[0];
     const { id: doctorId } = doctor[0] || [] as any;

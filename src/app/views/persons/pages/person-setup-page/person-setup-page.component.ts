@@ -64,12 +64,13 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
         switchMap((data) => {
           this.typePerson = data.type;
           this.permission = this.jwtAuthService.getPermission(this.typePerson.type);
+          this.subscribers = this.personsEntityService.getServerCurrent(this.permission.id).subscribe(noop);
           this.setupForm();
           return personsEntityService.getCurrent();
         }),
         tap(person => {
           this.person = person;
-          this.personsEntityService.populate(person);
+          this.personsEntityService.populate(person, this.permission);
         })
       )
       .subscribe(noop);
@@ -79,7 +80,6 @@ export class PersonSetupPageComponent implements OnInit, OnDestroy {
       this.isFormValid = formConfigBaseService.isAllFormsValid();
     });
 
-    this.subscribers = this.personsEntityService.getServerCurrent().subscribe(noop);
   }
 
   ngOnInit(): void {

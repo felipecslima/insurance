@@ -23,6 +23,13 @@ export class PersonsDataService extends DefaultDataService<Person> {
     return this.http.put(`${ this._baseUrl }/${ id }/inactive`, { personTypeId });
   }
 
+  detail(id: number, personTypeId): Observable<Person> {
+    const params = this.uss.objectParams({ personTypeId });
+    return this.http.get(`${ this._baseUrl }/${ id }`, { params }).pipe(
+      map((response: Person) => response)
+    );
+  }
+
   cancelAccount(): Observable<any> {
     return this.http.post(`${ this._baseUrl }/cancel`, {});
   }
