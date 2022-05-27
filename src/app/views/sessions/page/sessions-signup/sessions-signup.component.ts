@@ -9,7 +9,7 @@ import { SafesEntityService } from '../../../../shared/services/states/safes-ent
 import { NumeralService } from '../../../../shared/services/numeral.service';
 import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { PersonFormService } from '../../../persons/services/person-form.service';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
 
@@ -61,6 +61,7 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
   safeFormGroup: FormGroup;
 
   constructor(
+    private matStepperIntl: MatStepperIntl,
     private formConfigBaseService: FormConfigBaseService,
     private formBuilder: FormBuilder,
     private personFormService: PersonFormService,
@@ -68,6 +69,7 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
     private safesEntityService: SafesEntityService,
     private plansEntityService: PlansEntityService
   ) {
+    matStepperIntl.optionalLabel = 'Opcional';
     this.plansEntityService.getWithQuery({ active: 'true' }).subscribe(noop);
     this.plansEntityService.entities$
       .pipe(tap(response => {

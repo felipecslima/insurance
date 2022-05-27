@@ -48,8 +48,8 @@
         <span>Continuar</span>
       </button>
     </mat-step>
-    <mat-step [stepControl]="safeFormGroup">
-      <ng-template matStepLabel>Escolha um seguro (opcional)</ng-template>
+    <mat-step [stepControl]="safeFormGroup" [optional]="true" >
+      <ng-template matStepLabel  >Escolha um seguro</ng-template>
       <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
         <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
           <ng-container *ngTemplateOutlet="safe"></ng-container>
