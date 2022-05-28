@@ -91,3 +91,12 @@ export interface Permission {
   label: 'Cooperativa' | 'Consultor' | 'Médico' | 'Clínica' | 'Assinante';
   paramType: 'cooperativa' | 'consultor' | 'medico' | 'clinica' | 'assinante';
 }
+
+export interface PersonCreate {
+  type: string;
+  planId: number;
+  safeId: number;
+  discountPlan: number;
+  discountSafe: number;
+  person: Person;
+}

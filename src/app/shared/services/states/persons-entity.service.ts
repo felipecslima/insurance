@@ -5,7 +5,7 @@ import {
   EntityCollectionServiceElementsFactory,
   QueryParams
 } from '@ngrx/data';
-import { Login, Permission, Person } from '../../interfaces/person.interface';
+import { Login, Permission, Person, PersonCreate } from '../../interfaces/person.interface';
 import { Observable } from 'rxjs';
 import { PersonsDataService } from './persons-data.service';
 import { RouterParamsService } from '../router-params.service';
@@ -13,7 +13,6 @@ import { filter, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { UtilsService } from '../utils.service';
 import { DateService } from '../date.service';
 import { FormConfigBaseService } from '../../forms/services/form-config-base.service';
-import { Safe } from '../../interfaces/safe.interface';
 
 @Injectable({ providedIn: 'root' })
 export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
@@ -257,6 +256,34 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
       phone,
       email,
       doctor
+    };
+  }
+
+  /**
+   * Add person from CREATE YOUR ACCOUNT LINK
+   */
+  create(values: any) {
+    let body = this._defaultCreatePerson(values);
+    body = this.utilsService.removeEmpty(body);
+    return this.personsDataService.create(body);
+  }
+
+  _defaultCreatePerson(values: any): PersonCreate {
+    const person: any = this._defaultSavePerson(values);
+    const {
+      type,
+      planId,
+      safeId,
+      discountPlan = 0,
+      discountSafe = 0,
+    } = values;
+    return {
+      type,
+      planId,
+      safeId,
+      discountPlan,
+      discountSafe,
+      person,
     };
   }
 }

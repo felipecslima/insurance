@@ -12,6 +12,9 @@ import { PersonFormService } from '../../../persons/services/person-form.service
 import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormConfigBaseService } from '../../../../shared/forms/services/form-config-base.service';
+import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
+import { Plan } from '../../../../shared/interfaces/plan.interface';
 
 @Component({
   selector: 'app-signup2',
@@ -57,8 +60,12 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
   public formConfig;
 
   typePersonFormGroup: FormGroup;
+  plans: Plan[];
+
   planFormGroup: FormGroup;
   safeFormGroup: FormGroup;
+
+  formValues: any;
 
   brief: any[] = [];
 
@@ -68,27 +75,21 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private personFormService: PersonFormService,
     private numeralService: NumeralService,
+    private utilsService: UtilsService,
     private safesEntityService: SafesEntityService,
-    private plansEntityService: PlansEntityService
+    private plansEntityService: PlansEntityService,
+    private personsEntityService: PersonsEntityService,
   ) {
     matStepperIntl.optionalLabel = 'Opcional';
-    this.plansEntityService.getWithQuery({ active: 'true' }).subscribe(noop);
-    this.plansEntityService.entities$
+    this.subscriptions = this.plansEntityService.getWithQuery({ active: 'true' }).subscribe(noop);
+    this.subscriptions = this.plansEntityService.entities$
       .pipe(tap(response => {
-        this.selectSignupPlan = response.map(r => {
-          return {
-            description: r.description,
-            value: r.id.toString(),
-            selected: false,
-            label: r.name,
-            price: `R$${ numeralService.formatMoneyCurrency(r.value) }`
-          };
-        });
+        this.plans = response;
       }))
       .subscribe(noop);
 
-    this.safesEntityService.getWithQuery({ active: 'true' }).subscribe(noop);
-    this.safesEntityService.getSafesActive()
+    this.subscriptions = this.safesEntityService.getWithQuery({ active: 'true' }).subscribe(noop);
+    this.subscriptions = this.safesEntityService.getSafesActive()
       .pipe(tap(response => {
         this.selectSignupSafe = response.map(r => {
           return {
@@ -101,6 +102,8 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
         });
       }))
       .subscribe(noop);
+
+    this.subscriptions = this.formConfigBaseService.getValues().subscribe(v => this.formValues = v);
   }
 
   ngOnInit() {
@@ -108,10 +111,10 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
       type: ['', Validators.required],
     });
     this.planFormGroup = this.formBuilder.group({
-      plan: ['', Validators.required],
+      planId: ['', Validators.required],
     });
     this.safeFormGroup = this.formBuilder.group({
-      safe: [''],
+      safeId: [''],
     });
 
     this.setupForm();
@@ -141,24 +144,45 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
   }
 
   getTypePerson(type: string) {
+    this.selectSignupPlan = this.plans.filter(r => r.type === type).map(r => {
+      return {
+        description: r.description,
+        value: r.id.toString(),
+        selected: false,
+        label: r.name,
+        price: `R$${ this.numeralService.formatMoneyCurrency(r.value) }`
+      };
+    });
     this.formConfigBaseService.setValue({ type });
     this.typePersonFormGroup.setValue({ type });
   }
 
-  getPlan(plan: string) {
-    this.formConfigBaseService.setValue({ plan });
-    this.planFormGroup.setValue({ plan });
+  getPlan(planId: string) {
+    this.formConfigBaseService.setValue({ planId });
+    this.planFormGroup.setValue({ planId });
   }
 
-  getSafe(safe: string) {
-    this.formConfigBaseService.setValue({ safe });
-    this.safeFormGroup.setValue({ safe });
+  getSafe(safeId: string) {
+    this.formConfigBaseService.setValue({ safeId });
+    this.safeFormGroup.setValue({ safeId });
+  }
+
+  save() {
+    const body = { ...this.formValues, personTypeId: 5 };
+    this.personsEntityService.create(body)
+      .subscribe(() => {
+          this.utilsService.toast('Cadastro realizado com sucesso!', 'success');
+          // TODO: Pra onde vai depois?
+        }, error => {
+          this.utilsService.setError(error);
+        }
+      );
   }
 
   setBrief() {
     this.subscriptions = this.formConfigBaseService.getValues()
       .pipe(tap(values => {
-        const exclude = ['type', 'plan', 'safe', 'password'];
+        const exclude = ['type', 'planId', 'safeId', 'password'];
         const { type, plan, safe } = values;
         this.brief = [
           {
