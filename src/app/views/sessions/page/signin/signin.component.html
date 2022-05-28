@@ -1,0 +1,33 @@
+<div class="page-wrap h-full green">
+  <div class="session-form-hold">
+    <div clCard>
+      <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
+      <div clCardContent class="remove-bottom">
+        <div class="text-center pt-8 pb-16">
+          <img width="60px" src="../../../../../assets/images/logos/parcial-logo-green.png" alt="">
+          <p class="text-muted m-0">Entre no seu clube de benefícios</p>
+        </div>
+        <cl-form-component (submit)="signin()" [formConfig]="formConfig">
+        </cl-form-component>
+      </div>
+      <div clCardFooterButton [disableTop]="true" [clColumn]="true">
+        <button
+          [loading]="isFormLoading"
+          [hasDisabled]="!isFormValid" (click)="signin()" clButtonContained [bgColor]="colors.primary">
+          <span>Entrar</span>
+        </button>
+        <button
+          [routerLink]="'/sessions/cadastro'"
+          clButtonDense
+          clButtonContainedSecondary>
+          <span>Cadastre-se</span>
+        </button>
+        <div class="text-center">
+          <a clButtonSecondary [routerLink]="'/sessions/mudar-senha'" class="mat-primary text-center full-width">Esqueci
+            minha senha</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,25 @@
+<form class="autocomplete">
+  <mat-progress-bar mode="determinate" class="progress"></mat-progress-bar>
+  <mat-form-field class="width-100" appearance="fill">
+    <mat-label>Digite um CPF existente na base de dados</mat-label>
+    <input type="text"
+           placeholder="Digite um CPF:"
+           aria-label="CPF"
+           matInput
+           [formControl]="usernameControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions | async"
+                  [value]="{person: option, maskCpf:  this.utilsService.maskCpfCnpj}"
+                  (onSelectionChange)="onSelection($event)">
+        {{utilsService.maskCpfCnpj(option.username)}} | {{option.firstName}} {{option.lastName}}
+      </mat-option>
+      <mat-option *ngIf="hasFind">
+        <a [routerLink]="urlSetup">Se não encontrou o usuário crie um novo clicando aqui</a>
+      </mat-option>
+    </mat-autocomplete>
+    <mat-error *ngIf="usernameControl.hasError('validateCpf') && !usernameControl.hasError('required')">
+      CPF inválido
+    </mat-error>
+  </mat-form-field>
+</form>

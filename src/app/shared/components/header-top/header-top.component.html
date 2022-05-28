@@ -1,0 +1,26 @@
+<mat-toolbar class="topbar mat-bg-card">
+
+  <h1>Clube de Benefícios</h1>
+
+  <span fxFlex></span>
+
+  <!-- Top left persons menu -->
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="accountMenu"
+    class="topbar-button-right img-button"
+  >
+    <img src="assets/images/placeholder-user.png" alt=""/>
+  </button>
+
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item [routerLink]="['/profile/overview']">
+      <mat-icon>account_box</mat-icon>
+      <span>Perfil</span>
+    </button>
+    <button mat-menu-item (click)="jwtAuth.signout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Sair</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

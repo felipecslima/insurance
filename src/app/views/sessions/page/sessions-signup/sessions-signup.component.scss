@@ -1,0 +1,48 @@
+.content-stepper {
+  padding: 16px 0;
+}
+
+.content-stepper {
+  h2 {
+    font-size: 16px;
+  }
+
+  &.scroll {
+    overflow: hidden;
+
+    .slide-scroll {
+      overflow-y: auto;
+      padding: 0 8px 8px;
+      width: 100%;
+    }
+  }
+}
+
+.form-holder {
+  transition: left 1s linear;
+  max-width: 40%;
+  overflow-y: scroll;
+}
+
+.width-100 {
+  min-width: 100% !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+mat-list {
+  width: 100%;
+
+  h3 {
+    font-size: 16px !important;
+    color: rgba(0, 0, 0, 0.7) !important;
+  }
+
+  label {
+    color: rgba(0, 0, 0, 0.7) !important;
+  }
+
+  span {
+    color: rgba(0, 0, 0, 0.5) !important;
+  }
+}

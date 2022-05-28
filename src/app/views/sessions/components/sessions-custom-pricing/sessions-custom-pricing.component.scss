@@ -1,0 +1,27 @@
+.plan-pricing {
+  > div {
+    min-width: 350px;
+  }
+
+  h2 {
+    padding: 24px 0;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: block;
+    margin-bottom: 0;
+
+    &.active {
+      color: #fff;
+      background-color: rgb(102, 205, 50);
+    }
+  }
+
+  h3 {
+    padding: 20px 0;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    font-size: 16px;
+    margin-bottom: 16px;
+    display: block;
+  }
+}

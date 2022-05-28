@@ -1,0 +1,135 @@
+<div class="section-left" *ngIf="!changeLayout">
+  <div class="section-left-content">
+    <h1 class="text-36 font-weight-light">Já possui uma conta?</h1>
+    <p class="mb-24 text-small">Faça seu login clicando aqui!</p>
+    <button clButtonContained [bgColor]="colors.primary" [routerLink]="'/sessions/login'">
+      <span>Login</span>
+    </button>
+  </div>
+</div>
+
+<div
+  class="form-holder h-full-screen mat-elevation-z4 mat-bg-card"
+  [class.width-100]="changeLayout"
+>
+  <!-- headline -->
+  <div class="form-headline text-center mb-16">
+    <h1 class="font-weight-bold">Vamos começar!</h1>
+    <p class="text-muted">Crie uma conta e tenha acesso ao sistema do clube de benefícios!</p>
+  </div>
+  <div class="mb-32" fxLayout="row wrap" fxLayoutAlign="center center">
+    <img width="200px" src="assets/images/illustrations/posting_photo.svg" alt="">
+  </div>
+  <mat-stepper #stepper
+               [linear]="true"
+               [selectedIndex]="selectedIndex" (selectionChange)="stepperChange($event)"
+               orientation="vertical">
+    <mat-step [stepControl]="typePersonFormGroup">
+      <ng-template matStepLabel>Escolha um tipo de cadastro</ng-template>
+      <div class="content-stepper" fxLayout="row" fxLayoutGap="16px">
+        <ng-container *ngTemplateOutlet="type"></ng-container>
+      </div>
+      <button
+        [hasDisabled]="!typePersonFormGroup.valid"
+        clButtonContained [bgColor]="colors.primary" matStepperNext>
+        <span>Continuar</span>
+      </button>
+    </mat-step>
+    <mat-step [stepControl]="planFormGroup">
+      <ng-template matStepLabel>Escolha seu plano</ng-template>
+      <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
+        <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
+          <ng-container *ngTemplateOutlet="plan"></ng-container>
+        </div>
+      </div>
+      <button
+        [hasDisabled]="!planFormGroup.valid"
+        clButtonContained [bgColor]="colors.primary" matStepperNext>
+        <span>Continuar</span>
+      </button>
+    </mat-step>
+    <mat-step [stepControl]="safeFormGroup" [optional]="true">
+      <ng-template matStepLabel>Escolha um seguro</ng-template>
+      <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
+        <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
+          <ng-container *ngTemplateOutlet="safe"></ng-container>
+        </div>
+      </div>
+      <button clButtonContained [bgColor]="colors.primary" matStepperNext>
+        <span>Continuar</span>
+      </button>
+    </mat-step>
+    <mat-step [stepControl]="formGroup">
+      <ng-template matStepLabel>Seus dados</ng-template>
+      <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
+        <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
+          <ng-container *ngTemplateOutlet="form"></ng-container>
+        </div>
+      </div>
+      <button
+        [hasDisabled]="formGroup?.status === 'INVALID'"
+        clButtonContained [bgColor]="colors.primary" matStepperNext>
+        <span>Continuar</span>
+      </button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Resumo</ng-template>
+      <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
+        <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
+          <mat-list>
+            <ng-container *ngFor="let b of brief">
+              <h3 matSubheader *ngIf="b.header">{{ b.label }}</h3>
+              <mat-list-item *ngIf="!b.header && b.value">
+                <h4 matLine fxLayout="row" fxLayoutGap="8px">
+                  <label *ngIf="b.label">{{ b.label }}:</label>
+                  <span *ngIf="b.value">{{ b.value }}</span>
+                </h4>
+              </mat-list-item>
+              <mat-divider *ngIf="(!b.header && b.value) || b.header"></mat-divider>
+            </ng-container>
+          </mat-list>
+        </div>
+      </div>
+      <button clButtonContained [bgColor]="colors.primary" matStepperNext>
+        <span>Continuar</span>
+      </button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Dados de pagamento</ng-template>
+      <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
+        <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
+
+        </div>
+      </div>
+      <button clButtonContained [bgColor]="colors.primary" matStepperNext (click)="save()">
+        <span>Continuar</span>
+      </button>
+    </mat-step>
+
+  </mat-stepper>
+</div>
+
+<ng-template #form>
+  <cl-form-component (formInstance)="formInstance($event)" fxFlex="100" *ngIf="formConfig"
+                     [formConfig]="formConfig">
+  </cl-form-component>
+</ng-template>
+
+<ng-template #type>
+  <sessions-custom-pricing fxFlex="100"
+                           [options]="selectSignupType"
+                           (value)="getTypePerson($event)"
+                           [direction]="!changeLayout?'column': 'row'"></sessions-custom-pricing>
+</ng-template>
+
+<ng-template #plan>
+  <sessions-custom-pricing fxFlex="100"
+                           (value)="getPlan($event)"
+                           [options]="selectSignupPlan"></sessions-custom-pricing>
+</ng-template>
+
+<ng-template #safe>
+  <sessions-custom-pricing fxFlex="100"
+                           (value)="getSafe($event)"
+                           [options]="selectSignupSafe"></sessions-custom-pricing>
+</ng-template>

@@ -1,0 +1,40 @@
+<mat-toolbar class="topbar mat-bg-card">
+  <!-- Sidenav toggle button -->
+  <button
+    *ngIf="layoutConf.sidebarStyle !== 'compact'"
+    mat-icon-button
+    id="sidenavToggle"
+    (click)="toggleSidenav()"
+    matTooltip="Toggle Hide/Open"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <small class="hello">Área {{ permission.label }}</small>
+
+  <span fxFlex></span>
+
+  <small class="hello">Olá, {{ user.firstName }}</small>
+  <!-- Top left persons menu -->
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="accountMenu"
+    class="topbar-button-right img-button"
+  >
+    <img src="assets/images/placeholder-user.png" alt=""/>
+  </button>
+
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item [routerLink]="[urlUserProfile]">
+      <mat-icon>account_box</mat-icon>
+      <span>Perfil</span>
+    </button>
+    <button mat-menu-item routerLink="/sessions/areas">
+      <mat-icon>switch_account</mat-icon>
+      <span>Trocar de área</span>
+    </button>
+    <button mat-menu-item (click)="jwtAuth.signout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>{{ "Sair"  }}</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

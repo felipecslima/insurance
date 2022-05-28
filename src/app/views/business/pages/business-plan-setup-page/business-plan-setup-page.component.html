@@ -1,0 +1,19 @@
+<div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+  <div clCard>
+    <mat-progress-bar #progress mode="determinate" class="progress"></mat-progress-bar>
+    <div clCardContent>
+      <cl-form-component *ngIf="formConfig" [formConfig]="formConfig">
+      </cl-form-component>
+    </div>
+    <div clCardFooterButton [disableTop]="true">
+      <button *ngIf="!this.entityId" (click)="save()" [loading]="isFormLoading" [hasDisabled]="!this.isFormValid" clButtonContained
+              [bgColor]="colors.primary">
+        <span>Salvar</span>
+      </button>
+      <button *ngIf="!!this.entityId" (click)="back()" clButtonContained
+              [bgColor]="colors.primary">
+        <span>Voltar</span>
+      </button>
+    </div>
+  </div>
+</div>

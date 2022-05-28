@@ -1,0 +1,53 @@
+<div class="wrap-table" #ngxDataTable>
+  <div class="header-table" fxLayout="row" fxLayoutAlign="space-between center">
+    <h2 fxFlex="100">
+      {{ title }}
+    </h2>
+    <button fxFlex="40px" *ngIf="hasFilter" clButtonIcon (click)="cbFilter.emit(true)">
+      <i clIcon name="cl-search" color="rgba(0, 0, 0, 0.5)"></i>
+    </button>
+  </div>
+  <mat-progress-bar mode="determinate" class="progress"></mat-progress-bar>
+  <ngx-datatable
+    *ngIf="!!data"
+    class="material striped"
+    [rows]="data"
+    [sorts]="sorts"
+    [columnMode]="columnModeSelected"
+    [headerHeight]="headerHeight"
+    [rowHeight]="rowHeight"
+    [virtualization]="enableScrollTable"
+    [scrollbarV]="true"
+    [scrollbarH]="true"
+    (scroll)="onScroll($event)"
+    (sort)="sortData($event)"
+  >
+    <ngx-datatable-column
+      *ngFor="let columnData of columns"
+      [name]="columnData.columnName"
+      [prop]="columnData.columnName"
+      [resizeable]="columnData?.resizeable || false"
+      [minWidth]="columnData?.minWidth"
+      [maxWidth]="columnData?.maxWidth"
+      [draggable]="columnData?.draggable || false"
+      [sortable]="columnData?.sortable || false">
+      <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="datatable-header-cell-label" >
+                {{ columnData.displayText }}
+              </span>
+      </ng-template>
+      <ng-template let-element="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+        <a *ngIf="columnData.type === 'text'" [routerLink]="columnData.urlBase+element[columnData.id]">
+          {{ element[columnData.columnName] }}
+        </a>
+        <div class="buttons" *ngIf="columnData.type === 'button'">
+          <button clButtonContainedSecondary clButtonDense
+                  (click)="cbButton.emit({element, columnData})">
+            <span *ngIf="columnData.buttonLabel">{{columnData.buttonLabel}}</span>
+            <span *ngIf="!columnData.buttonLabel">{{element[columnData.columnName]}}</span>
+          </button>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>

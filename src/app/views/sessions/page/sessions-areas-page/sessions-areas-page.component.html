@@ -1,0 +1,18 @@
+<app-header-top></app-header-top>
+<mat-progress-bar mode="determinate" class="progress"></mat-progress-bar>
+<div class="cl-card no-bg content" >
+  <div class="content-warp" fxLayoutAlign="center center" fxLayout="row wrap" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+    <div class="item" *ngFor="let permission of permissionsList">
+      <div clCard>
+        <div clCardContent>
+          <h2>{{ permission.name }}</h2>
+        </div>
+        <div clCardFooterButton [disableTop]="true">
+          <a [routerLink]="permission.url" clButtonContainedSecondary>
+            <span>Entrar</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

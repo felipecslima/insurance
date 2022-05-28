@@ -1,0 +1,26 @@
+<div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+  <div clCard>
+    <table-list
+      *ngIf="!this.safesListService.emptyResult"
+      [hasFilter]="true"
+      [title]="'Lista de seguros'"
+      [columns]="columns"
+      (loadNewData)="load()"
+      (cbButton)="cbButton($event)"
+      (cbFilter)="openFilter()"
+      [loading]="safesListService.isLoading"
+    ></table-list>
+    <div class="empty-state" *ngIf="this.safesListService.emptyResult">
+      <button fxFlex="40px" clButtonIcon (click)="openFilter()">
+        <i clIcon name="cl-search" color="rgba(0, 0, 0, 0.5)"></i>
+      </button>
+      <h2>Lista vazia</h2>
+      <p>Não foram encontrados resultados para sua lista</p>
+    </div>
+  </div>
+  <a [routerLink]="urlSetup" clButtonContained [bgColor]="colors.primary">
+    <span>Cadastrar</span>
+  </a>
+</div>
+<router-outlet></router-outlet>
+<p>business-safe-page works!</p>

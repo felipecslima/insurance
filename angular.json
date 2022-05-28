@@ -1,0 +1,145 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "egret": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "allowedCommonJsDependencies": [
+              "rxjs",
+              "tinycolor2",
+              "dragula",
+              "highlight.js",
+              "zrender/lib/vml/vml",
+              "zrender/lib/svg/svg",
+              "crossvent",
+              "@mattlewis92/dom-autoscroller",
+              "dom-plane",
+              "dom-set"
+            ],
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/collact-components-svg",
+                "output": "/assets/svg"
+              },
+              "src/_redirects",
+              "src/assets",
+              "src/favicon.ico"
+            ],
+            "styles": [
+              "node_modules/collact-design-system/styles/_styles.scss",
+              "node_modules/collact-components/styles/_styles.scss",
+              "src/assets/styles/app.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules",
+                "src/assets/styles"
+              ]
+            },
+            "scripts": [
+              "node_modules/numeraljs/min/numeral.min.js",
+              "node_modules/numeraljs/languages/pt-br.js"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "prod": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "egret:build"
+          },
+          "configurations": {
+            "prod": {
+              "browserTarget": "egret:build:prod"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "egret:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [],
+            "styles": [
+              "src/assets/styles/app.scss"
+            ],
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ]
+          }
+        }
+      }
+    },
+    "egret-e2e": {
+      "root": "",
+      "sourceRoot": "",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "egret:serve"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "egret",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "",
+      "style": "scss",
+      "skipTests": true,
+    },
+    "@schematics/angular:directive": {
+      "prefix":""
+    }
+  }
+}

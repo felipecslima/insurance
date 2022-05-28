@@ -1,0 +1,21 @@
+<div [fxLayout]="direction" class="plan-pricing" fxLayoutGap="16px">
+  <div fxLayout="column" clCard *ngFor="let option of options">
+    <h2 [class.active]="option.selected">{{ option.label }}</h2>
+    <div fxLayout="column" fxFlex="100" clCardContent>
+      <div fxFlex="100">
+        <h3 *ngIf="option.price">
+          {{ option.price }}
+        </h3>
+        <p *ngIf="option.description" [innerHTML]="option.description"></p>
+      </div>
+      <div>
+        <button *ngIf="!option.selected" (click)="select(option)" clButtonContainedSecondary clButtonDense>
+          <span>Selecionar</span>
+        </button>
+        <button *ngIf="option.selected" (click)="removeAll()" clButtonContained [bgColor]="colors.primary" clButtonDense>
+          <span>Remover</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
