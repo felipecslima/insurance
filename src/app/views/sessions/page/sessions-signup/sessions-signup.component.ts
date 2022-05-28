@@ -60,6 +60,8 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
   planFormGroup: FormGroup;
   safeFormGroup: FormGroup;
 
+  brief: any[] = [];
+
   constructor(
     private matStepperIntl: MatStepperIntl,
     private formConfigBaseService: FormConfigBaseService,
@@ -113,6 +115,7 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
     });
 
     this.setupForm();
+    this.setBrief();
   }
 
   ngOnDestroy() {
@@ -135,7 +138,6 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
 
   formInstance($event: any) {
     this.formGroup = $event.form;
-    console.log(this.formGroup.status);
   }
 
   getTypePerson(type: string) {
@@ -151,5 +153,90 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
   getSafe(safe: string) {
     this.formConfigBaseService.setValue({ safe });
     this.safeFormGroup.setValue({ safe });
+  }
+
+  setBrief() {
+    this.subscriptions = this.formConfigBaseService.getValues()
+      .pipe(tap(values => {
+        const exclude = ['type', 'plan', 'safe', 'password'];
+        const { type, plan, safe } = values;
+        this.brief = [
+          {
+            header: true,
+            label: 'Tipo de plano escolhido',
+          },
+          {
+            header: false,
+            value: type === 'E' ? 'Empresarial' : 'Pessoal',
+          },
+          {
+            header: true,
+            label: 'Plano escolhido',
+          },
+          {
+            header: false,
+            label: this.selectSignupPlan.find(p => p.value === plan)?.label,
+            value: this.selectSignupPlan.find(p => p.value === plan)?.price,
+          },
+          {
+            header: true,
+            label: 'Seguro escolhido',
+          },
+          {
+            header: false,
+            label: safe ? this.selectSignupSafe.find(s => s.value === safe)?.label : 'Nenhum',
+            value: safe ? this.selectSignupSafe.find(s => s.value === safe)?.price : '-',
+          },
+          {
+            header: true,
+            label: 'Seus do dados',
+          },
+        ];
+
+        Object.keys(values).map(key => {
+            if (exclude.includes(key)) {
+              return;
+            }
+            this.brief.push(
+              {
+                header: false,
+                label: this.getConfigs().find(i => i.name === key)?.title?.replace(':', ''),
+                value: values[key],
+                key,
+                config: this.getConfigs().find(i => i.name === key),
+                formConfig: this.formConfig,
+              });
+          }
+        );
+      }))
+      .subscribe(noop);
+  }
+
+  getConfigs() {
+    const configs = [];
+    this.formConfig.map(config => {
+      if (config.group) {
+        config.group.map(gc => {
+          configs.push(gc);
+        });
+        return;
+      }
+      configs.push(config);
+    });
+    return configs;
+  }
+
+  arrayChunk(inputArray, perChunk) {
+    return inputArray.reduce((resultArray, item, index) => {
+      const chunkIndex = Math.floor(index / perChunk);
+
+      if (!resultArray[chunkIndex]) {
+        resultArray[chunkIndex] = []; // start a new chunk
+      }
+
+      resultArray[chunkIndex].push(item);
+
+      return resultArray;
+    }, []);
   }
 }

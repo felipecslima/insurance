@@ -48,8 +48,8 @@
         <span>Continuar</span>
       </button>
     </mat-step>
-    <mat-step [stepControl]="safeFormGroup" [optional]="true" >
-      <ng-template matStepLabel  >Escolha um seguro</ng-template>
+    <mat-step [stepControl]="safeFormGroup" [optional]="true">
+      <ng-template matStepLabel>Escolha um seguro</ng-template>
       <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
         <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
           <ng-container *ngTemplateOutlet="safe"></ng-container>
@@ -61,7 +61,6 @@
     </mat-step>
     <mat-step [stepControl]="formGroup">
       <ng-template matStepLabel>Seus dados</ng-template>
-
       <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
         <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
           <ng-container *ngTemplateOutlet="form"></ng-container>
@@ -70,6 +69,28 @@
       <button
         [hasDisabled]="formGroup?.status === 'INVALID'"
         clButtonContained [bgColor]="colors.primary" matStepperNext>
+        <span>Continuar</span>
+      </button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Resumo</ng-template>
+      <div class="content-stepper scroll" fxLayout="row" fxLayoutGap="16px">
+        <div class="slide-scroll" fxLayout="row" fxLayoutGap="16px">
+          <mat-list>
+            <ng-container *ngFor="let b of brief">
+              <h3 matSubheader *ngIf="b.header">{{ b.label }}</h3>
+              <mat-list-item *ngIf="!b.header && b.value">
+                <h4 matLine fxLayout="row" fxLayoutGap="8px">
+                  <label *ngIf="b.label">{{ b.label }}:</label>
+                  <span *ngIf="b.value">{{ b.value }}</span>
+                </h4>
+              </mat-list-item>
+              <mat-divider *ngIf="(!b.header && b.value) || b.header"></mat-divider>
+            </ng-container>
+          </mat-list>
+        </div>
+      </div>
+      <button clButtonContained [bgColor]="colors.primary" matStepperNext>
         <span>Continuar</span>
       </button>
     </mat-step>
@@ -84,6 +105,7 @@
         <span>Continuar</span>
       </button>
     </mat-step>
+
   </mat-stepper>
 </div>
 
