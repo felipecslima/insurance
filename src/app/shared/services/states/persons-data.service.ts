@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { UtilsStateService } from '../utils-state.service';
-import { Person, PersonCrud } from '../../interfaces/person.interface';
+import { Person, PersonCreate, PersonCrud } from '../../interfaces/person.interface';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -74,6 +74,18 @@ export class PersonsDataService extends DefaultDataService<Person> {
     return this.http.get(`${ this._baseUrl }`, { params }).pipe(
       map((response: Person[]) => {
         return response || [];
+      })
+    );
+  }
+
+  /**
+   * Create a PERSON using public API
+   * @param body
+   */
+  create(body: PersonCreate) {
+    return this.http.post(`${ this.uss.baseUrl('/subscribers/sign') }`, body).pipe(
+      map(response => {
+        return response as Person;
       })
     );
   }
