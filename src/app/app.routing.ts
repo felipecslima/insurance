@@ -38,9 +38,9 @@ export const rootRouterConfig: Routes = [
         data: { title: 'Usuários', breadcrumb: 'Usuários' },
       },
       {
-        path: 'negocios',
+        path: 'clinica',
         loadChildren: () => import('./views/business/business.module').then(m => m.BusinessModule),
-        data: { title: 'Negócios', breadcrumb: 'Negócios' },
+        data: { title: 'Clinicas', breadcrumb: 'Clinica' },
       },
       {
         path: 'others',

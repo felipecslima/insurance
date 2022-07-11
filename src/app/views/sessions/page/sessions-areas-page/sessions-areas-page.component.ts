@@ -57,13 +57,18 @@ export class SessionsAreasPageComponent implements OnInit, OnDestroy, AfterViewI
       },
       {
         name: 'Área da Clinica',
-        url: this.urlService.getUserList('medico', 'clinica'),
+        url: this.urlService.getBusinessListSelect('clinica'),
         paramType: 'clinica',
       },
       {
         name: 'Área do Consultor',
         url: this.urlService.getUserList('consultor', 'consultor'),
         paramType: 'consultor',
+      },
+      {
+        name: 'Área do médico',
+        url: this.urlService.getBusinessNotificationList('medico'),
+        paramType: 'medico',
       }
     ];
   }

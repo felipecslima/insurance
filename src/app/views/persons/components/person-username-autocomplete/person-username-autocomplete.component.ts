@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { noop, Observable, of, Unsubscribable } from 'rxjs';
+import { forkJoin, noop, Observable, of, Unsubscribable } from 'rxjs';
 import { catchError, debounce, debounceTime, filter, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { PersonsEntityService } from '../../../../shared/services/states/persons-entity.service';
 import { Permission, Person } from '../../../../shared/interfaces/person.interface';
@@ -76,10 +76,31 @@ export class PersonUsernameAutocompleteComponent implements OnInit, OnDestroy {
               return value?.length > 0 && this.utilsService.verifyCpf(value);
             }),
             switchMap(username => {
+              const permissions = jwtAuthService.permissions.filter(p => p.id !== this.personPermission.id && p.id !== 5);
+              const requests: any[] = permissions.map(permission => {
+                return this.personsEntityService.getWithQuery({
+                    username,
+                    personTypeId: permission.id.toString()
+                  }
+                );
+              });
               this.progressBar.mode = 'indeterminate';
-              return this.personsEntityService.getWithQuery({
-                  username
-                }
+              return forkJoin(requests).pipe(
+                map(response => {
+                  const r = response.map(r => {
+                    return r[0];
+                  });
+
+                  if (r[0] === undefined) {
+                    return undefined;
+                  }
+
+                  return [r[0]];
+                }),
+                catchError(e => {
+                  console.log('e', e);
+                  return e;
+                })
               );
             }),
             map((value: Person[]) => {

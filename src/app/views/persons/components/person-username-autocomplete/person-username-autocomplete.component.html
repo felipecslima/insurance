@@ -12,7 +12,7 @@
       <mat-option *ngFor="let option of filteredOptions | async"
                   [value]="{person: option, maskCpf:  this.utilsService.maskCpfCnpj}"
                   (onSelectionChange)="onSelection($event)">
-        {{utilsService.maskCpfCnpj(option.username)}} | {{option.firstName}} {{option.lastName}}
+        {{utilsService.maskCpfCnpj(option?.username)}} | {{option?.firstName}} {{option?.lastName}}
       </mat-option>
       <mat-option *ngIf="hasFind">
         <a [routerLink]="urlSetup">Se não encontrou o usuário crie um novo clicando aqui</a>

@@ -30,6 +30,10 @@ import { BusinessPlanPageComponent } from './pages/business-plan-page/business-p
 import { BusinessSafePageComponent } from './pages/business-safe-page/business-safe-page.component';
 import { BusinessSafeSetupPageComponent } from './pages/business-safe-setup-page/business-safe-setup-page.component';
 import { BusinessPlanSetupPageComponent } from './pages/business-plan-setup-page/business-plan-setup-page.component';
+import { BusinessNotificationPageComponent } from './pages/business-notification-page/business-notification-page.component';
+import { BusinessNotificationSetupPageComponent } from './pages/business-notification-setup-page/business-notification-setup-page.component';
+import { BusinessServiceLinkPageComponent } from './pages/business-service-link-page/business-service-link-page.component';
+import { BusinessListPageComponent } from './pages/business-list-page/business-list-page.component';
 
 @NgModule({
   imports: [
@@ -61,6 +65,10 @@ import { BusinessPlanSetupPageComponent } from './pages/business-plan-setup-page
     BusinessSafePageComponent,
     BusinessSafeSetupPageComponent,
     BusinessPlanSetupPageComponent,
+    BusinessNotificationPageComponent,
+    BusinessNotificationSetupPageComponent,
+    BusinessServiceLinkPageComponent,
+    BusinessListPageComponent,
   ]
 })
 export class BusinessModule {

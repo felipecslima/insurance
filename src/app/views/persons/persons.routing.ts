@@ -6,6 +6,8 @@ import {
 } from '../../shared/components/layouts/internal-layout/admin-layout-internal.component';
 import { PersonPreSetupPageComponent } from './pages/person-pre-setup-page/person-pre-setup-page.component';
 import { PersonProfilePageComponent } from './pages/person-profile-page/person-profile-page.component';
+import { AuthGuard } from "../../shared/guards/auth.guard";
+import { BusinessGuard } from "../../shared/guards/business.guard";
 
 
 export interface ChildPersonList {
@@ -44,6 +46,7 @@ personCrud.forEach((p, id: number) => {
       path: `${ p.type }`,
       component: AdminLayoutInternalComponent,
       data: { title: `Lista de ${ p.pluralName }`, breadcrumb: `Lista de ${ p.pluralName }`, type: p },
+      canActivate: [BusinessGuard],
       children: [
         {
           path: ``,

@@ -150,6 +150,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
     } = values;
 
     const document = this.utilsService.removeCNPJMask(maskedDocument);
+    const phone_number_unmasked = this.utilsService.removeMaskPhone(phone_number);
 
     const businessUser = [{
       id: businessUserId,
@@ -163,7 +164,7 @@ export class BusinessEntityService extends EntityCollectionServiceBase<Business>
     }];
     const businessPhone = [{
       id: phoneId,
-      number: phone_number
+      number: phone_number_unmasked
     }];
     const businessEmail = [{
       id: emailId,

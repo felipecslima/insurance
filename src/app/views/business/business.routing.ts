@@ -12,6 +12,16 @@ import { BusinessPlanPageComponent } from './pages/business-plan-page/business-p
 import { BusinessSafePageComponent } from './pages/business-safe-page/business-safe-page.component';
 import { BusinessSafeSetupPageComponent } from './pages/business-safe-setup-page/business-safe-setup-page.component';
 import { BusinessPlanSetupPageComponent } from './pages/business-plan-setup-page/business-plan-setup-page.component';
+import {
+  BusinessNotificationPageComponent
+} from './pages/business-notification-page/business-notification-page.component';
+import {
+  BusinessNotificationSetupPageComponent
+} from './pages/business-notification-setup-page/business-notification-setup-page.component';
+import { BusinessListPageComponent } from './pages/business-list-page/business-list-page.component';
+import {
+  BusinessServiceLinkPageComponent
+} from './pages/business-service-link-page/business-service-link-page.component';
 
 export const BusinessRoutes: Routes = [
   {
@@ -59,6 +69,11 @@ export const BusinessRoutes: Routes = [
             component: BusinessServiceSetupPageComponent,
             data: { title: `Editar de serviço`, breadcrumb: `Cadastro de serviço` },
           },
+          {
+            path: `vincular/clinica/:businessId`,
+            component: BusinessServiceLinkPageComponent,
+            data: { title: `Vincular de serviço`, breadcrumb: `Vincular de serviço` },
+          },
         ]
       },
       {
@@ -101,7 +116,41 @@ export const BusinessRoutes: Routes = [
           {
             path: `setup/:safeId`,
             component: BusinessSafeSetupPageComponent,
-            data: { title: `Editar de seguro`, breadcrumb: `Cadastro de seguro` },
+            data: { title: `Editar de seguro`, breadcrumb: `Editar de seguro` },
+          },
+        ]
+      },
+      {
+        path: `notificacao`,
+        component: AdminLayoutInternalComponent,
+        data: { title: `Notificação Médica`, breadcrumb: `Lista de notificações` },
+        children: [
+          {
+            path: ``,
+            component: BusinessNotificationPageComponent,
+            data: { title: `Notificação Médica`, breadcrumb: `Lista de seguros` },
+          },
+          {
+            path: `setup`,
+            component: BusinessNotificationSetupPageComponent,
+            data: { title: `Cadastro de notificação`, breadcrumb: `Cadastro de notificação` },
+          },
+          {
+            path: `setup/:notificationId`,
+            component: BusinessNotificationSetupPageComponent,
+            data: { title: `Editar notificação`, breadcrumb: `Editar notificação` },
+          },
+        ]
+      },
+      {
+        path: `lista`,
+        component: AdminLayoutInternalComponent,
+        data: { title: `Lista de clinicas`, breadcrumb: `Lista de clinicas` },
+        children: [
+          {
+            path: ``,
+            component: BusinessListPageComponent,
+            data: { title: `Lista de clinicas`, breadcrumb: `Lista de clinicas` },
           },
         ]
       },

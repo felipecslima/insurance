@@ -27,6 +27,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FilterListComponent } from './components/filter-list/filter-list.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserSelfResolver } from './resolvers/self-user.resolver';
+import { BusinessGuard } from "./guards/business.guard";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { UserSelfResolver } from './resolvers/self-user.resolver';
     NavigationService,
     RoutePartsService,
     UserSelfResolver,
+    BusinessGuard,
     AuthGuard,
     AuthAreasGuard,
     UserRoleGuard,

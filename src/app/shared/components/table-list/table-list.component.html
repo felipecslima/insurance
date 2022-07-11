@@ -40,6 +40,9 @@
         <a *ngIf="columnData.type === 'text'" [routerLink]="columnData.urlBase+element[columnData.id]">
           {{ element[columnData.columnName] }}
         </a>
+        <a *ngIf="columnData.type === 'click'" (click)="cbButton.emit({element, columnData})">
+          {{ element[columnData.columnName] }}
+        </a>
         <div class="buttons" *ngIf="columnData.type === 'button'">
           <button clButtonContainedSecondary clButtonDense
                   (click)="cbButton.emit({element, columnData})">

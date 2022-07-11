@@ -23,9 +23,9 @@ import { Plan } from '../../../../shared/interfaces/plan.interface';
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: { showError: true },
-    },
-  ],
+      useValue: { showError: true }
+    }
+  ]
 })
 @AutoUnsubscribe()
 export class SessionsSignupComponent implements OnInit, OnDestroy {
@@ -44,14 +44,14 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
       label: 'Pessoal',
       description: 'Planos categoria pessoa fisica que podem ser contratados por qualquer usuário e tambem os coletivos por adesão por categoria profissional através de entidades de classe',
       value: 'F',
-      selected: false,
+      selected: false
     },
     {
       label: 'Empresarial',
       value: 'E',
       description: 'Planos categoria pessoa fisica que podem ser contratados por qualquer usuário e tambem os coletivos por adesão por categoria profissional através de entidades de classe',
-      selected: false,
-    },
+      selected: false
+    }
   ];
 
   selectSignupPlan: CustomPrice[];
@@ -78,7 +78,7 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private safesEntityService: SafesEntityService,
     private plansEntityService: PlansEntityService,
-    private personsEntityService: PersonsEntityService,
+    private personsEntityService: PersonsEntityService
   ) {
     matStepperIntl.optionalLabel = 'Opcional';
     this.subscriptions = this.plansEntityService.getWithQuery({ active: 'true' }).subscribe(noop);
@@ -108,13 +108,13 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.typePersonFormGroup = this.formBuilder.group({
-      type: ['', Validators.required],
+      type: ['', Validators.required]
     });
     this.planFormGroup = this.formBuilder.group({
-      planId: ['', Validators.required],
+      planId: ['', Validators.required]
     });
     this.safeFormGroup = this.formBuilder.group({
-      safeId: [''],
+      safeId: ['']
     });
 
     this.setupForm();
@@ -158,13 +158,13 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
   }
 
   getPlan(planId: string) {
-    this.formConfigBaseService.setValue({ planId });
-    this.planFormGroup.setValue({ planId });
+    this.formConfigBaseService.setValue({ planId: parseInt(planId, 10) });
+    this.planFormGroup.setValue({ planId: parseInt(planId, 10) });
   }
 
   getSafe(safeId: string) {
-    this.formConfigBaseService.setValue({ safeId });
-    this.safeFormGroup.setValue({ safeId });
+    this.formConfigBaseService.setValue({ safeId: parseInt(safeId, 10) });
+    this.safeFormGroup.setValue({ safeId: parseInt(safeId, 10) });
   }
 
   save() {
@@ -180,6 +180,7 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
   }
 
   setBrief() {
+    console.log('setBrief');
     this.subscriptions = this.formConfigBaseService.getValues()
       .pipe(tap(values => {
         const exclude = ['type', 'planId', 'safeId', 'password'];
@@ -187,34 +188,34 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
         this.brief = [
           {
             header: true,
-            label: 'Tipo de plano escolhido',
+            label: 'Tipo de plano escolhido'
           },
           {
             header: false,
-            value: type === 'E' ? 'Empresarial' : 'Pessoal',
+            value: type === 'E' ? 'Empresarial' : 'Pessoal'
           },
           {
             header: true,
-            label: 'Plano escolhido',
+            label: 'Plano escolhido'
           },
           {
             header: false,
-            label: this.selectSignupPlan.find(p => p.value === plan)?.label,
-            value: this.selectSignupPlan.find(p => p.value === plan)?.price,
+            label: this.selectSignupPlan?.find(p => p.value === plan)?.label,
+            value: this.selectSignupPlan?.find(p => p.value === plan)?.price
           },
           {
             header: true,
-            label: 'Seguro escolhido',
+            label: 'Seguro escolhido'
           },
           {
             header: false,
             label: safe ? this.selectSignupSafe.find(s => s.value === safe)?.label : 'Nenhum',
-            value: safe ? this.selectSignupSafe.find(s => s.value === safe)?.price : '-',
+            value: safe ? this.selectSignupSafe.find(s => s.value === safe)?.price : '-'
           },
           {
             header: true,
-            label: 'Seus do dados',
-          },
+            label: 'Seus do dados'
+          }
         ];
 
         Object.keys(values).map(key => {
@@ -228,10 +229,11 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
                 value: values[key],
                 key,
                 config: this.getConfigs().find(i => i.name === key),
-                formConfig: this.formConfig,
+                formConfig: this.formConfig
               });
           }
         );
+        console.log(this.brief);
       }))
       .subscribe(noop);
   }

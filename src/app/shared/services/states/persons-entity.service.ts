@@ -167,8 +167,8 @@ export class PersonsEntityService extends EntityCollectionServiceBase<Person> {
     let { birthday } = person;
     birthday = this.dateService.getDateFormatted(birthday, 'YYYY-MM-DD', 'DD/MM/YYYY');
     const { number: addressNumber, id: addressId } = address[0];
-
-    const { id: userId } = user.find(u => u.personTypeId === permission.id);
+    console.log(person.user, permission);
+    const { id: userId } = user.find(u => u.personTypeId === permission?.id) || {};
 
     let { number: phoneNumber } = phone[0];
     const { id: phoneId } = phone[0];

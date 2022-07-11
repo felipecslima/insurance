@@ -9,7 +9,7 @@
   >
     <mat-icon>menu</mat-icon>
   </button>
-  <small class="hello">Área {{ permission.label }}</small>
+  <small class="hello">Área {{ permission.label }} <span *ngIf="businessName">-</span> {{ businessName }}</small>
 
   <span fxFlex></span>
 

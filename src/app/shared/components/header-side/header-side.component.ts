@@ -2,14 +2,13 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
 import { LayoutService } from '../../services/layout.service';
 import { JwtAuthService } from '../../services/auth/jwt-auth.service';
-import { User } from 'app/shared/models/user.model';
 import { UrlService } from '../../services/url.service';
 import { ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { noop, Unsubscribable } from 'rxjs';
+import { Unsubscribable } from 'rxjs';
 import { CombineSubscriptions } from '../../decorators/auto-unsubscribe.decorator';
-import { ChildPersonList } from '../../../views/persons/persons.routing';
 import { Permission, Person } from '../../interfaces/person.interface';
+import { BusinessSelectedService } from '../../../views/business/business-selected.service';
+import { filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header-side',
@@ -29,8 +28,10 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
   urlUserProfile: string;
   typePerson: string;
   permission: Permission;
+  businessName: string;
 
   constructor(
+    private businessSelectedService: BusinessSelectedService,
     private route: ActivatedRoute,
     private urlService: UrlService,
     private themeService: ThemeService,
@@ -41,6 +42,17 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
     this.typePerson = this.urlService.getParamType(route);
     this.urlUserProfile = this.urlService.getUserProfile(this.typePerson);
     this.permission = this.jwtAuth.getPermission(this.typePerson);
+    console.log(this.typePerson, this.permission);
+    this.subscribers = businessSelectedService.get()
+      .pipe(
+        tap(() => this.businessName = ''),
+        filter((response) => this.typePerson === 'clinica' && !!response?.name),
+        tap(response => {
+          this.businessName = response.name;
+        })
+      )
+      .subscribe();
+
   }
 
   ngOnInit() {

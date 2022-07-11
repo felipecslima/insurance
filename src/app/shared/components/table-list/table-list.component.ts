@@ -126,7 +126,7 @@ export interface TableInfinityListColumn {
   url?: string;
   columnName: string;
   displayText?: string;
-  type: 'button' | 'text';
+  type: 'button' | 'text'| 'click';
   buttonLabel?: string;
   resizeable?: boolean;
   minWidth?: number;

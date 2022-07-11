@@ -81,6 +81,10 @@ export class NavigationService {
     if (permission.id === 2) { // Consultant Menu
       return this._createMenuConsult(permission.paramType);
     }
+
+    if (permission.id === 3) { // Doctor Menu
+      return this._createMenuDoctor(permission.paramType);
+    }
     return [];
   }
 
@@ -138,21 +142,14 @@ export class NavigationService {
     ];
   }
 
-  _createMenuClinic(paramType: string): IMenuItem[] {
+  _createMenuDoctor(paramType: string): IMenuItem[] {
     return [
       {
-        name: 'Usuários',
-        type: 'dropDown',
-        icon: 'person',
-        sub: [
-          {
-            name: 'Médicos',
-            type: 'link',
-            icon: 'person',
-            state: `${ paramType }/usuario/medico`,
-          },
-        ]
-      },
+        name: 'Notificações',
+        type: 'link',
+        icon: 'notifications',
+        state: `${ paramType }/clinica/notificacao`,
+      }
     ];
   }
 
@@ -175,8 +172,26 @@ export class NavigationService {
         name: 'Clinicas',
         type: 'link',
         icon: 'local_hospital',
-        state: `${ paramType }/negocios/clinica`,
+        state: `${ paramType }/clinica/clinica`,
       }
+    ];
+  }
+
+  _createMenuClinic(paramType: string): IMenuItem[] {
+    return [
+      {
+        name: 'Usuários',
+        type: 'dropDown',
+        icon: 'person',
+        sub: [
+          {
+            name: 'Médicos',
+            type: 'link',
+            icon: 'person',
+            state: `${ paramType }/usuario/medico`,
+          },
+        ]
+      },
     ];
   }
 

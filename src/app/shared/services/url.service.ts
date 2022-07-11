@@ -12,10 +12,18 @@ export class UrlService {
     this.basePath = this.getParamType(route);
   }
 
+  public getBusinessNotificationList(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBasePath(typeList),
+      'clinica',
+      'notificacao',
+    ].join('/');
+  }
+
   public getBusinessSafeList(typeList: ChildPersonList['type']): string {
     return [
       this.getBasePath(typeList),
-      'negocios',
+      'clinica',
       'seguros',
     ].join('/');
   }
@@ -32,7 +40,7 @@ export class UrlService {
   public getBusinessPlanList(typeList: ChildPersonList['type']): string {
     return [
       this.getBasePath(typeList),
-      'negocios',
+      'clinica',
       'planos',
     ].join('/');
   }
@@ -49,7 +57,7 @@ export class UrlService {
   public getBusinessServiceList(typeList: ChildPersonList['type']): string {
     return [
       this.getBasePath(typeList),
-      'negocios',
+      'clinica',
       'servicos',
     ].join('/');
   }
@@ -65,8 +73,16 @@ export class UrlService {
   public getBusinessList(typeList: ChildPersonList['type']): string {
     return [
       this.getBasePath(typeList),
-      'negocios',
       'clinica',
+      'clinica',
+    ].join('/');
+  }
+
+  public getBusinessListSelect(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBasePath(typeList),
+      'clinica',
+      'lista',
     ].join('/');
   }
 
