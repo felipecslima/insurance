@@ -61,12 +61,41 @@ export class UrlService {
       'servicos',
     ].join('/');
   }
-
   public getBusinessServiceSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
     return [
       this.getBusinessServiceList(typeList),
       'setup',
       id,
+    ].join('/');
+  }
+
+  public getBusinessServiceLink(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBusinessServiceList(typeList),
+      'meus-servicos',
+    ].join('/');
+  }
+
+  public getBusinessServiceLinkSetup(id: unknown = '', typeList?: ChildPersonList['type']): string {
+    return [
+      this.getBusinessServiceList(typeList),
+      'setup-link',
+      id,
+    ].join('/');
+  }
+
+  public getBusinessListDoctor(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBasePath(typeList),
+      'clinica',
+      'medicos',
+    ].join('/');
+  }
+
+  public getBusinessListDoctorSetup(typeList: ChildPersonList['type']): string {
+    return [
+      this.getBusinessListDoctor(typeList),
+      'setup',
     ].join('/');
   }
 

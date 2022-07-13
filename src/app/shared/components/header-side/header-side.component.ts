@@ -42,7 +42,6 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
     this.typePerson = this.urlService.getParamType(route);
     this.urlUserProfile = this.urlService.getUserProfile(this.typePerson);
     this.permission = this.jwtAuth.getPermission(this.typePerson);
-    console.log(this.typePerson, this.permission);
     this.subscribers = businessSelectedService.get()
       .pipe(
         tap(() => this.businessName = ''),

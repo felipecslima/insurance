@@ -27,9 +27,9 @@ export class ServicesDataService extends DefaultDataService<Service> {
     );
   }
 
-  inactive(params: { id: number, personTypeId: number }): Observable<any> {
-    const { id, personTypeId } = params;
-    return this.http.put(`${ this._baseUrl }/${ id }/inactive`, { personTypeId });
+  inactive(params: { id: number, personTypeId: number, businessId?: number; }): Observable<any> {
+    const { id, personTypeId, businessId } = params;
+    return this.http.put(`${ this._baseUrl }/${ id }/inactive`, { personTypeId, businessId });
   }
 
   getWithQuery(queryParams: QueryParams | string): Observable<Service[]> {
@@ -37,6 +37,21 @@ export class ServicesDataService extends DefaultDataService<Service> {
     return this.http.get(`${ this._baseUrl }`, { params }).pipe(
       map((response: Service[]) => {
         return response || [];
+      })
+    );
+  }
+
+  linkBusiness(body: { businessId: number; serviceId: {id: number, value: number}[] }): Observable<any> {
+    return this.http.post(`${ this._baseUrl }/business`, body).pipe(
+      map(response => {
+        return response as Service;
+      })
+    );
+  }
+  saveLinkPerson(body: { businessId: number; serviceId: {id: number}[], personDoctorId: number }): Observable<any> {
+    return this.http.post(`${ this._baseUrl }/doctor`, body).pipe(
+      map(response => {
+        return response as Service;
       })
     );
   }

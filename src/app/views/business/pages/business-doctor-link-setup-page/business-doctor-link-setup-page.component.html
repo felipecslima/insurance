@@ -1,0 +1,30 @@
+<div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+  <div clCard>
+    <mat-progress-bar #progress mode="determinate" class="progress"></mat-progress-bar>
+    <div clCardContent>
+
+      <business-username-setup-autocomplete
+        (callback)="getPerson($event)"
+        [username]="person?.username">
+      </business-username-setup-autocomplete>
+
+      <business-service-autocomplete
+        [businessId]="businessId"
+        (callback)="getService($event)"></business-service-autocomplete>
+
+      <mat-selection-list #shoes [multiple]="false">
+        <div mat-subheader>Serviços</div>
+        <mat-list-option *ngFor="let service of services" [value]="service" (click)="removeService(service)">
+          {{service.name}}
+          <mat-icon mat-list-icon>delete</mat-icon>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div clCardFooterButton [disableTop]="true">
+      <button (click)="save()" [loading]="isFormLoading" [hasDisabled]="!this.isFormValid" clButtonContained
+              [bgColor]="colors.primary">
+        <span>Salvar</span>
+      </button>
+    </div>
+  </div>
+</div>

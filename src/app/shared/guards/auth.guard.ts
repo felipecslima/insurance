@@ -33,8 +33,6 @@ export class AuthGuard implements CanActivate {
       return 'LOGIN';
     }
 
-    console.log(permissionType, this.getPermissionByUser(), this.getPermissionByUser().includes(permissionType));
-
     if (this.getPermissionByUser().includes(permissionType)) {
       return 'PAGE';
     }

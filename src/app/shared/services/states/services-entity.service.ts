@@ -16,7 +16,8 @@ import { UtilsService } from '../utils.service';
 export class ServicesEntityService extends EntityCollectionServiceBase<Service> {
 
   static _defaultSaveEntity(values: any): Service {
-    const { id,
+    const {
+      id,
       serviceTypeId,
       name,
       description,
@@ -25,7 +26,7 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
       active = true,
       timestamp,
     } = values;
-    const serviceType = { id: parseInt(serviceTypeId, 10) } ;
+    const serviceType = { id: parseInt(serviceTypeId, 10) };
     return {
       id,
       serviceType,
@@ -49,7 +50,7 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
     super('Services', serviceElementsFactory);
   }
 
-  public inactive(params: { id: number, personTypeId: number }): Observable<Service> {
+  public inactive(params: { id: number, personTypeId: number, businessId?: number }): Observable<Service> {
     return this.servicesDataService.inactive(params);
   }
 
@@ -94,6 +95,15 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
     });
   }
 
+  populateLink(service: Service, businessId) {
+    const { id, value } = service;
+    this.formConfigBaseService.initForm({
+      businessId,
+      id,
+      value: (value / 100),
+    });
+  }
+
   /**
    * Save or update business entity
    * @param values
@@ -109,5 +119,42 @@ export class ServicesEntityService extends EntityCollectionServiceBase<Service> 
       observable = this.add(body);
     }
     return observable;
+  }
+
+
+  /**
+   * Save or update business entity
+   * @param body
+   */
+  saveLinkPerson(body: { businessId: number; serviceId: {id: number}[], personDoctorId: number }): Observable<Service> {
+    return this.servicesDataService.saveLinkPerson(body);
+  }
+
+  /**
+   * Save or update business entity
+   * @param values
+   */
+  saveLinkBusiness(values: any): Observable<Service> {
+    const { businessId, newValue = 0, value: oldValue = 0, id } = values;
+    let value: number;
+    const parseNewValue = parseInt(newValue, 10);
+    const parseOldValue = parseInt(oldValue, 10);
+
+    if (parseNewValue > 0) {
+      value = parseNewValue * 100;
+    } else {
+      value = parseOldValue;
+    }
+
+    const body = {
+      businessId,
+      serviceId: [
+        {
+          id,
+          value,
+        }
+      ]
+    };
+    return this.servicesDataService.linkBusiness(body);
   }
 }

@@ -192,6 +192,18 @@ export class NavigationService {
           },
         ]
       },
+      {
+        name: 'Serviços',
+        type: 'link',
+        icon: 'medical_services',
+        state: this.urlService.getBusinessServiceLink(paramType),
+      },
+      {
+        name: 'Médicos',
+        type: 'link',
+        icon: 'medical_services',
+        state: this.urlService.getBusinessListDoctor(paramType),
+      },
     ];
   }
 

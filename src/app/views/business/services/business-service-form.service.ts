@@ -56,6 +56,18 @@ export class BusinessServiceFormService {
     return formConfig;
   }
 
+  getLinkForm() {
+    const formConfig = [];
+    formConfig.push(
+      this.formFieldService.getCurrency({
+        name: 'newValue',
+        title: 'Novo valor do serviço:',
+        hint: 'Deseja alterar o valor padrão do serviço'
+      }),
+    );
+    return formConfig;
+  }
+
 }
 
 const optionsTypeService = [

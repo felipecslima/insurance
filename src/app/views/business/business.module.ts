@@ -34,6 +34,10 @@ import { BusinessNotificationPageComponent } from './pages/business-notification
 import { BusinessNotificationSetupPageComponent } from './pages/business-notification-setup-page/business-notification-setup-page.component';
 import { BusinessServiceLinkPageComponent } from './pages/business-service-link-page/business-service-link-page.component';
 import { BusinessListPageComponent } from './pages/business-list-page/business-list-page.component';
+import { BusinessServiceLinkSetupPageComponent } from './pages/business-service-link-setup-page/business-service-link-setup-page.component';
+import { BusinessServiceAutocompleteComponent } from './components/business-service-autocomplete/business-service-autocomplete.component';
+import { BusinessDoctorLinkPageComponent } from './pages/business-doctor-link-page/business-doctor-link-page.component';
+import { BusinessDoctorLinkSetupPageComponent } from './pages/business-doctor-link-setup-page/business-doctor-link-setup-page.component';
 
 @NgModule({
   imports: [
@@ -69,6 +73,10 @@ import { BusinessListPageComponent } from './pages/business-list-page/business-l
     BusinessNotificationSetupPageComponent,
     BusinessServiceLinkPageComponent,
     BusinessListPageComponent,
+    BusinessServiceLinkSetupPageComponent,
+    BusinessServiceAutocompleteComponent,
+    BusinessDoctorLinkPageComponent,
+    BusinessDoctorLinkSetupPageComponent,
   ]
 })
 export class BusinessModule {

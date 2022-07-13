@@ -1,0 +1,22 @@
+<form class="autocomplete">
+  <mat-progress-bar mode="determinate" class="progress"></mat-progress-bar>
+  <mat-form-field class="width-100" appearance="fill">
+    <mat-label>Digite um Serviço existente na base de dados</mat-label>
+    <input type="text"
+           placeholder="Digite um serviço:"
+           aria-label="Serviço"
+           matInput
+           [formControl]="inputControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions | async"
+                  [value]="option"
+                  (onSelectionChange)="onSelection($event)">
+       {{option.name}}
+      </mat-option>
+      <mat-option *ngIf="hasFind">
+        Se não encontrou o serviço crie um novo ou verifique as informações e tente novamente.
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

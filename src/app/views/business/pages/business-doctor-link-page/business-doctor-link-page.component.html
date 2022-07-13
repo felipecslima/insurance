@@ -1,16 +1,16 @@
 <div class="cl-card no-bg content" fxLayout="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
   <div clCard>
     <table-list
-      *ngIf="!this.servicesListService.emptyResult"
+      *ngIf="!this.personListService.emptyResult"
       [hasFilter]="true"
-      [title]="'Meus de serviços'"
+      [title]="'Nossos '+typePerson?.pluralName.toLowerCase()"
       [columns]="columns"
       (loadNewData)="load()"
       (cbButton)="cbButton($event)"
       (cbFilter)="openFilter()"
-      [loading]="servicesListService.isLoading"
+      [loading]="personListService.isLoading"
     ></table-list>
-    <div class="empty-state" *ngIf="this.servicesListService.emptyResult">
+    <div class="empty-state" *ngIf="this.personListService.emptyResult">
       <button fxFlex="40px" clButtonIcon (click)="openFilter()">
         <i clIcon name="cl-search" color="rgba(0, 0, 0, 0.5)"></i>
       </button>

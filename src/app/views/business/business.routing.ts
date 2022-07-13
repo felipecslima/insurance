@@ -22,6 +22,22 @@ import { BusinessListPageComponent } from './pages/business-list-page/business-l
 import {
   BusinessServiceLinkPageComponent
 } from './pages/business-service-link-page/business-service-link-page.component';
+import { BusinessGuard } from '../../shared/guards/business.guard';
+import {
+  BusinessServiceLinkSetupPageComponent
+} from './pages/business-service-link-setup-page/business-service-link-setup-page.component';
+import { BusinessDoctorLinkPageComponent } from './pages/business-doctor-link-page/business-doctor-link-page.component';
+import {
+  BusinessDoctorLinkSetupPageComponent
+} from './pages/business-doctor-link-setup-page/business-doctor-link-setup-page.component';
+
+
+const personTypeDoc = {
+  type: 'clinica',
+  pluralName: 'Médicos',
+  singularName: 'Médico'
+};
+
 
 export const BusinessRoutes: Routes = [
   {
@@ -70,9 +86,41 @@ export const BusinessRoutes: Routes = [
             data: { title: `Editar de serviço`, breadcrumb: `Cadastro de serviço` },
           },
           {
-            path: `vincular/clinica/:businessId`,
+            path: `meus-servicos`,
             component: BusinessServiceLinkPageComponent,
-            data: { title: `Vincular de serviço`, breadcrumb: `Vincular de serviço` },
+            data: { title: `Meus serviços`, breadcrumb: `Meus serviços` },
+            canActivate: [BusinessGuard],
+          },
+          {
+            path: `setup-link`,
+            component: BusinessServiceLinkSetupPageComponent,
+            data: { title: `Cadastro do serviço`, breadcrumb: `Cadastro do serviço` },
+            canActivate: [BusinessGuard],
+          },
+        ]
+      },
+      {
+        path: `medicos`,
+        component: AdminLayoutInternalComponent,
+        data: {
+          title: `Lista de médicos`, breadcrumb: `Lista de médicos`, type: personTypeDoc
+        },
+        children: [
+          {
+            path: ``,
+            component: BusinessDoctorLinkPageComponent,
+            data: {
+              title: `Lista de médicos`, breadcrumb: `Lista de médicos`, type: personTypeDoc
+            },
+            canActivate: [BusinessGuard],
+          },
+          {
+            path: `setup`,
+            component: BusinessDoctorLinkSetupPageComponent,
+            data: {
+              title: `Associar de médico aos serviços da clinica`, breadcrumb: `Associar de médico`, type: personTypeDoc
+            },
+            canActivate: [BusinessGuard],
           },
         ]
       },
@@ -157,3 +205,4 @@ export const BusinessRoutes: Routes = [
     ]
   }
 ];
+

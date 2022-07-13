@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
-import { CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
+import { AutoUnsubscribe, CombineSubscriptions } from '../../../../shared/decorators/auto-unsubscribe.decorator';
 import { noop, of, Unsubscribable } from 'rxjs';
 import { TableInfinityListColumn } from '../../../../shared/components/table-list/table-list.component';
 import { Business, BusinessEmail, BusinessPhone } from '../../../../shared/interfaces/business.interface';
@@ -26,6 +26,7 @@ import { BusinessSelectedService } from '../../business-selected.service';
   templateUrl: './business-list-page.component.html',
   styleUrls: ['./business-list-page.component.scss']
 })
+@AutoUnsubscribe()
 export class BusinessListPageComponent implements OnInit, OnDestroy {
   colors = environment.color;
   @CombineSubscriptions()

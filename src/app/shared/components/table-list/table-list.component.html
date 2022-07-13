@@ -41,6 +41,7 @@
           {{ element[columnData.columnName] }}
         </a>
         <a *ngIf="columnData.type === 'click'" (click)="cbButton.emit({element, columnData})">
+
           {{ element[columnData.columnName] }}
         </a>
         <div class="buttons" *ngIf="columnData.type === 'button'">
