@@ -100,7 +100,6 @@ export class BusinessDoctorLinkSetupPageComponent implements OnInit, OnDestroy {
     if (!this.isFormValid) {
       return;
     }
-    console.log(this.geBody());
     this.servicesEntityService.saveLinkPerson(this.geBody())
       .subscribe(() => {
         this.utilsService.toast('Médico salvo com sucesso!', 'success');
@@ -133,7 +132,8 @@ export class BusinessDoctorLinkSetupPageComponent implements OnInit, OnDestroy {
   }
 
   geBody(): { businessId: number; serviceId: { id: number }[], personDoctorId: number } {
-    const user = this.person.user.find(u => u.personTypeId === this.permission.id);
+    console.log(this.person);
+    const [doctor] = this.person.doctor;
     return {
       businessId: this.businessId,
       serviceId: this.services.map(s => {
@@ -141,7 +141,7 @@ export class BusinessDoctorLinkSetupPageComponent implements OnInit, OnDestroy {
           id: s.id
         };
       }),
-      personDoctorId: user.id
+      personDoctorId: doctor.id
     };
   }
 }
