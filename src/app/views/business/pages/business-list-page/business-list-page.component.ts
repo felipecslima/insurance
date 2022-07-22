@@ -69,7 +69,8 @@ export class BusinessListPageComponent implements OnInit, OnDestroy {
     this.permissions = this.jwtAuthService.getPermission(this.typePermission);
 
     this.person = this.jwtAuthService.getUser();
-    this.baseUrl = this.urlService.getUserList('medico');
+
+    this.baseUrl = this.getBaseUrl();
     this.subscribers = this.route.queryParams
       .pipe(
         switchMap(queryParams => {
@@ -116,6 +117,15 @@ export class BusinessListPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  getBaseUrl() {
+    const [, url] = this.router.url.split('/');
+    if (url === 'medico') {
+      return this.urlService.getBusinessNotificationList('medico');
+    } else if (url === 'clinica') {
+      return this.urlService.getUserList('medico');
+    }
   }
 
   load(isLoadMore = true) { // LOAD MORE

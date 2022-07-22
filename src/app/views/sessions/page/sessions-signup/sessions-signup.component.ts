@@ -180,7 +180,6 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
   }
 
   setBrief() {
-    console.log('setBrief');
     this.subscriptions = this.formConfigBaseService.getValues()
       .pipe(tap(values => {
         const exclude = ['type', 'planId', 'safeId', 'password'];
@@ -233,7 +232,6 @@ export class SessionsSignupComponent implements OnInit, OnDestroy {
               });
           }
         );
-        console.log(this.brief);
       }))
       .subscribe(noop);
   }

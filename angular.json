@@ -76,6 +76,22 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "client": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.client.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
@@ -88,6 +104,9 @@
           "configurations": {
             "prod": {
               "browserTarget": "egret:build:prod"
+            },
+            "client": {
+              "browserTarget": "egret:build:client"
             }
           }
         },
@@ -136,7 +155,7 @@
     "@schematics/angular:component": {
       "prefix": "",
       "style": "scss",
-      "skipTests": true,
+      "skipTests": true
     },
     "@schematics/angular:directive": {
       "prefix":""

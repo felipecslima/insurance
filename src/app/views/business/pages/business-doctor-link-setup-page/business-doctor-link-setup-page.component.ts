@@ -132,7 +132,6 @@ export class BusinessDoctorLinkSetupPageComponent implements OnInit, OnDestroy {
   }
 
   geBody(): { businessId: number; serviceId: { id: number }[], personDoctorId: number } {
-    console.log(this.person);
     const [doctor] = this.person.doctor;
     return {
       businessId: this.businessId,

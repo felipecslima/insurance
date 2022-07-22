@@ -117,7 +117,6 @@ export class BusinessDoctorLinkPageComponent implements OnInit, OnDestroy {
             const { id, username, firstName, lastName, doctor, birthday, address } = person;
             const { phone, email, user } = person;
             const userBy = user.find(u => u.personTypeId === this.typePersonDocId);
-            console.log('userBy', userBy);
             const { skill, medicalId } = doctor[0] || [] as any;
             const { city } = address[0];
             return {
