@@ -9,6 +9,7 @@
     "start:mock": "concurrently \"npm run start \" \"nodemon e2e/e2e-server.js\"",
     "serveProd": "ng serve --environment=prod",
     "build": "ng build -c=prod",
+    "build:client": "ng build -c=client",
     "test": "ng test",
     "e2e": "ng e2e",
     "mock": "nodemon e2e/e2e-server.js",

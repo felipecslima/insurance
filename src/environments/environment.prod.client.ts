@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://clube-beneficios.herokuapp.com',
+  apiUrl: 'https://api-unisulpara.naveamazon.com',
   color: {
     primary: '#234711',
     textPrimary: '#fff',
